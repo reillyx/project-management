@@ -98,7 +98,7 @@ export interface FileEntry {
   name: string;
   ext: string; // 文件后缀
   size: string;
-  updated: string;
+  updated: string; // ISO 上传或覆盖时间戳（只读）
   data?: string; // dataURL / 对象存储 URL，存在则支持下载
 }
 

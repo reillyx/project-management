@@ -1,6 +1,6 @@
 // 文件管理器：按「阶段 → 用途」二级目录存储
 // 含：总览（搜索/排序/类型筛选/最近tab/批量/列表网格/拖拽上传/预览）+ 单项目按阶段目录浏览
-import { getProject, getProjects, updateProject } from '../store';
+import { addLog, getProject, getProjects, updateProject } from '../store';
 import { PHASE_META, type PhaseKey, type Project } from '../data/types';
 import { USAGE_DIR_LIST } from '../data/mock';
 import { esc, icon, toast } from '../ui';
@@ -105,6 +105,11 @@ function pickFiles(accept: string, onFiles: (files: File[]) => void): void {
   input.click();
 }
 
+function fileTimestamp(value: string): string {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString('zh-CN', { hour12: false });
+}
+
 /** 统一处理上传：写入指定 stage/folder 或合同附件，返回成功数量，并回调进度 */
 async function uploadInto(
   p: Project,
@@ -128,7 +133,7 @@ async function uploadInto(
       name: base,
       ext,
       size: fmtSize(f.size),
-      updated: new Date().toISOString().slice(0, 10),
+      updated: new Date().toISOString(),
       data: await readAsDataURL(f),
     });
     onProgress?.(i + 1, total);
@@ -142,17 +147,33 @@ async function uploadInto(
       uploadedAt: e.updated,
       data: e.data,
     }));
+    const incomingNames = new Set(mapped.map(file => file.name.toLowerCase()));
     updateProject(p.id, {
-      contract: { ...(p.contract ?? { no: '', name: '', amount: '', signDate: '', payment: '' }), files: cur.concat(mapped) },
+      contract: {
+        ...(p.contract ?? { no: '', name: '', amount: '', signDate: '', payment: '' }),
+        files: cur.filter(file => !incomingNames.has(file.name.toLowerCase())).concat(mapped),
+      },
     });
   } else if (opts.stage && opts.folder) {
     const dir = { ...(p.filesDir ?? {}) };
     const stageDir = { ...(dir[opts.stage] ?? {}) };
-    const folderFiles = (stageDir[opts.folder] || []).concat(entries);
+    const previous = stageDir[opts.folder] || [];
+    const incomingNames = new Set(entries.map(entry => `${entry.name}.${entry.ext}`.toLowerCase()));
+    const folderFiles = previous.filter(entry => !incomingNames.has(`${entry.name}.${entry.ext}`.toLowerCase())).concat(entries);
     stageDir[opts.folder] = folderFiles;
     dir[opts.stage] = stageDir;
     updateProject(p.id, { filesDir: dir });
   }
+  const location = opts.contract ? '合同附件' : `阶段「${opts.stage ?? ''}」/「${opts.folder ?? ''}」`;
+  entries.forEach(entry => {
+    const filename = `${entry.name}.${entry.ext}`;
+    addLog({
+      action: 'upload',
+      target: 'file',
+      projectId: p.id,
+      detail: `上传或覆盖文件「${filename}」至${location}`,
+    });
+  });
   return entries.length;
 }
 
@@ -753,7 +774,7 @@ export function renderFiles(root: HTMLElement, projectId?: string, phase?: strin
                 <span class="w-7 h-8 rounded flex items-center justify-center text-white text-[10px] font-semibold shrink-0" style="background:${c}">${fl.ext.toUpperCase()}</span>
                 <button class="flex-1 min-w-0 text-left group/pv" title="预览 / 下载" data-pv-file="${fl.id}">
                   <div class="text-[13px] text-ink truncate group-hover/pv:text-brand-deep transition-colors">${esc(fl.name)}.${esc(fl.ext)}</div>
-                  <div class="text-[10px] text-ink-faint">${fl.size} · ${fmtDate(fl.updated)}</div>
+                  <div class="text-[10px] text-ink-faint">${fl.size} · 上传/覆盖：${fileTimestamp(fl.updated)}</div>
                 </button>
                 <button class="text-danger/70 hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity shrink-0" title="删除" data-del-file="${fl.id}">${icon('trash', 14)}</button>
                 <span class="text-brand-deep shrink-0" title="下载" data-dl-file="${fl.id}">${icon('download', 14)}</span>
@@ -1031,6 +1052,7 @@ export function renderFiles(root: HTMLElement, projectId?: string, phase?: strin
               stt[fld] = list.filter(x => x.id !== id);
               newDir[selStage] = stt;
               updateProject(p.id, { filesDir: newDir });
+              addLog({ action: 'delete', target: 'file', projectId: p.id, detail: `删除文件「${fl.name}.${fl.ext}」` });
               toast(`已删除 ${fl.name}.${fl.ext}`, 'success');
               render(selStage, fld);
             });
@@ -1052,6 +1074,7 @@ export function renderFiles(root: HTMLElement, projectId?: string, phase?: strin
             updateProject(p.id, {
               contract: { ...(p.contract ?? { no: '', name: '', amount: '', signDate: '', payment: '' }), files: cur.filter(f => f !== target) },
             });
+            addLog({ action: 'delete', target: 'file', projectId: p.id, detail: `删除合同附件「${target.name}」` });
             toast(`已删除 ${target.name}`, 'success');
             render(selStage);
           });
