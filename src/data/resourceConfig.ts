@@ -35,11 +35,10 @@ function normalize(raw: Partial<ResourceConfig>): ResourceConfig {
   const catalog = Array.isArray(raw.catalog)
     ? raw.catalog.filter((c): c is CatalogProduct => !!c && typeof c.name === 'string')
     : base.catalog;
-  if (!catalog.length) catalog.push(...base.catalog);
   return {
     catalog,
-    systems: Array.isArray(raw.systems) && raw.systems.length ? raw.systems : base.systems,
-    integrates: Array.isArray(raw.integrates) && raw.integrates.length ? raw.integrates : base.integrates,
+    systems: Array.isArray(raw.systems) ? raw.systems : base.systems,
+    integrates: Array.isArray(raw.integrates) ? raw.integrates : base.integrates,
   };
 }
 

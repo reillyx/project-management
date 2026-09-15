@@ -228,7 +228,7 @@ export function renderTeam(root: HTMLElement): void {
   };
 
   root.querySelector('#prodNew')?.addEventListener('click', () => openProductCfgModal(root, undefined, reloadCfg));
-  root.querySelectorAll<HTMLElement>('[data-prod-idx]').forEach(btn => {
+  root.querySelectorAll<HTMLElement>('.prod-del, .prod-edit').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = Number(btn.getAttribute('data-prod-idx'));
       const c = getResourceConfig().catalog[idx];
