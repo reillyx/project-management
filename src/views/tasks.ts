@@ -19,6 +19,7 @@ let fProj = '';
 let fStatus = '';
 let fPhase = '';
 let fPri = '';
+let statFilter: '' | 'overdue' | 'today' | 'week' | 'done' = '';
 let collapsed = new Set<string>();
 
 function saveState(): void {
@@ -91,6 +92,11 @@ function matches(row: TaskRow): boolean {
   const { project, task } = row;
   const status = (task.status as string) || 'todo';
   const u = urgencyOf(task);
+  const days = daysUntil(task.end || '');
+  if (statFilter === 'overdue' && u !== 'overdue') return false;
+  if (statFilter === 'today' && u !== 'today') return false;
+  if (statFilter === 'week' && (status === 'done' || !Number.isFinite(days) || days < 0 || days > 7)) return false;
+  if (statFilter === 'done' && status !== 'done') return false;
   // scope
   if (scope === 'done' && status !== 'done') return false;
   if (scope === 'focus' && !(u === 'overdue' || u === 'today' || u === 'soon')) return false;
@@ -100,10 +106,7 @@ function matches(row: TaskRow): boolean {
   if (fProj && project.id !== fProj) return false;
   if (fStatus && (task.status as string) !== fStatus) return false;
   if (fPhase && (task.phase as string) !== fPhase) return false;
-  // priority: 高=逾期+今日, 中=3天, 低=正常+完成
-  if (fPri === 'high' && !(u === 'overdue' || u === 'today')) return false;
-  if (fPri === 'mid' && u !== 'soon') return false;
-  if (fPri === 'low' && !(u === 'normal' || u === 'done')) return false;
+  if (fPri && (task.priority || '') !== fPri) return false;
   return true;
 }
 
@@ -117,7 +120,7 @@ export function renderTasks(): string {
 
   const projectOpts = `<option value="">全部项目</option>` + getProjects().map(p => `<option value="${esc(p.id)}" ${fProj === p.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
   const statusOpts = Object.entries(ST_LABEL).map(([k, v]) => `<option value="${k}" ${fStatus === k ? 'selected' : ''}>${v}</option>`).join('');
-  const phaseOpts = `<option value="">全部阶段</option>` + Object.values(PHASE_META).map(ph => `<option value="${esc(ph.code)}" ${fPhase === ph.code ? 'selected' : ''}>${esc(ph.name)}</option>`).join('');
+  const phaseOpts = `<option value="">全部阶段</option>` + Object.values(PHASE_META).map(ph => `<option value="${esc(ph.key)}" ${fPhase === ph.key ? 'selected' : ''}>${esc(ph.name)}</option>`).join('');
   const priOpts = Object.entries(PRI_LABEL).map(([k, v]) => `<option value="${k}" ${fPri === k ? 'selected' : ''}>${v}</option>`).join('');
   const activeRow = (key: 'overdue' | 'today' | 'week' | 'done') => {
     // 卡片点击筛选：逾期/今日/已完成直接设 scope；本周通过搜索占位（click 事件处理统计卡的 today/week）
@@ -223,7 +226,7 @@ function renderBody(): string {
     byProj.forEach((g, key) => groups.push({ key, title: (g[0].project.name), rows: g }));
   } else {
     Object.values(PHASE_META).forEach(p => {
-      const g = sorted.filter(r => (r.task.phase as string) === p.code);
+      const g = sorted.filter(r => (r.task.phase as string) === p.key);
       if (g.length) groups.push({ key: p.code, title: p.name, rows: g });
     });
   }
@@ -333,36 +336,51 @@ function countdown(task: ProjectTask): string {
 let stOpen: { id: string; btn: HTMLElement } | null = null;
 
 export function wireTasks(): void {
-  const root = document.querySelector('[data-view="tasks"]');
+  const root = document.querySelector<HTMLElement>('#viewRoot > [data-view="tasks"]');
   if (!root) return;
 
-  const rerender = () => { const b = document.getElementById('tk-body'); if (b) b.outerHTML = `<div id="tk-body">${renderBody()}</div>`; };
+  const rerender = () => {
+    const b = document.getElementById('tk-body');
+    if (b) b.outerHTML = `<div id="tk-body">${renderBody()}</div>`;
+    root.querySelectorAll<HTMLElement>('[data-scope]').forEach(button => {
+      const active = button.dataset.scope === scope;
+      button.className = `px-3 py-1.5 text-sm font-medium border-b-2 transition ${active ? 'text-[#5B9BD5] border-[#5B9BD5]' : 'text-slate-500 border-transparent hover:text-slate-700'}`;
+    });
+    root.querySelectorAll<HTMLElement>('[data-group]').forEach(button => {
+      const active = button.dataset.group === group;
+      button.className = `px-3 py-1.5 text-sm rounded-lg transition ${active ? 'bg-[#5B9BD5] text-white' : 'bg-white text-slate-600 border hover:bg-slate-50'}`;
+    });
+    root.querySelectorAll<HTMLElement>('[data-viewt]').forEach(button => {
+      const active = (button.dataset.viewt === 'card') === (view === 'card');
+      button.className = `px-2.5 py-1.5 rounded-md transition ${active ? 'bg-white shadow text-[#5B9BD5]' : 'text-slate-500'}`;
+    });
+  };
 
   // 搜索
   const s = root.querySelector<HTMLInputElement>('#tk-s');
-  s?.addEventListener('input', () => { q = s.value.trim(); rerender(); });
+  s?.addEventListener('input', () => { q = s.value.trim(); statFilter = ''; rerender(); });
   // 筛选
   const proj = root.querySelector<HTMLSelectElement>('#tk-proj');
-  proj?.addEventListener('change', () => { fProj = proj.value; rerender(); });
+  proj?.addEventListener('change', () => { fProj = proj.value; statFilter = ''; rerender(); });
   const status = root.querySelector<HTMLSelectElement>('#tk-status');
-  status?.addEventListener('change', () => { fStatus = status.value; rerender(); });
+  status?.addEventListener('change', () => { fStatus = status.value; statFilter = ''; rerender(); });
   const phase = root.querySelector<HTMLSelectElement>('#tk-phase');
-  phase?.addEventListener('change', () => { fPhase = phase.value; rerender(); });
+  phase?.addEventListener('change', () => { fPhase = phase.value; statFilter = ''; rerender(); });
   const pri = root.querySelector<HTMLSelectElement>('#tk-pri');
-  pri?.addEventListener('change', () => { fPri = pri.value; rerender(); });
+  pri?.addEventListener('change', () => { fPri = pri.value; statFilter = ''; rerender(); });
 
   // 视角 / 分组 / 视图 (委托)
-  root.querySelectorAll<HTMLElement>('[data-scope]').forEach(b => b.addEventListener('click', () => { scope = b.dataset.scope as typeof scope; saveState(); rerender(); }));
+  root.querySelectorAll<HTMLElement>('[data-scope]').forEach(b => b.addEventListener('click', () => { scope = b.dataset.scope as typeof scope; statFilter = ''; saveState(); rerender(); }));
   root.querySelectorAll<HTMLElement>('[data-group]').forEach(b => b.addEventListener('click', () => { group = b.dataset.group as typeof group; saveState(); rerender(); }));
   root.querySelectorAll<HTMLElement>('[data-viewt]').forEach(b => b.addEventListener('click', () => { view = b.dataset.viewt === 'card' ? 'card' : 'list'; saveState(); rerender(); }));
 
   // 统计卡点击
   root.querySelectorAll<HTMLElement>('[data-stat]').forEach(b => b.addEventListener('click', () => {
     const k = b.dataset.stat as string;
-    if (k === 'done') { scope = 'done'; saveState(); rerender(); }
-    else if (k === 'overdue') { scope = 'focus'; fStatus = ''; saveState(); rerender(); }
-    else if (k === 'today') { scope = 'focus'; /* today 通过搜索近似：标q? 直接提示*/ }
-    else if (k === 'week') { scope = 'all'; }
+    if (k === 'done') { scope = 'all'; statFilter = 'done'; saveState(); rerender(); }
+    else if (k === 'overdue') { scope = 'all'; statFilter = 'overdue'; saveState(); rerender(); }
+    else if (k === 'today') { scope = 'all'; statFilter = 'today'; saveState(); rerender(); }
+    else if (k === 'week') { scope = 'all'; statFilter = 'week'; saveState(); rerender(); }
   }));
 
   // 分组折叠
@@ -372,10 +390,8 @@ export function wireTasks(): void {
     rerender();
   }));
 
-  // 状态切换 / 快速完成（委托到 body）
-  const body = root.querySelector('#tk-body');
-  if (body) {
-    body.addEventListener('click', (e) => {
+  // 状态切换 / 快速完成 / 日期修改（委托到根节点，内容重绘后仍然有效）
+  root.addEventListener('click', (e) => {
       const t = e.target as HTMLElement;
       const stBtn = t.closest<HTMLElement>('[data-st]');
       if (stBtn) { openStateMenu(stBtn, stBtn.dataset.st as string); return; }
@@ -383,10 +399,9 @@ export function wireTasks(): void {
       if (doneBtn) { quickDone(doneBtn.dataset.done as string); return; }
       const dateBtn = t.closest<HTMLElement>('[data-date]');
       if (dateBtn) { openDateEditor(dateBtn, dateBtn.dataset.date as string); return; }
-    });
-    // 进度条拖拽：date 显示在行内不可拖，这里用点击进度条边缘。提供简单 +/- 
-  }
-  renderBody();
+  });
+  const body = root.querySelector<HTMLElement>('#tk-body');
+  if (body) body.innerHTML = renderBody();
 }
 
 /* 已开状态菜单关闭 */
@@ -398,6 +413,7 @@ function openStateMenu(btn: HTMLElement, taskId: string): void {
   if (stOpen && stOpen.btn === btn) { removeMenu(); return; }
   removeMenu();
   const menu = document.createElement('div');
+  menu.dataset.stmenu = 'true';
   menu.style.cssText = 'position:absolute;z-index:40;background:#fff;border:1px solid #E1E8F0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.08);min-width:120px;overflow:hidden';
   ['todo', 'doing', 'done'].forEach(st => {
     const it = document.createElement('button');
