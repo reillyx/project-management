@@ -8,8 +8,18 @@ import {
 } from '../data/resourceConfig';
 import { esc, icon, toast } from '../ui';
 
+let memberRole: 'all' | 'tech' | 'sales' | 'dev' | 'pm' = 'all';
+let memberPage = 1;
+const MEMBER_PAGE_SIZE = 5;
+const roleColor = (role: typeof memberRole): string => role === 'all' ? '#5B9BD5' : ROLE_META[role].color;
+
 export function renderTeam(root: HTMLElement): void {
-  const members = getTeam();
+  const roleMembers = memberRole === 'all'
+    ? getTeam()
+    : getTeam().filter(m => m.roles.includes(memberRole as 'tech' | 'sales' | 'dev' | 'pm'));
+  const pageCount = Math.max(1, Math.ceil(roleMembers.length / MEMBER_PAGE_SIZE));
+  memberPage = Math.min(memberPage, pageCount);
+  const members = roleMembers.slice((memberPage - 1) * MEMBER_PAGE_SIZE, memberPage * MEMBER_PAGE_SIZE);
   const projects = getProjects();
 
   const memberCard = (m: TeamMember): string => {
@@ -71,10 +81,10 @@ export function renderTeam(root: HTMLElement): void {
       <div class="flex items-center gap-3 flex-wrap">
         <div class="flex items-center gap-2 text-[15px] font-semibold text-ink">${icon('users', 17)} 团队成员库</div>
         <div class="flex items-center gap-1.5 text-[12px] text-ink-faint flex-wrap ml-1">
-          ${(['tech', 'sales', 'dev', 'pm'] as const)
+          ${(['all', 'tech', 'sales', 'dev', 'pm'] as const)
             .map(
               r =>
-                `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] text-white" style="background:${ROLE_META[r].color}">${ROLE_META[r].label}</span>`,
+              `<button class="member-role-filter inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] ${memberRole === r ? 'text-white' : 'text-ink-soft bg-canvas'}" data-member-role="${r}" style="${memberRole === r ? `background:${roleColor(r)}` : ''}">${r === 'all' ? '全部' : ROLE_META[r].label}</button>`,
             )
             .join('')}
         </div>
@@ -102,6 +112,14 @@ export function renderTeam(root: HTMLElement): void {
             ${members.map(memberCard).join('') || '<tr><td colspan="7" class="px-4 py-6 text-center text-[12px] text-ink-faint">暂无成员</td></tr>'}
           </tbody>
         </table>
+      </div>
+      <div class="flex items-center justify-between mt-2 text-[12px] text-ink-faint">
+        <span>共 ${roleMembers.length} 名成员</span>
+        <div class="flex items-center gap-2">
+          <button class="member-page-prev btn-ghost px-2" ${memberPage <= 1 ? 'disabled' : ''}>上一页</button>
+          <span>${memberPage} / ${pageCount}</span>
+          <button class="member-page-next btn-ghost px-2" ${memberPage >= pageCount ? 'disabled' : ''}>下一页</button>
+        </div>
       </div>
     </div>
 
@@ -158,6 +176,24 @@ export function renderTeam(root: HTMLElement): void {
   // ===== 团队成员交互 =====
   const grid = root.querySelector('#teamGrid') as HTMLElement | null;
   const search = root.querySelector('#teamSearch') as HTMLInputElement | null;
+  root.querySelectorAll<HTMLButtonElement>('[data-member-role]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = btn.dataset.memberRole;
+      if (next === 'all' || next === 'tech' || next === 'sales' || next === 'dev' || next === 'pm') {
+        memberRole = next;
+        memberPage = 1;
+        renderTeam(root);
+      }
+    });
+  });
+  root.querySelector<HTMLButtonElement>('.member-page-prev')?.addEventListener('click', () => {
+    memberPage = Math.max(1, memberPage - 1);
+    renderTeam(root);
+  });
+  root.querySelector<HTMLButtonElement>('.member-page-next')?.addEventListener('click', () => {
+    memberPage += 1;
+    renderTeam(root);
+  });
   search?.addEventListener('input', () => {
     const q = (search.value || '').trim().toLowerCase();
     root.querySelectorAll<HTMLElement>('[data-mid]').forEach(el => {

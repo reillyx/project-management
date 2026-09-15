@@ -136,8 +136,8 @@ async function boot(): Promise<void> {
       return;
     }
     seeded = true;
-    setProjects(s.projects);
     if (Array.isArray(s.team) && s.team.length > 0) setTeam(s.team);
+    setProjects(s.projects);
     // 模板：若后端已是富文本结构（≥内置套数且内置项均含 contentHTML）则恢复（含用户编辑/上传），
     // 否则以本地内置富文本模板为准并将新模板写回后端完成升级。
     const hasRichTemplates = Array.isArray(s.templates) && s.templates.length >= getTemplates().length &&

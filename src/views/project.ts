@@ -1177,10 +1177,6 @@ function openTaskModal(root: HTMLElement, opts: TaskModalOpts): void {
     getTeam().forEach(member => {
       if (member.name && !candidates.includes(member.name)) candidates.push(member.name);
     });
-    if (proj?.manager && !candidates.includes(proj.manager)) candidates.push(proj.manager);
-    (proj?.teamOf ? Object.values(proj.teamOf).flat() : []).forEach(m => {
-      if (m?.name && !candidates.includes(m.name)) candidates.push(m.name);
-    });
     if (!candidates.length) candidates.push(opts.defaults.owner || '');
     ownerSel.innerHTML = candidates.map(n => `<option value="${esc(n)}" ${n === opts.defaults.owner ? 'selected' : ''}>${esc(n)}</option>`).join('');
   }
