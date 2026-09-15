@@ -1,6 +1,7 @@
 // 应用外壳：顶栏 + 侧边导航 + 内容容器
-import { countAlerts } from '../store';
-import { icon } from '../ui';
+import { collectReminders, countAlerts } from '../store';
+import { daysUntil, fmtDate, LEVEL_META } from '../lib';
+import { esc, icon } from '../ui';
 
 interface NavItem {
   view: string;
@@ -46,7 +47,7 @@ export function renderShell(app: HTMLElement): void {
       </div>
     </aside>
     <div class="flex-1 flex flex-col min-w-0">
-      <header class="h-14 shrink-0 border-b border-line bg-white flex items-center gap-3 px-4">
+      <header class="relative h-14 shrink-0 border-b border-line bg-white flex items-center gap-3 px-4">
         <div id="viewTitle" class="text-[15px] font-semibold text-ink whitespace-nowrap">工作台</div>
         <div class="flex-1"></div>
         <div class="flex items-center gap-2">
@@ -57,6 +58,7 @@ export function renderShell(app: HTMLElement): void {
           <button id="headerBell" class="btn relative px-2.5" title="到期提醒">${icon('bell', 16)}
             <span id="bellCount" class="absolute -top-1 -right-1 min-w-[16px] h-4 px-1 rounded-full bg-[#C00000] text-white text-[10px] flex items-center justify-center">0</span>
           </button>
+          <div id="notificationDrawer" class="hidden absolute right-4 top-12 z-40 w-[420px] max-w-[calc(100vw-2rem)] bg-white border border-line rounded-lg shadow-xl overflow-hidden"></div>
           <button id="headerExport" class="btn">${icon('export', 14)} 导出</button>
           <button id="headerNew" class="btn-primary">${icon('plus', 14)} 新建项目</button>
           <div class="w-px h-6 bg-line mx-0.5"></div>
@@ -124,4 +126,59 @@ export function updateBell(): void {
     el.style.display = c.total > 0 ? 'flex' : 'none';
     el.style.background = c.overdue > 0 ? '#C00000' : '#E36C0A';
   }
+}
+
+export function renderNotificationDrawer(): void {
+  const drawer = document.getElementById('notificationDrawer');
+  if (!drawer) return;
+  const reminders = collectReminders();
+  const counts = {
+    overdue: reminders.filter(r => r.level === 'overdue').length,
+    urgent: reminders.filter(r => r.level === 'urgent').length,
+    warning: reminders.filter(r => r.level === 'warning').length,
+  };
+  const groups: Array<{ key: 'overdue' | 'urgent' | 'warning'; label: string }> = [
+    { key: 'overdue', label: '已逾期' },
+    { key: 'urgent', label: '1 天内到期' },
+    { key: 'warning', label: '3 天内到期' },
+  ];
+  const itemRows = groups.flatMap(group =>
+    reminders
+      .filter(item => item.level === group.key)
+      .map(item => {
+        const meta = LEVEL_META[item.level];
+        const days = daysUntil(item.date);
+        const countdown = days < 0 ? `逾期${-days}天` : days === 0 ? '今天到期' : `还剩${days}天`;
+        return `<a href="#/project/${esc(item.projectId)}" data-notification-link class="flex items-start gap-2.5 px-4 py-3 border-t border-hair hover:bg-brand-soft transition-colors">
+          <span class="w-2 h-2 mt-1.5 rounded-full shrink-0" style="background:${meta.color}"></span>
+          <div class="flex-1 min-w-0">
+            <div class="text-[13px] text-ink truncate">${esc(item.title)}</div>
+            <div class="text-[11px] text-ink-faint truncate">${esc(item.projectName)} · ${fmtDate(item.date)}</div>
+          </div>
+          <span class="text-[11px] font-medium shrink-0" style="color:${meta.color}">${countdown}</span>
+        </a>`;
+      }),
+  );
+  drawer.innerHTML = `
+    <div class="px-4 py-3 border-b border-hair flex items-center justify-between">
+      <div class="flex items-center gap-2 text-[14px] font-semibold text-ink">${icon('bell', 15)} 通知中心</div>
+      <a href="#/reminders" data-notification-link class="text-[12px] text-brand-deep hover:underline">查看全部 ${icon('chevron', 12)}</a>
+    </div>
+    <div class="grid grid-cols-3 divide-x divide-hair border-b border-hair">
+      ${groups.map(group => `<div class="px-3 py-2 text-center"><div class="text-[18px] font-semibold" style="color:${LEVEL_META[group.key].color}">${counts[group.key]}</div><div class="text-[11px] text-ink-faint">${group.label}</div></div>`).join('')}
+    </div>
+    <div class="max-h-[390px] overflow-auto">
+      ${itemRows.length ? itemRows.join('') : '<div class="px-4 py-10 text-center text-[12px] text-ink-faint">' + icon('check', 24) + '<div class="mt-2">暂无提醒和预警</div></div>'}
+    </div>`;
+  drawer.querySelectorAll<HTMLElement>('[data-notification-link]').forEach(link => {
+    link.addEventListener('click', () => drawer.classList.add('hidden'));
+  });
+}
+
+export function toggleNotificationDrawer(): void {
+  const drawer = document.getElementById('notificationDrawer');
+  if (!drawer) return;
+  const opening = drawer.classList.contains('hidden');
+  if (opening) renderNotificationDrawer();
+  drawer.classList.toggle('hidden', !opening);
 }

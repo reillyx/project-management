@@ -17,7 +17,7 @@ import {
 } from './store';
 import { applySysSettings } from './lib';
 import { confirmLeaving, saveScroll, restoreScroll, setDirtyApp, isDirtyApp } from './guard';
-import { renderShell, renderNav, setViewTitle, updateBell, setAuthenticated, updateHeaderUser } from './views/layout';
+import { renderShell, renderNav, setViewTitle, updateBell, setAuthenticated, updateHeaderUser, toggleNotificationDrawer } from './views/layout';
 import { renderDashboard } from './views/dashboard';
 import { renderReminders } from './views/reminders';
 import { renderProjects, openNewModal } from './views/projects';
@@ -257,7 +257,7 @@ function navViewOf(view: string, projectId?: string): string {
 function wireHeader(): void {
   const bell = document.getElementById('headerBell');
   bell?.addEventListener('click', () => {
-    window.location.hash = '#/reminders';
+    toggleNotificationDrawer();
   });
 
   // 全局搜索：常驻搜索框 + 防抖下拉（wireGlobalSearch 内部自行绑定 input）
