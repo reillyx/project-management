@@ -20,6 +20,52 @@ let stageLogLimit = 6; // 项目日志默认展示条数
 let stageLogExpanded = false; // 项目日志是否展开全部
 
 type OurRole = 'tech' | 'sales' | 'dev';
+
+function ownerChips(value: string): string {
+  const team = getTeam();
+  const names = value.split(',').map(name => name.trim()).filter(Boolean);
+  if (!names.length) return '<span class="text-ink-faint">未分配</span>';
+  return names.map(name => {
+    const member = team.find(item => item.name === name);
+    const role = member?.roles[0];
+    const color = role ? ROLE_META[role].color : '#718096';
+    return `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] text-white mr-1" style="background:${color}">${esc(name)}</span>`;
+  }).join('');
+}
+
+function ownerOptions(selected: string): string {
+  const names = new Set(selected.split(',').map(name => name.trim()).filter(Boolean));
+  return getTeam().map(member => {
+    const color = ROLE_META[member.roles[0]].color;
+    return `<label class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-canvas cursor-pointer">
+      <input type="checkbox" data-owner-id="${esc(member.id)}" value="${esc(member.name)}" ${names.has(member.name) ? 'checked' : ''}>
+      <span class="w-2.5 h-2.5 rounded-full" style="background:${color}"></span><span>${esc(member.name)}</span>
+    </label>`;
+  }).join('');
+}
+
+function openOwnerModal(root: HTMLElement, selected: string, onSave: (value: string) => void): void {
+  const bg = document.createElement('div');
+  bg.className = 'modal-mask';
+  bg.innerHTML = `<div class="modal" style="max-width:420px">
+    <div class="px-4 py-3 border-b border-line flex items-center justify-between">
+      <span class="text-[15px] font-semibold text-ink">选择负责人（可多选）</span>
+      <button class="text-ink-faint hover:text-ink" data-owner-close>${icon('x', 16)}</button>
+    </div>
+    <div class="p-4"><div class="border border-line rounded-md p-1 max-h-56 overflow-y-auto">${ownerOptions(selected) || '<span class="text-ink-faint text-[12px]">暂无团队成员</span>'}</div></div>
+    <div class="flex justify-end gap-2 px-4 py-3 border-t border-line"><button class="btn" data-owner-cancel>取消</button><button class="btn-primary" data-owner-save>保存</button></div>
+  </div>`;
+  const close = (): void => bg.remove();
+  bg.addEventListener('click', event => { if (event.target === bg) close(); });
+  bg.querySelector('[data-owner-close]')?.addEventListener('click', close);
+  bg.querySelector('[data-owner-cancel]')?.addEventListener('click', close);
+  bg.querySelector('[data-owner-save]')?.addEventListener('click', () => {
+    const value = Array.from(bg.querySelectorAll<HTMLInputElement>('input[type="checkbox"]:checked')).map(input => input.value).join(', ');
+    onSave(value);
+    close();
+  });
+  root.appendChild(bg);
+}
 import {
   contactBlock,
   esc,
@@ -94,7 +140,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
         <td class="table-td">
           <span class="editable-cell" data-task-field="name" data-tid="${t.id}">${esc(t.name)}<span class="pencil-hint">${icon('edit', 10)}</span></span>${t.milestone ? ` <span class="text-[#B8860B]">${icon('star', 12)}</span>` : ''}
         </td>
-        <td class="table-td"><span class="editable-cell" data-task-field="owner" data-tid="${t.id}">${esc(t.owner) || '—'}</span></td>
+        <td class="table-td"><span class="editable-cell" data-task-field="owner" data-tid="${t.id}">${ownerChips(t.owner)}</span></td>
         <td class="table-td"><span class="editable-cell" data-task-field="status" data-tid="${t.id}">${taskStatusBadge(t.status)}</span></td>
         <td class="table-td"><span class="editable-cell" data-task-field="progress" data-tid="${t.id}">${t.progress}%</span></td>
         <td class="table-td text-right whitespace-nowrap">
@@ -565,7 +611,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
             t => `<div class="flex items-center justify-between gap-2 py-2.5 border-b border-hair">
             <div class="min-w-0">
               <div class="text-[13px] text-ink truncate">${esc(t.name)}</div>
-              <div class="text-[11px] text-ink-faint mt-0.5 truncate">${esc(t.owner || '未指派')}</div>
+              <div class="text-[11px] text-ink-faint mt-0.5 truncate">${ownerChips(t.owner)}</div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
               ${taskStatusBadge(t.status)}
@@ -646,6 +692,15 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
       const proj = cur();
       const task = proj?.tasks.find(t => t.id === tid);
       if (!proj || !task) return;
+      if (field === 'owner') {
+        openOwnerModal(root, task.owner, value => {
+          const before = task.owner;
+          updateProject(proj.id, { tasks: proj.tasks.map(item => item.id === tid ? { ...item, owner: value } : item) });
+          if (before !== value) addLog({ action: 'update', target: 'task', projectId: proj.id, detail: `负责人变更：「${task.name}」由「${before || '未分配'}」改为「${value || '未分配'}」` });
+          toast('任务已保存');
+        });
+        return;
+      }
 
       const finish = (commit: boolean, value?: string) => {
         if (commit && value !== undefined) {
@@ -665,8 +720,6 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
             addLog({ action: 'update', target: 'task', projectId: proj.id, detail: `进度修改：「${task.name}」进度 ${before.progress}%→${Math.max(0, Math.min(100, Number(value) || 0))}%` });
           } else if (field === 'name' && value !== undefined && value.trim() !== before?.name) {
             addLog({ action: 'update', target: 'task', projectId: proj.id, detail: `任务重命名：「${before?.name}」→「${value.trim()}」` });
-          } else if (field === 'owner' && value !== undefined && value.trim() !== (before?.owner || '')) {
-            addLog({ action: 'update', target: 'task', projectId: proj.id, detail: `负责人变更：「${task.name}」由「${before?.owner || '未分配'}」改为「${value.trim() || '未分配'}」` });
           }
           toast('任务已保存');
         } else {
@@ -769,7 +822,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
       title: '添加任务',
       phaseHint: `将添加到当前阶段（${STAGE_STATUS[proj.stages[ai]?.status || 'pending']}）`,
       defaults: {
-        name: '', owner: getTeam()[0]?.name || '', status: 'todo', progress: 0, milestone: false,
+        name: '', owner: '', status: 'todo', progress: 0, milestone: false,
         start: proj.stages[ai]?.planStart ?? '', end: proj.stages[ai]?.planEnd ?? '',
       },
       onSave: (f) => {
@@ -1137,9 +1190,9 @@ function openTaskModal(root: HTMLElement, opts: TaskModalOpts): void {
           <input id="tm-name" class="input w-full mt-1" value="${esc(opts.defaults.name)}" placeholder="请输入任务名称" />
         </label>
         <div class="grid grid-cols-2 gap-3">
-          <label class="block"><span class="text-[12px] text-ink-soft">负责人</span>
-            <select id="tm-owner" class="input w-full mt-1"></select>
-          </label>
+          <div><span class="text-[12px] text-ink-soft">负责人（可多选）</span>
+            <div id="tm-owner" class="mt-1 border border-line rounded-md p-1 max-h-32 overflow-y-auto">${ownerOptions(opts.defaults.owner)}</div>
+          </div>
           <label class="block"><span class="text-[12px] text-ink-soft">状态</span>
             <select id="tm-status" class="input w-full mt-1"></select>
           </label>
@@ -1169,17 +1222,6 @@ function openTaskModal(root: HTMLElement, opts: TaskModalOpts): void {
         <button class="btn-primary" data-task-modal-save>保存</button>
       </div>
     </div>`;
-  const ownerSel = bg.querySelector<HTMLSelectElement>('#tm-owner');
-  const curId = (window.location.hash.match(/\/project\/([\w-]+)/) || [])[1] || '';
-  const proj = getProject(curId);
-  if (ownerSel) {
-    const candidates: string[] = [];
-    getTeam().forEach(member => {
-      if (member.name && !candidates.includes(member.name)) candidates.push(member.name);
-    });
-    if (!candidates.length) candidates.push(opts.defaults.owner || '');
-    ownerSel.innerHTML = candidates.map(n => `<option value="${esc(n)}" ${n === opts.defaults.owner ? 'selected' : ''}>${esc(n)}</option>`).join('');
-  }
   const statusSel = bg.querySelector<HTMLSelectElement>('#tm-status');
   if (statusSel) {
     statusSel.innerHTML = (Object.keys(TASK_STATUS) as TaskStatus[])
@@ -1196,7 +1238,7 @@ function openTaskModal(root: HTMLElement, opts: TaskModalOpts): void {
     const progress = Math.max(0, Math.min(100, Number((bg.querySelector('#tm-progress') as HTMLInputElement).value) || 0));
     opts.onSave({
       name,
-      owner: (bg.querySelector('#tm-owner') as HTMLSelectElement).value || '',
+      owner: Array.from(bg.querySelectorAll<HTMLInputElement>('#tm-owner input[type="checkbox"]:checked')).map(input => input.value).join(', '),
       status: (bg.querySelector('#tm-status') as HTMLSelectElement).value as TaskStatus,
       progress,
       start: (bg.querySelector('#tm-start') as HTMLInputElement).value,
