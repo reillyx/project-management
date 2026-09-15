@@ -126,6 +126,10 @@ function matches(row: TaskRow): boolean {
   return true;
 }
 
+function phaseName(phase: string): string {
+  return PHASE_META[phase as keyof typeof PHASE_META]?.name || phase || '—';
+}
+
 /* ---------- 渲染 ---------- */
 export function renderTasks(): string {
   const s = stats();
@@ -286,7 +290,7 @@ function listRow({ project, task }: TaskRow): string {
       <div class="text-xs text-slate-400 truncate">${esc(project.name)}</div>
     </div>
     <div class="w-[110px] text-sm text-slate-600 truncate">${esc(task.owner || '—')}</div>
-    <div class="w-[90px] text-sm text-slate-600 truncate">${esc(Object.values(PHASE_META).find(p => p.code === (task.phase as string))?.name || (task.phase as string) || '—')}</div>
+    <div class="w-[90px] text-sm text-slate-600 truncate">${esc(phaseName(task.phase as string))}</div>
     <button data-date="${esc(task.id)}" title="点击修改截止日期" class="w-[96px] text-sm text-slate-600 hover:text-[#5B9BD5] truncate">${task.end ? esc(fmtDate(task.end)) : '—'}</button>
     <div class="w-[120px]"><div class="text-xs text-slate-400 mb-0.5">${progress}%</div>${progressBar(task.progress ?? 0)}</div>
     <button data-st="${esc(task.id)}" class="w-[70px] shrink-0">${statusBadge(task)}</button>
@@ -317,7 +321,7 @@ function cardRow({ project, task }: TaskRow): string {
       <button data-date="${esc(task.id)}" title="点击修改截止日期" class="hover:text-[#5B9BD5]">${task.end ? esc(fmtDate(task.end)) : '—'}</button>
     </div>
     <div class="mt-2.5">
-      <div class="text-xs text-slate-400 mb-1 flex items-center justify-between"><span>${esc(Object.values(PHASE_META).find(p => p.code === (task.phase as string))?.name || '—')}</span><span>${ld}</span></div>
+      <div class="text-xs text-slate-400 mb-1 flex items-center justify-between"><span>${esc(phaseName(task.phase as string))}</span><span>${ld}</span></div>
       ${progressBar(task.progress ?? 0)}
     </div>
     <div class="mt-2.5 flex items-center justify-between">
