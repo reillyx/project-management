@@ -77,7 +77,7 @@ export function updateProject(id: string, patch: Partial<Project>): void {
   const i = state.projects.findIndex(p => p.id === id);
   if (i >= 0) {
     const prev = state.projects[i];
-    state.projects[i] = { ...prev, ...patch, id };
+    Object.assign(prev, patch, { id });
     // 合同信息变化单独记一笔
     if (patch.contract) {
       addLog({ action: 'update', target: 'contract', projectId: id, detail: `修改「${prev.name}」合同信息（合同号 ${patch.contract.no || prev.contract?.no || ''}）` });

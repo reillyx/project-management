@@ -623,10 +623,9 @@ export function renderAllFiles(root: HTMLElement, projects: Project[]): void {
       st.uploadProject = uploadProject.value;
     });
     if (dz) {
-      const targetProject = st.uploadProject ? getProject(st.uploadProject) : undefined;
       dz.addEventListener('click', () => {
         pickFiles('.doc,.docx,.pdf,.xls,.xlsx,.ppt,.pptx,.zip,.jpg,.png,.gif', async (files) => {
-          await runDropUpload(targetProject, files);
+          await runDropUpload(st.uploadProject ? getProject(st.uploadProject) : undefined, files);
         });
       });
       dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('!border-brand', 'bg-brand-soft/60'); });
@@ -635,7 +634,7 @@ export function renderAllFiles(root: HTMLElement, projects: Project[]): void {
         e.preventDefault();
         dz.classList.remove('!border-brand', 'bg-brand-soft/60');
         const files = Array.from(e.dataTransfer?.files || []);
-        if (files.length) void runDropUpload(targetProject, files);
+        if (files.length) void runDropUpload(st.uploadProject ? getProject(st.uploadProject) : undefined, files);
       });
     }
   };
@@ -673,7 +672,33 @@ export function renderFiles(root: HTMLElement, projectId?: string): void {
   const projects = getProjects();
   // 一级菜单进入（无 projectId）：展示所有项目全部文件总览
   if (!projectId || !getProject(projectId)) {
-    renderAllFiles(root, projects);
+    const projectCards = projects.map(p => {
+      const stageCount = Object.values(p.filesDir ?? {}).reduce(
+        (sum, stage) => sum + Object.values(stage).reduce((n, files) => n + files.length, 0),
+        0,
+      );
+      const contractCount = p.contract?.files?.length ?? 0;
+      return `<a href="#/files/${p.id}" class="card block p-4 hover:border-brand hover:shadow-sm transition-all">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-lg bg-brand-light text-brand-deep flex items-center justify-center shrink-0">${icon('folder', 19)}</div>
+          <div class="min-w-0 flex-1">
+            <div class="text-[14px] font-semibold text-ink truncate">${esc(p.name)}</div>
+            <div class="text-[11px] text-ink-faint mt-0.5">${esc(p.code)} · ${esc(p.customer || '客户待完善')}</div>
+            <div class="text-[12px] text-ink-soft mt-3">${stageCount + contractCount} 个文件 <span class="text-ink-faint">· ${stageCount} 个阶段文件 · ${contractCount} 个合同附件</span></div>
+          </div>
+          <span class="text-brand-deep">${icon('chevron', 16)}</span>
+        </div>
+      </a>`;
+    }).join('');
+    root.innerHTML = `<div class="max-w-[1000px] mx-auto space-y-4 view-enter">
+      <div class="flex items-center gap-3">
+        <div class="text-[15px] font-semibold text-ink">${icon('folder', 17)} 文件管理</div>
+        <span class="text-[12px] text-ink-faint">请选择项目，再按阶段查看和上传文件</span>
+      </div>
+      ${projects.length
+        ? `<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">${projectCards}</div>`
+        : '<div class="card p-10 text-center text-ink-faint">暂无项目，请先创建项目</div>'}
+    </div>`;
     return;
   }
   const pid = projectId && getProject(projectId) ? projectId : projects[0].id;
