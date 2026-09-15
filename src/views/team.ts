@@ -221,12 +221,6 @@ export function renderTeam(root: HTMLElement): void {
     if (card) card.remove();
     renderTeam(root);
   };
-  // 自定义提示输入框
-  const promptCfg = (msg: string, def = ''): string | null => {
-    const v = window.prompt(msg, def);
-    return v === null ? null : v.trim();
-  };
-
   root.querySelector('#prodNew')?.addEventListener('click', () => openProductCfgModal(root, undefined, reloadCfg));
   root.querySelectorAll<HTMLElement>('.prod-del, .prod-edit').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -259,14 +253,54 @@ export function renderTeam(root: HTMLElement): void {
     btn.addEventListener('click', () => {
       const kind = btn.getAttribute('data-kind');
       const label = kind === 'sys' ? '对接系统版本' : '集成系统';
-      const v = promptCfg(`添加新的${label}：`);
-      if (!v) return;
-      const cfg2 = getResourceConfig();
-      if (kind === 'sys') { if (!cfg2.systems.includes(v)) cfg2.systems.push(v); }
-      else { if (!cfg2.integrates.includes(v)) cfg2.integrates.push(v); }
-      saveResourceConfig(cfg2);
-      renderTeam(root);
+      openResourceOptionModal(root, kind === 'sys' ? 'sys' : 'int', label);
     });
+  });
+}
+
+function openResourceOptionModal(root: HTMLElement, kind: 'sys' | 'int', label: string): void {
+  const bg = document.createElement('div');
+  bg.className = 'modal-mask';
+  bg.innerHTML = `
+    <div class="bg-white rounded-lg w-[420px] max-w-full shadow-xl border border-line">
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-hair">
+        <div class="text-[15px] font-semibold text-ink">${icon('plus', 16)} 添加${esc(label)}</div>
+        <button class="modal-close btn-ghost" aria-label="关闭">${icon('x', 16)}</button>
+      </div>
+      <div class="px-5 py-4">
+        <label class="field-label block">${esc(label)}名称 *</label>
+        <input id="resource-option-value" class="input w-full mt-1.5" placeholder="请输入${esc(label)}名称" />
+      </div>
+      <div class="flex justify-end gap-2 px-5 py-3.5 border-t border-hair bg-canvas/40 rounded-b-lg">
+        <button class="modal-close btn">取消</button>
+        <button id="resource-option-save" class="btn-primary">保存</button>
+      </div>
+    </div>`;
+  document.body.appendChild(bg);
+  const close = (): void => bg.remove();
+  bg.querySelectorAll('.modal-close').forEach(el => el.addEventListener('click', close));
+  bg.addEventListener('click', e => { if (e.target === bg) close(); });
+  bg.querySelector<HTMLInputElement>('#resource-option-value')?.focus();
+  bg.querySelector('#resource-option-save')?.addEventListener('click', () => {
+    const input = bg.querySelector<HTMLInputElement>('#resource-option-value');
+    const value = input?.value.trim() || '';
+    if (!value) {
+      toast(`请填写${label}名称`);
+      input?.focus();
+      return;
+    }
+    const cfg = getResourceConfig();
+    const list = kind === 'sys' ? cfg.systems : cfg.integrates;
+    if (list.includes(value)) {
+      toast('该选项已存在');
+      input?.focus();
+      return;
+    }
+    list.push(value);
+    saveResourceConfig(cfg);
+    close();
+    toast('资源参数已保存');
+    renderTeam(root);
   });
 }
 
