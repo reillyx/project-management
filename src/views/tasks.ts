@@ -198,9 +198,14 @@ export function renderTasks(): string {
     </div>
 
     <!-- 内容区 -->
-    <div id="tk-group-title" class="bg-white rounded-lg shadow-sm border border-slate-100 px-4 py-3 flex items-center gap-3">
-      <span class="text-sm font-semibold text-ink">任务清单</span>
-      <span id="tk-sort-hint" class="text-xs text-slate-400"></span>
+    <div id="tk-group-title" class="bg-white rounded-lg shadow-sm border border-slate-100 px-4 py-2.5 flex items-center gap-3 text-xs font-medium text-slate-500">
+      <div class="flex-1 min-w-0">任务</div>
+      <div class="w-[110px] shrink-0">负责人</div>
+      <div class="w-[90px] shrink-0">阶段</div>
+      <div class="w-[96px] shrink-0">截止日期</div>
+      <div class="w-[70px] shrink-0">项目状态</div>
+      <div class="w-[52px] shrink-0 text-right">倒计时</div>
+      <div class="w-[110px] shrink-0 text-right">操作</div>
     </div>
     <div id="tk-body"></div>
   </div>`;
@@ -229,9 +234,6 @@ function renderBody(): string {
   if (!sorted.length) {
     return `<div class="py-16 text-center text-slate-400"><div class="text-3xl mb-2">🔍</div>暂无匹配任务</div>`;
   }
-
-  const hintEl = document.getElementById('tk-sort-hint');
-  if (hintEl) hintEl.textContent = sortingHint();
 
   // 分组
   const groups: { key: string; title: string; rows: TaskRow[] }[] = [];
@@ -265,12 +267,6 @@ function renderBody(): string {
       ${isCollapsed ? '' : `<div class="mt-1">${g.rows.map(renderOne).join('')}</div>`}
     </section>`;
   }).join('');
-}
-
-function sortingHint(): string {
-  if (group === 'urgency') return '排序规则：已逾期 → 今日到期 → 3天内 → 正常 → 已完成（同级按期升序）';
-  if (group === 'project') return '按项目分组，组内按紧急程度排序';
-  return '按阶段分组，组内按紧急程度排序';
 }
 
 /* ---------- 列表行 ---------- */
@@ -554,8 +550,6 @@ function openDateEditor(btn: HTMLElement, taskId: string): void {
 function rerenderCurrent(): void {
   const b = document.getElementById('tk-body');
   if (b) {
-    const hintEl = document.getElementById('tk-sort-hint');
-    if (hintEl) hintEl.textContent = sortingHint();
     b.outerHTML = `<div id="tk-body">${renderBody()}</div>`;
   }
 }
