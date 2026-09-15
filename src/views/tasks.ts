@@ -82,27 +82,10 @@ function stats(): Stats {
     s.total++;
     if (urgencyOf(task) === 'overdue') s.overdue++;
     if (urgencyOf(task) === 'today') s.today++;
-    if (isThisWeek(task.end || '') && task.status !== 'done') s.week++;
+    if (task.status === 'doing') s.week++;
     if ((task.status as string) === 'done') s.done++;
   });
   return s;
-}
-
-/** 本周待办按自然周（周一至周日）统计，只包含今天起到本周日的未完成任务。 */
-function isThisWeek(iso: string): boolean {
-  if (!iso) return false;
-  const today = new Date();
-  const day = today.getDay();
-  const monday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - ((day + 6) % 7));
-  const sunday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 6);
-  const start = `${monday.getFullYear()}-${padDate(monday.getMonth() + 1)}-${padDate(monday.getDate())}`;
-  const end = `${sunday.getFullYear()}-${padDate(sunday.getMonth() + 1)}-${padDate(sunday.getDate())}`;
-  const todayIso = `${today.getFullYear()}-${padDate(today.getMonth() + 1)}-${padDate(today.getDate())}`;
-  return iso >= todayIso && iso <= end && iso >= start;
-}
-
-function padDate(value: number): string {
-  return value < 10 ? `0${value}` : String(value);
 }
 
 /* ---------- 筛选 ---------- */
@@ -113,7 +96,7 @@ function matches(row: TaskRow): boolean {
   const days = daysUntil(task.end || '');
   if (statFilter === 'overdue' && u !== 'overdue') return false;
   if (statFilter === 'today' && u !== 'today') return false;
-  if (statFilter === 'week' && (status === 'done' || !isThisWeek(task.end || ''))) return false;
+  if (statFilter === 'week' && status !== 'doing') return false;
   if (statFilter === 'done' && status !== 'done') return false;
   // scope
   if (scope === 'done' && status !== 'done') return false;
@@ -145,7 +128,7 @@ export function renderTasks(): string {
   const phaseOpts = `<option value="">全部阶段</option>` + Object.values(PHASE_META).map(ph => `<option value="${esc(ph.key)}" ${fPhase === ph.key ? 'selected' : ''}>${esc(ph.name)}</option>`).join('');
   const priOpts = Object.entries(PRI_LABEL).map(([k, v]) => `<option value="${k}" ${fPri === k ? 'selected' : ''}>${v}</option>`).join('');
   const activeRow = (key: 'overdue' | 'today' | 'week' | 'done') => {
-    // 卡片点击筛选：逾期/今日/已完成直接设 scope；本周通过搜索占位（click 事件处理统计卡的 today/week）
+    // 卡片点击筛选：按对应统计条件展示任务
     let cb = '';
     if (key === 'overdue') cb = `data-stat="overdue"`;
     if (key === 'today') cb = `data-stat="today"`;
@@ -156,7 +139,7 @@ export function renderTasks(): string {
   const statCards = [
     { k: 'overdue', num: s.overdue, unit: '个', label: '已逾期', color: '#E53E3E', border: '#E53E3E' },
     { k: 'today', num: s.today, unit: '个', label: '今日到期', color: '#E36C0A', border: '#E36C0A' },
-    { k: 'week', num: s.week, unit: '个', label: '本周待办', color: '#5B9BD5', border: '#5B9BD5' },
+    { k: 'week', num: s.week, unit: '个', label: '最近待办', color: '#5B9BD5', border: '#5B9BD5' },
     { k: 'done', num: `${doneRate}%`, unit: '', label: '已完成率', color: '#38A169', border: '#38A169' },
   ].map(c =>
     `<button class="bg-white rounded-lg shadow-sm p-4 text-left hover:shadow transition w-1/4 shrink-0 ${statFilter === c.k ? 'ring-2 ring-offset-1 ring-[#5B9BD5]' : ''}" style="border-top:3px solid ${c.border}" ${activeRow(c.k as any)}>
