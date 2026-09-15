@@ -13,6 +13,7 @@ export function renderDashboard(root: HTMLElement, route: Route): void {
   const reminders = collectReminders();
   const inProgress = projects.filter(p => p.stages.some(s => s.status === 'active')).length;
   const done = projects.filter(p => p.stages[p.stages.length - 1].status === 'done').length;
+  const total = inProgress + done;
   const overdue = reminders.filter(r => r.level === 'overdue').length;
   const near = reminders.length;
   const dashOn = isOn('dashboard');
@@ -74,7 +75,7 @@ export function renderDashboard(root: HTMLElement, route: Route): void {
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      ${stat('项目总数', String(projects.length))}
+      ${stat('项目总数', String(total))}
       ${stat('进行中项目', String(inProgress), '#3D74A8')}
       ${stat('已验收项目', String(done), '#4A8A3A')}
       ${stat('近3天预警', String(near), overdue > 0 ? '#C00000' : '#B8860B', overdue > 0 ? `含 ${overdue} 项逾期` : '')}
