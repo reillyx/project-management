@@ -18,6 +18,7 @@ import { setDirtyApp } from '../guard';
 let stageTaskLimit = 8; // 当前阶段任务默认展示条数
 let stageLogLimit = 6; // 项目日志默认展示条数
 let stageLogExpanded = false; // 项目日志是否展开全部
+let previewStageKey: PhaseKey | undefined;
 
 type OurRole = 'tech' | 'sales' | 'dev';
 
@@ -71,7 +72,6 @@ import {
   esc,
   icon,
   priorityBadge,
-  progressBar,
   taskStatusBadge,
   toast,
 } from '../ui';
@@ -129,10 +129,11 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
     .join('');
 
   const activeStage = p.stages[activeStageIndex(p)];
-  const allStageTasks = activeStage ? p.tasks.filter(t => t.phase === activeStage.key) : [];
+  const previewStage = p.stages.find(stage => stage.key === previewStageKey) ?? activeStage ?? p.stages[0];
+  const allStageTasks = previewStage ? p.tasks.filter(t => t.phase === previewStage.key) : [];
   const stageTasks = allStageTasks.slice(0, stageTaskLimit);
   const hasMore = allStageTasks.length > 8;
-  const moreRow = hasMore ? `<tr class="border-0"><td colspan="5" class="p-1.5 text-center"><button data-stage-more class="text-[12px] font-medium text-brand-deep hover:underline">${stageTaskLimit === 8 ? `显示全部 ${allStageTasks.length} 条` : '收起'}</button></td></tr>` : '';
+  const moreRow = hasMore ? `<tr class="border-0"><td colspan="4" class="p-1.5 text-center"><button data-stage-more class="text-[12px] font-medium text-brand-deep hover:underline">${stageTaskLimit === 8 ? `显示全部 ${allStageTasks.length} 条` : '收起'}</button></td></tr>` : '';
 
   const taskRows = stageTasks
     .map(t => `
@@ -142,7 +143,6 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
         </td>
         <td class="table-td"><span class="editable-cell" data-task-field="owner" data-tid="${t.id}">${ownerChips(t.owner)}</span></td>
         <td class="table-td"><span class="editable-cell" data-task-field="status" data-tid="${t.id}">${taskStatusBadge(t.status)}</span></td>
-        <td class="table-td"><span class="editable-cell" data-task-field="progress" data-tid="${t.id}">${t.progress}%</span></td>
         <td class="table-td text-right whitespace-nowrap">
           <input type="date" class="inline-edit-date w-[124px]" data-task-start="${t.id}" value="${t.start}" title="计划开始">
           <button class="btn-ghost text-[#C00000] ml-1" data-task-del="${t.id}" title="删除任务">${icon('x', 13)}</button>
@@ -293,7 +293,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
         <div class="text-[12px] text-ink-faint mt-0.5">${esc(p.code)} · ${esc(p.customer)}</div>
       </div>
       <a href="#/gantt/${p.id}" class="btn">${icon('calendar', 14)} 阶段甘特</a>
-      <a href="#/gantt/${p.id}/${activeStage ? activeStage.key : 'dev'}" class="btn">${icon('list', 14)} 详细甘特</a>
+      <a href="#/gantt/${p.id}/${previewStage ? previewStage.key : 'dev'}" class="btn">${icon('list', 14)} 详细甘特</a>
       <a href="#/files/${p.id}" class="btn">${icon('folder', 14)} 文件管理</a>
       <button class="btn-primary" data-prj-gen="${p.id}">${icon('doc', 14)} 生成文档</button>
       ${isOn('notify') ? `<select data-prj-notify title="自动通知" class="input w-auto py-1 px-2 text-[12px]"><option value="">自动通知 ▾</option>${['上线通知','变更通知','会议纪要','培训通知'].map(t => `<option value="${t}">${t}</option>`).join('')}</select>` : ''}
@@ -409,16 +409,16 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
 
         <div class="card overflow-hidden">
           <div class="px-4 py-3 border-b border-hair flex items-center justify-between">
-            <span class="text-[14px] font-semibold text-ink flex items-center gap-2">${icon('check', 15)} 当前阶段任务 <span class="text-[11px] font-normal text-ink-faint"></span></span>
+            <span class="text-[14px] font-semibold text-ink flex items-center gap-2">${icon('check', 15)} 阶段任务 <span class="text-[11px] font-normal text-ink-faint">${previewStage ? `· ${PHASE_META[previewStage.key].name}` : ''}</span></span>
             <div class="flex items-center gap-2">
               <button class="btn py-1 px-2.5" data-task-add>${icon('plus', 13)} 添加任务</button>
-              <a href="#/gantt/${p.id}/${activeStage ? activeStage.key : 'dev'}" class="text-[12px] text-brand-deep hover:underline">详细甘特 ${icon('chevron', 13)}</a>
+              <a href="#/gantt/${p.id}/${previewStage ? previewStage.key : 'dev'}" class="text-[12px] text-brand-deep hover:underline">详细甘特 ${icon('chevron', 13)}</a>
             </div>
           </div>
           <table class="w-full"><thead class="bg-canvas/50"><tr>
-            <th class="table-th">任务</th><th class="table-th">负责人</th><th class="table-th">状态</th><th class="table-th">进度</th><th class="table-th text-right">计划开始</th>
+            <th class="table-th">任务</th><th class="table-th">负责人</th><th class="table-th">状态</th><th class="table-th text-right">计划开始</th>
           </tr></thead><tbody>
-            ${(taskRows + moreRow) || `<tr><td colspan="5" class="table-td text-center text-ink-faint">当前阶段暂无任务，点击右上「添加任务」</td></tr>`}
+            ${(taskRows + moreRow) || `<tr><td colspan="4" class="table-td text-center text-ink-faint">当前阶段暂无任务，点击右上「添加任务」</td></tr>`}
           </tbody></table>
         </div>
 
@@ -559,10 +559,21 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
   const refresh = (): void => renderProjectDetail(root, p.id);
 
   // 阶段状态：点击在 未开始→进行中→已完成 间循环
-  root.querySelectorAll<HTMLElement>('[data-stage-status]').forEach(el => {
-    el.addEventListener('click', (ev: MouseEvent) => {
-      ev.stopPropagation();
-      const key = el.dataset.stageStatus as PhaseKey;
+  root.querySelectorAll<HTMLElement>('[data-stage-node]').forEach(node => {
+    let clickTimer = 0;
+    node.addEventListener('click', (ev: MouseEvent) => {
+      if ((ev.target as HTMLElement).closest('input')) return;
+      window.clearTimeout(clickTimer);
+      clickTimer = window.setTimeout(() => {
+        previewStageKey = node.dataset.stageNode as PhaseKey;
+        refresh();
+      }, 220);
+    });
+    node.addEventListener('dblclick', (ev: MouseEvent) => {
+      if ((ev.target as HTMLElement).closest('input')) return;
+      ev.preventDefault();
+      window.clearTimeout(clickTimer);
+      const key = node.dataset.stageNode as PhaseKey;
       const proj = cur();
       const st = proj?.stages.find(s => s.key === key);
       if (!proj || !st) return;
@@ -634,14 +645,6 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
     pt.classList.add('translate-x-0');
   };
 
-  root.querySelectorAll<HTMLElement>('[data-stage-node]').forEach(node => {
-    node.addEventListener('click', (ev: MouseEvent) => {
-      const t = ev.target as HTMLElement;
-      if (t.closest('input, [data-stage-status]')) return;
-      openStagePanel(node.dataset.stageNode as PhaseKey);
-    });
-  });
-
   root.addEventListener('click', (ev: MouseEvent) => {
     if ((ev.target as HTMLElement).closest('[data-panel-close]')) closeStagePanel();
   });
@@ -652,13 +655,13 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
   });
 
   // 初始定位：默认滚动到当前阶段并展开其详情面板
-  if (activeStage) {
+  if (previewStage) {
     const scrollEl = root.querySelector<HTMLElement>('#stageScroll');
-    const node = root.querySelector<HTMLElement>(`[data-stage-node="${activeStage.key}"]`);
+    const node = root.querySelector<HTMLElement>(`[data-stage-node="${previewStage.key}"]`);
     if (scrollEl && node) {
       scrollEl.scrollLeft = Math.max(0, node.offsetLeft - scrollEl.clientWidth / 2 + node.offsetWidth / 2);
     }
-    openStagePanel(activeStage.key);
+    openStagePanel(previewStage.key);
   }
 
   // 时间轴左右箭头：滚动
@@ -817,17 +820,17 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
   root.querySelector('[data-task-add]')?.addEventListener('click', () => {
     const proj = cur();
     if (!proj) return;
-    const ai = activeStageIndex(proj);
+    const selectedStage = proj.stages.find(stage => stage.key === previewStageKey) ?? proj.stages[activeStageIndex(proj)] ?? proj.stages[0];
     openTaskModal(root, {
       title: '添加任务',
-      phaseHint: `将添加到当前阶段（${STAGE_STATUS[proj.stages[ai]?.status || 'pending']}）`,
+      phaseHint: `当前预览阶段：${selectedStage ? PHASE_META[selectedStage.key].name : '未设置'}，也可以选择其他阶段`,
       defaults: {
-        name: '', owner: '', status: 'todo', progress: 0, milestone: false,
-        start: proj.stages[ai]?.planStart ?? '', end: proj.stages[ai]?.planEnd ?? '',
+        name: '', owner: '', phase: selectedStage?.key ?? 'dev', status: 'todo', progress: 0, milestone: false,
+        start: selectedStage?.planStart ?? '', end: selectedStage?.planEnd ?? '',
       },
       onSave: (f) => {
         const newTask: ProjectTask = {
-          id: `task_${Date.now()}`, name: f.name, phase: proj.stages[ai]?.key ?? 'dev',
+          id: `task_${Date.now()}`, name: f.name, phase: f.phase,
           owner: f.owner, start: f.start, end: f.end, status: f.status, progress: f.progress,
           milestone: f.milestone,
         };
@@ -1210,7 +1213,7 @@ function autoProgress(p: Project): number {
 }
 
 interface TaskForm {
-  name: string; owner: string; status: TaskStatus; progress: number; start: string; end: string; milestone: boolean;
+  name: string; owner: string; phase: PhaseKey; status: TaskStatus; progress: number; start: string; end: string; milestone: boolean;
 }
 interface TaskModalOpts {
   title: string; phaseHint: string;
@@ -1230,6 +1233,9 @@ function openTaskModal(root: HTMLElement, opts: TaskModalOpts): void {
         <div class="text-[11px] text-brand-deep">${opts.phaseHint}</div>
         <label class="block"><span class="text-[12px] text-ink-soft">任务名称 <b class="text-[#C00000]">*</b></span>
           <input id="tm-name" class="input w-full mt-1" value="${esc(opts.defaults.name)}" placeholder="请输入任务名称" />
+        </label>
+        <label class="block"><span class="text-[12px] text-ink-soft">所属阶段</span>
+          <select id="tm-phase" class="input w-full mt-1">${PHASE_KEYS.map(key => `<option value="${key}" ${key === opts.defaults.phase ? 'selected' : ''}>${PHASE_META[key].name}</option>`).join('')}</select>
         </label>
         <div class="grid grid-cols-2 gap-3">
           <div><span class="text-[12px] text-ink-soft">负责人（可多选）</span>
@@ -1281,6 +1287,7 @@ function openTaskModal(root: HTMLElement, opts: TaskModalOpts): void {
     opts.onSave({
       name,
       owner: Array.from(bg.querySelectorAll<HTMLInputElement>('#tm-owner input[type="checkbox"]:checked')).map(input => input.value).join(', '),
+      phase: (bg.querySelector('#tm-phase') as HTMLSelectElement).value as PhaseKey,
       status: (bg.querySelector('#tm-status') as HTMLSelectElement).value as TaskStatus,
       progress,
       start: (bg.querySelector('#tm-start') as HTMLInputElement).value,

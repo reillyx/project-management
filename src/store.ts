@@ -305,6 +305,21 @@ export function collectReminders(): ReminderItem[] {
         });
       }
     });
+    // 任务计划交付日前 3 天起，每天在通知中心保留提醒，直到完成或逾期
+    p.tasks.forEach(task => {
+      if (task.status === 'done' || !task.end) return;
+      const days = diffDays(task.end, todayISO());
+      if (days > 3 || !s.remind3) return;
+      items.push({
+        projectId: p.id,
+        projectName: p.name,
+        code: p.code,
+        title: `任务「${task.name}」计划到期`,
+        date: task.end,
+        days,
+        level: remindLevel(days),
+      });
+    });
     // 项目整体计划结束
     const pdays = diffDays(p.planEnd, todayISO());
     if (pdays <= (s.remindDays ?? 7)) {
