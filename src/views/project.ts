@@ -129,7 +129,10 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
     .join('');
 
   const activeStage = p.stages[activeStageIndex(p)];
-  const previewStage = p.stages.find(stage => stage.key === previewStageKey) ?? activeStage ?? p.stages[0];
+  if (!previewStageKey || !p.stages.some(stage => stage.key === previewStageKey)) {
+    previewStageKey = activeStage?.key ?? p.stages[0]?.key;
+  }
+  const previewStage = p.stages.find(stage => stage.key === previewStageKey) ?? p.stages[0];
   const allStageTasks = previewStage ? p.tasks.filter(t => t.phase === previewStage.key) : [];
   const stageTasks = allStageTasks.slice(0, stageTaskLimit);
   const hasMore = allStageTasks.length > 8;
@@ -304,7 +307,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
     ${alertBlocks ? `<div class="card px-4 py-3 flex flex-col gap-1.5">${alertBlocks}</div>` : ''}
 
     <div class="card overflow-hidden">
-      <div class="px-4 py-3 border-b border-hair text-[14px] font-semibold text-ink flex items-center gap-2">${icon('list', 15)} 阶段时间轴 <span class="text-[11px] font-normal text-ink-faint">（8 标准阶段 · 点击节点查看任务）</span></div>
+      <div class="px-4 py-3 border-b border-hair text-[14px] font-semibold text-ink flex items-center gap-2">${icon('list', 15)} 阶段时间轴 <span class="text-[11px] font-normal text-ink-faint">（单击预览阶段任务，双击修改阶段状态）</span></div>
       <div class="px-4 py-5 bg-canvas/40">
         <div class="relative flex items-center group/ts">
           <button class="ts-arrow absolute left-0 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-white border border-line shadow-sm flex items-center justify-center text-ink-soft hover:text-brand-deep hover:border-brand transition-colors" data-ts="-1" aria-label="向左滚动">${icon('chevron-left', 14)}</button>
@@ -626,7 +629,6 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
             </div>
             <div class="flex items-center gap-2 shrink-0">
               ${taskStatusBadge(t.status)}
-              <span class="text-[12px] text-ink-soft min-w-[34px] text-right">${t.progress}%</span>
             </div>
           </div>`
           )
