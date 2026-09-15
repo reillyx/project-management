@@ -10,7 +10,7 @@ import { esc, icon, toast } from '../ui';
 
 let memberRole: 'all' | 'tech' | 'sales' | 'dev' | 'pm' = 'all';
 let memberPage = 1;
-const MEMBER_PAGE_SIZE = 5;
+const MEMBER_PAGE_SIZE = 10;
 const roleColor = (role: typeof memberRole): string => role === 'all' ? '#5B9BD5' : ROLE_META[role].color;
 
 export function renderTeam(root: HTMLElement): void {
@@ -40,7 +40,7 @@ export function renderTeam(root: HTMLElement): void {
       <td class="py-2 px-3 text-[12px] text-ink-soft whitespace-nowrap">${esc(m.tel || '—')}</td>
       <td class="py-2 px-3 text-[12px] text-ink-soft whitespace-nowrap">${esc(m.dept || '—')}</td>
       <td class="py-2 px-3 text-[12px] text-ink-soft whitespace-nowrap">${used} 个</td>
-      ${m.note ? `<td class="py-2 px-3 text-[11px] text-ink-faint max-w-[180px] truncate" title="${esc(m.note)}">${esc(m.note)}</td>` : '<td class="py-2 px-3"></td>'}
+      <td class="py-2 px-3 text-[12px] text-ink-soft whitespace-nowrap">${esc(m.email || '—')}</td>
       <td class="py-2 px-3 text-right whitespace-nowrap">
         <button class="tm-edit btn-ghost px-1.5" data-mid="${m.id}" title="编辑">${icon('edit', 13)}</button>
         <button class="tm-del btn-ghost px-1.5 text-[#C00000]" data-mid="${m.id}" title="删除">${icon('x', 14)}</button>
@@ -104,7 +104,7 @@ export function renderTeam(root: HTMLElement): void {
               <th class="py-1.5 px-3 font-medium">手机号</th>
               <th class="py-1.5 px-3 font-medium">部门</th>
               <th class="py-1.5 px-3 font-medium">参与项目</th>
-              <th class="py-1.5 px-3 font-medium">备注</th>
+              <th class="py-1.5 px-3 font-medium">邮箱</th>
               <th class="py-1.5 px-3 font-medium text-right">操作</th>
             </tr>
           </thead>
