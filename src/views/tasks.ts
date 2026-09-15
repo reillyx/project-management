@@ -80,11 +80,27 @@ function stats(): Stats {
     s.total++;
     if (urgencyOf(task) === 'overdue') s.overdue++;
     if (urgencyOf(task) === 'today') s.today++;
-    const d = daysUntil(task.end || '');
-    if (!Number.isNaN(d)) { if (d >= 0 && d <= 7) s.week++; }
+    if (isThisWeek(task.end || '') && task.status !== 'done') s.week++;
     if ((task.status as string) === 'done') s.done++;
   });
   return s;
+}
+
+/** 本周待办按自然周（周一至周日）统计，只包含今天起到本周日的未完成任务。 */
+function isThisWeek(iso: string): boolean {
+  if (!iso) return false;
+  const today = new Date();
+  const day = today.getDay();
+  const monday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - ((day + 6) % 7));
+  const sunday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 6);
+  const start = `${monday.getFullYear()}-${padDate(monday.getMonth() + 1)}-${padDate(monday.getDate())}`;
+  const end = `${sunday.getFullYear()}-${padDate(sunday.getMonth() + 1)}-${padDate(sunday.getDate())}`;
+  const todayIso = `${today.getFullYear()}-${padDate(today.getMonth() + 1)}-${padDate(today.getDate())}`;
+  return iso >= todayIso && iso <= end && iso >= start;
+}
+
+function padDate(value: number): string {
+  return value < 10 ? `0${value}` : String(value);
 }
 
 /* ---------- 筛选 ---------- */
@@ -95,7 +111,7 @@ function matches(row: TaskRow): boolean {
   const days = daysUntil(task.end || '');
   if (statFilter === 'overdue' && u !== 'overdue') return false;
   if (statFilter === 'today' && u !== 'today') return false;
-  if (statFilter === 'week' && (status === 'done' || !Number.isFinite(days) || days < 0 || days > 7)) return false;
+  if (statFilter === 'week' && (status === 'done' || !isThisWeek(task.end || ''))) return false;
   if (statFilter === 'done' && status !== 'done') return false;
   // scope
   if (scope === 'done' && status !== 'done') return false;
