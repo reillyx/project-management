@@ -198,7 +198,10 @@ export function renderTasks(): string {
     </div>
 
     <!-- 内容区 -->
-    <div id="tk-group-title" class="text-xs text-slate-400 flex items-center gap-2"></div>
+    <div id="tk-group-title" class="bg-white rounded-lg shadow-sm border border-slate-100 px-4 py-3 flex items-center gap-3">
+      <span class="text-sm font-semibold text-ink">任务清单</span>
+      <span id="tk-sort-hint" class="text-xs text-slate-400"></span>
+    </div>
     <div id="tk-body"></div>
   </div>`;
 }
@@ -227,8 +230,8 @@ function renderBody(): string {
     return `<div class="py-16 text-center text-slate-400"><div class="text-3xl mb-2">🔍</div>暂无匹配任务</div>`;
   }
 
-  const titleEl = document.getElementById('tk-group-title');
-  if (titleEl) titleEl.textContent = sortingHint();
+  const hintEl = document.getElementById('tk-sort-hint');
+  if (hintEl) hintEl.textContent = sortingHint();
 
   // 分组
   const groups: { key: string; title: string; rows: TaskRow[] }[] = [];
@@ -551,8 +554,8 @@ function openDateEditor(btn: HTMLElement, taskId: string): void {
 function rerenderCurrent(): void {
   const b = document.getElementById('tk-body');
   if (b) {
-    const groupTitle = document.getElementById('tk-group-title');
-    if (groupTitle) groupTitle.textContent = sortingHint();
+    const hintEl = document.getElementById('tk-sort-hint');
+    if (hintEl) hintEl.textContent = sortingHint();
     b.outerHTML = `<div id="tk-body">${renderBody()}</div>`;
   }
 }
