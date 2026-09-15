@@ -115,7 +115,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
       const active = st.status === 'active';
       return `<div class="flex flex-col items-center relative shrink-0 cursor-pointer" data-stage-node="${st.key}" style="width:168px">
         <div class="relative flex items-center justify-center" style="height:22px">
-          <div class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold text-white cursor-pointer ${active ? 'ring-4 ring-brand/25' : 'ring-2 ring-white'}" data-stage-status="${st.key}" style="background:${color}">${st.status === 'done' ? icon('check', 10) : ''}</div>
+          <div class="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold text-white cursor-pointer ${active ? 'ring-4 ring-brand/25' : 'ring-2 ring-white'}" data-stage-status="${st.key}" title="点击设置阶段状态" style="background:${color}">${st.status === 'done' ? icon('check', 10) : ''}</div>
         </div>
         <div class="mt-2 text-center">
           <div class="text-[12.5px] ${active ? 'text-brand-deep font-bold' : 'font-semibold text-ink'}">${m.name}</div>
@@ -566,11 +566,11 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
       const proj = cur();
       const st = proj?.stages.find(s => s.key === key);
       if (!proj || !st) return;
-      const order: StageStatus[] = ['pending', 'active', 'done'];
-      const next = order[(order.indexOf(st.status) + 1) % order.length];
-      updateStage(proj.id, key, { status: next });
-      toast(`「${PHASE_META[key].name}」状态已切换为：${STAGE_STATUS[next]}`);
-      if (next === 'done' && isOn('notify')) autoNotifyOnStage(getProject(proj.id)!);
+      openStageStatusModal(root, PHASE_META[key].name, st.status, (next) => {
+        updateStage(proj.id, key, { status: next });
+        toast(`「${PHASE_META[key].name}」状态已设置为：${STAGE_STATUS[next]}`);
+        if (next === 'done' && isOn('notify')) autoNotifyOnStage(getProject(proj.id)!);
+      });
     });
   });
 
@@ -1144,6 +1144,45 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
 
 const STAGE_STATUS: Record<StageStatus, string> = { pending: '未开始', active: '进行中', done: '已完成' };
 const TASK_STATUS: Record<TaskStatus, string> = { todo: '未开始', doing: '进行中', done: '已完成' };
+
+function openStageStatusModal(
+  root: HTMLElement,
+  stageName: string,
+  current: StageStatus,
+  onSave: (status: StageStatus) => void,
+): void {
+  const options: StageStatus[] = ['pending', 'active', 'done'];
+  const bg = document.createElement('div');
+  bg.className = 'modal-mask';
+  bg.innerHTML = `
+    <div class="modal" style="max-width:400px">
+      <div class="px-4 py-3 border-b border-line flex items-center justify-between">
+        <span class="text-[15px] font-semibold text-ink">设置「${esc(stageName)}」状态</span>
+        <button type="button" class="text-ink-faint hover:text-ink" data-stage-status-close>${icon('x', 18)}</button>
+      </div>
+      <div class="p-4 space-y-2">
+        <p class="text-[12px] text-ink-soft">阶段之间互不限制，可并行进行、提前进入其他阶段，也可以只结束当前阶段。</p>
+        <div class="grid grid-cols-3 gap-2">
+          ${options.map(status => `<button type="button" class="${status === current ? 'btn-primary' : 'btn'} py-2" data-stage-status-option="${status}">${STAGE_STATUS[status]}</button>`).join('')}
+        </div>
+      </div>
+      <div class="flex justify-end px-4 py-3 border-t border-line">
+        <button type="button" class="btn" data-stage-status-cancel>取消</button>
+      </div>
+    </div>`;
+  const close = (): void => bg.remove();
+  bg.addEventListener('click', event => { if (event.target === bg) close(); });
+  bg.querySelector('[data-stage-status-close]')?.addEventListener('click', close);
+  bg.querySelector('[data-stage-status-cancel]')?.addEventListener('click', close);
+  bg.querySelectorAll<HTMLButtonElement>('[data-stage-status-option]').forEach(button => {
+    button.addEventListener('click', () => {
+      const status = button.dataset.stageStatusOption as StageStatus;
+      onSave(status);
+      close();
+    });
+  });
+  root.appendChild(bg);
+}
 
 /** 项目状态（由总体进度推导）：0 待开始 / 0<x<100 进行中 / 100 已完成 */
 function projState(progress: number): { label: string; color: string; bg: string } {
