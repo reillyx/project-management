@@ -1,0 +1,3021 @@
+{
+  "projects": [
+    {
+      "id": "p1",
+      "code": "IT-2026-001",
+      "name": "智慧城市视频监控二期扩容项目",
+      "customer": "市公共安全信息化中心",
+      "category": "智慧城市",
+      "manager": "张伟",
+      "contacts": {
+        "a": {
+          "party": "甲方",
+          "name": "王建军",
+          "tel": "138-0013-8001"
+        },
+        "b": {
+          "party": "乙方",
+          "name": "刘洋",
+          "tel": "139-0102-5566",
+          "role": "tech"
+        }
+      },
+      "clients": [
+        {
+          "id": "clt1",
+          "name": "王建军",
+          "tel": "138-0013-8001"
+        }
+      ],
+      "teamOf": {
+        "tech": [
+          {
+            "id": "t1",
+            "name": "李源",
+            "tel": "13800000001"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ],
+        "sales": [
+          {
+            "id": "t2",
+            "name": "郑云飞",
+            "tel": "13800000002"
+          },
+          {
+            "id": "t6",
+            "name": "王芳",
+            "tel": "13800000006"
+          }
+        ],
+        "dev": [
+          {
+            "id": "t3",
+            "name": "汪洋",
+            "tel": "13800000003"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ]
+      },
+      "startDate": "2026-09-05",
+      "endDate": "2026-12-09",
+      "progress": 38,
+      "planStart": "2026-09-05",
+      "planEnd": "2026-12-09",
+      "stages": [
+        {
+          "key": "initiate",
+          "planStart": "2026-09-05",
+          "planEnd": "2026-09-11",
+          "status": "done",
+          "actualStart": "2026-09-05",
+          "actualEnd": "2026-09-10"
+        },
+        {
+          "key": "research",
+          "planStart": "2026-09-12",
+          "planEnd": "2026-09-26",
+          "status": "done",
+          "actualStart": "2026-09-12",
+          "actualEnd": "2026-09-25"
+        },
+        {
+          "key": "solution",
+          "planStart": "2026-09-27",
+          "planEnd": "2026-10-06",
+          "status": "done",
+          "actualStart": "2026-09-27",
+          "actualEnd": "2026-10-05"
+        },
+        {
+          "key": "dev",
+          "planStart": "2026-10-07",
+          "planEnd": "2026-11-05",
+          "status": "active",
+          "actualStart": "2026-10-07"
+        },
+        {
+          "key": "deploy",
+          "planStart": "2026-11-06",
+          "planEnd": "2026-11-10",
+          "status": "pending"
+        },
+        {
+          "key": "training",
+          "planStart": "2026-11-11",
+          "planEnd": "2026-11-14",
+          "status": "pending"
+        },
+        {
+          "key": "trial",
+          "planStart": "2026-11-15",
+          "planEnd": "2026-12-04",
+          "status": "pending"
+        },
+        {
+          "key": "accept",
+          "planStart": "2026-12-05",
+          "planEnd": "2026-12-09",
+          "status": "pending"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "initiate-0-0",
+          "name": "现场勘察与需求采集",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-09-05",
+          "end": "2026-09-07",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-1",
+          "name": "初步方案立项评审",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-09-06",
+          "end": "2026-09-07",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-2",
+          "name": "签订项目任务书",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-09-07",
+          "end": "2026-09-08",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "research-1-0",
+          "name": "原系统资料收集",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-09-12",
+          "end": "2026-09-16",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-1",
+          "name": "业务流程梳理",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-09-13",
+          "end": "2026-09-17",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-2",
+          "name": "需求范围确认",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-09-14",
+          "end": "2026-09-18",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "solution-2-0",
+          "name": "整体方案设计",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-09-27",
+          "end": "2026-09-30",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-1",
+          "name": "点位清单与设备选型",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-09-28",
+          "end": "2026-09-30",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-2",
+          "name": "方案评审与修订",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-09-29",
+          "end": "2026-10-01",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "dev-3-0",
+          "name": "硬件到货与盘点",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-07",
+          "end": "2026-10-11",
+          "status": "doing",
+          "progress": 60,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-1",
+          "name": "平台接口开发",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-08",
+          "end": "2026-10-19",
+          "status": "doing",
+          "progress": 20,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-2",
+          "name": "现场设备安装调试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-09",
+          "end": "2026-10-18",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-3",
+          "name": "联调联试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-10",
+          "end": "2026-10-15",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "deploy-4-0",
+          "name": "生产环境部署",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-11-06",
+          "end": "2026-11-08",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "deploy-4-1",
+          "name": "配置与数据初始化",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-11-07",
+          "end": "2026-11-08",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "training-5-0",
+          "name": "操作手册编写",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-11-11",
+          "end": "2026-11-12",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "training-5-1",
+          "name": "分批用户培训",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-11-12",
+          "end": "2026-11-13",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "trial-6-0",
+          "name": "试运行监控",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-11-15",
+          "end": "2026-11-29",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "trial-6-1",
+          "name": "问题收集与修复",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-11-16",
+          "end": "2026-11-25",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "accept-7-0",
+          "name": "验收材料整理",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-12-05",
+          "end": "2026-12-07",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "accept-7-1",
+          "name": "正式验收评审",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-12-06",
+          "end": "2026-12-07",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        }
+      ],
+      "filesDir": {
+        "initiate": {
+          "立项材料": [
+            {
+              "id": "p1-initiate-立项材料-0-f0",
+              "name": "项目立项申请",
+              "ext": "docx",
+              "size": "293KB",
+              "updated": "2026-08-12"
+            }
+          ],
+          "会议纪要": [
+            {
+              "id": "p1-initiate-会议纪要-0-f0",
+              "name": "启动会会议纪要",
+              "ext": "docx",
+              "size": "3004KB",
+              "updated": "2026-08-11"
+            }
+          ],
+          "需求文档": [
+            {
+              "id": "p1-initiate-需求文档-0-f0",
+              "name": "需求规格说明书",
+              "ext": "docx",
+              "size": "382KB",
+              "updated": "2026-08-30"
+            }
+          ]
+        },
+        "research": {
+          "调研资料": [
+            {
+              "id": "p1-research-调研资料-0-f0",
+              "name": "现场调研记录",
+              "ext": "docx",
+              "size": "1249KB",
+              "updated": "2026-08-28"
+            }
+          ],
+          "需求确认": [
+            {
+              "id": "p1-research-需求确认-0-f0",
+              "name": "需求确认单",
+              "ext": "xlsx",
+              "size": "3611KB",
+              "updated": "2026-08-23"
+            }
+          ]
+        },
+        "solution": {
+          "方案文档": [
+            {
+              "id": "p1-solution-方案文档-0-f0",
+              "name": "系统建设方案",
+              "ext": "docx",
+              "size": "724KB",
+              "updated": "2026-08-27"
+            }
+          ],
+          "点位清单": [
+            {
+              "id": "p1-solution-点位清单-0-f0",
+              "name": "点位与设备清单",
+              "ext": "xlsx",
+              "size": "1020KB",
+              "updated": "2026-08-18"
+            }
+          ],
+          "评审记录": []
+        },
+        "dev": {
+          "接口文档": [
+            {
+              "id": "p1-dev-接口文档-0-f0",
+              "name": "平台接口说明",
+              "ext": "docx",
+              "size": "3820KB",
+              "updated": "2026-08-11"
+            }
+          ],
+          "测试报告": [
+            {
+              "id": "p1-dev-测试报告-0-f0",
+              "name": "功能测试报告",
+              "ext": "docx",
+              "size": "3973KB",
+              "updated": "2026-08-22"
+            }
+          ],
+          "实施记录": [
+            {
+              "id": "p1-dev-实施记录-0-f0",
+              "name": "设备安装调试记录",
+              "ext": "xlsx",
+              "size": "1597KB",
+              "updated": "2026-08-30"
+            }
+          ],
+          "设备台账": []
+        },
+        "deploy": {
+          "部署记录": [
+            {
+              "id": "p1-deploy-部署记录-0-f0",
+              "name": "现场部署记录",
+              "ext": "docx",
+              "size": "2567KB",
+              "updated": "2026-08-26"
+            }
+          ],
+          "配置清单": [
+            {
+              "id": "p1-deploy-配置清单-0-f0",
+              "name": "系统配置清单",
+              "ext": "xlsx",
+              "size": "2503KB",
+              "updated": "2026-08-28"
+            }
+          ]
+        },
+        "training": {
+          "培训材料": [
+            {
+              "id": "p1-training-培训材料-0-f0",
+              "name": "用户培训手册",
+              "ext": "docx",
+              "size": "410KB",
+              "updated": "2026-08-31"
+            }
+          ],
+          "操作手册": []
+        },
+        "trial": {
+          "试运行报告": [
+            {
+              "id": "p1-trial-试运行报告-0-f0",
+              "name": "试运行情况说明",
+              "ext": "docx",
+              "size": "3142KB",
+              "updated": "2026-08-13"
+            }
+          ],
+          "问题记录": []
+        },
+        "accept": {
+          "验收资料": [
+            {
+              "id": "p1-accept-验收资料-0-f0",
+              "name": "项目验收单",
+              "ext": "docx",
+              "size": "3256KB",
+              "updated": "2026-08-20"
+            }
+          ],
+          "竣工文档": [
+            {
+              "id": "p1-accept-竣工文档-0-f0",
+              "name": "竣工资料",
+              "ext": "docx",
+              "size": "710KB",
+              "updated": "2026-08-29"
+            }
+          ]
+        }
+      },
+      "priority": "high",
+      "budget": "2680000",
+      "remark": "重点项目，涉及 320 个新增监控点位与 5 路平台对接。",
+      "level": "A",
+      "thirdParty": "yes",
+      "deliverables": "320 台高清摄像机、5 路平台对接服务、1 套存储阵列及网桥",
+      "contract": {
+        "no": "HT-2026-0118",
+        "name": "智慧城市视频监控二期扩容项目合同",
+        "amount": "2680000",
+        "signDate": "2026-09-05",
+        "payment": "预付款 30% / 到货款 40% / 验收款 25% / 质保金 5%"
+      },
+      "logs": [
+        {
+          "time": "2026-09-05",
+          "action": "创建项目并关联合同 HT-2026-0118"
+        },
+        {
+          "time": "2026-09-07",
+          "action": "调研完成，形成需求确认清单"
+        },
+        {
+          "time": "2026-09-09",
+          "action": "方案评审通过，进入开发对接"
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "code": "IT-2026-002",
+      "name": "数据中心机房改造升级项目",
+      "customer": "某集团信息科技部",
+      "category": "基础设施",
+      "manager": "李强",
+      "contacts": {
+        "a": {
+          "party": "甲方",
+          "name": "陈志远",
+          "tel": "137-0055-6120"
+        },
+        "b": {
+          "party": "乙方",
+          "name": "赵敏",
+          "tel": "136-1122-3344",
+          "role": "dev"
+        }
+      },
+      "clients": [
+        {
+          "id": "clt1",
+          "name": "陈志远",
+          "tel": "137-0055-6120"
+        }
+      ],
+      "teamOf": {
+        "tech": [
+          {
+            "id": "t1",
+            "name": "李源",
+            "tel": "13800000001"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ],
+        "sales": [
+          {
+            "id": "t2",
+            "name": "郑云飞",
+            "tel": "13800000002"
+          },
+          {
+            "id": "t6",
+            "name": "王芳",
+            "tel": "13800000006"
+          }
+        ],
+        "dev": [
+          {
+            "id": "t3",
+            "name": "汪洋",
+            "tel": "13800000003"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ]
+      },
+      "startDate": "2026-08-22",
+      "endDate": "2026-11-25",
+      "progress": 38,
+      "planStart": "2026-08-22",
+      "planEnd": "2026-11-25",
+      "stages": [
+        {
+          "key": "initiate",
+          "planStart": "2026-08-22",
+          "planEnd": "2026-08-28",
+          "status": "done",
+          "actualStart": "2026-08-22",
+          "actualEnd": "2026-08-27"
+        },
+        {
+          "key": "research",
+          "planStart": "2026-08-29",
+          "planEnd": "2026-09-12",
+          "status": "done",
+          "actualStart": "2026-08-29",
+          "actualEnd": "2026-09-11"
+        },
+        {
+          "key": "solution",
+          "planStart": "2026-09-13",
+          "planEnd": "2026-09-22",
+          "status": "done",
+          "actualStart": "2026-09-13",
+          "actualEnd": "2026-09-21"
+        },
+        {
+          "key": "dev",
+          "planStart": "2026-09-23",
+          "planEnd": "2026-10-22",
+          "status": "active",
+          "actualStart": "2026-09-23"
+        },
+        {
+          "key": "deploy",
+          "planStart": "2026-10-23",
+          "planEnd": "2026-10-27",
+          "status": "pending"
+        },
+        {
+          "key": "training",
+          "planStart": "2026-10-28",
+          "planEnd": "2026-10-31",
+          "status": "pending"
+        },
+        {
+          "key": "trial",
+          "planStart": "2026-11-01",
+          "planEnd": "2026-11-20",
+          "status": "pending"
+        },
+        {
+          "key": "accept",
+          "planStart": "2026-11-21",
+          "planEnd": "2026-11-25",
+          "status": "pending"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "initiate-0-0",
+          "name": "现场勘察与需求采集",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-08-22",
+          "end": "2026-08-24",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-1",
+          "name": "初步方案立项评审",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-08-23",
+          "end": "2026-08-24",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-2",
+          "name": "签订项目任务书",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-08-24",
+          "end": "2026-08-25",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "research-1-0",
+          "name": "原系统资料收集",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-08-29",
+          "end": "2026-09-02",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-1",
+          "name": "业务流程梳理",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-08-30",
+          "end": "2026-09-03",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-2",
+          "name": "需求范围确认",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-08-31",
+          "end": "2026-09-04",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "solution-2-0",
+          "name": "整体方案设计",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-09-13",
+          "end": "2026-09-16",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-1",
+          "name": "点位清单与设备选型",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-09-14",
+          "end": "2026-09-16",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-2",
+          "name": "方案评审与修订",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-09-15",
+          "end": "2026-09-17",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "dev-3-0",
+          "name": "硬件到货与盘点",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-23",
+          "end": "2026-09-27",
+          "status": "doing",
+          "progress": 60,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-1",
+          "name": "平台接口开发",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-24",
+          "end": "2026-10-05",
+          "status": "doing",
+          "progress": 20,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-2",
+          "name": "现场设备安装调试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-25",
+          "end": "2026-10-04",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-3",
+          "name": "联调联试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-26",
+          "end": "2026-10-01",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "deploy-4-0",
+          "name": "生产环境部署",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-10-23",
+          "end": "2026-10-25",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "deploy-4-1",
+          "name": "配置与数据初始化",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-10-24",
+          "end": "2026-10-25",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "training-5-0",
+          "name": "操作手册编写",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-10-28",
+          "end": "2026-10-29",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "training-5-1",
+          "name": "分批用户培训",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-10-29",
+          "end": "2026-10-30",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "trial-6-0",
+          "name": "试运行监控",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-11-01",
+          "end": "2026-11-15",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "trial-6-1",
+          "name": "问题收集与修复",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-11-02",
+          "end": "2026-11-11",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "accept-7-0",
+          "name": "验收材料整理",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-11-21",
+          "end": "2026-11-23",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "accept-7-1",
+          "name": "正式验收评审",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-11-22",
+          "end": "2026-11-23",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        }
+      ],
+      "filesDir": {
+        "initiate": {
+          "立项材料": [
+            {
+              "id": "p2-initiate-立项材料-0-f0",
+              "name": "项目立项申请",
+              "ext": "docx",
+              "size": "174KB",
+              "updated": "2026-08-20"
+            }
+          ],
+          "会议纪要": [
+            {
+              "id": "p2-initiate-会议纪要-0-f0",
+              "name": "启动会会议纪要",
+              "ext": "docx",
+              "size": "3741KB",
+              "updated": "2026-08-06"
+            }
+          ],
+          "需求文档": [
+            {
+              "id": "p2-initiate-需求文档-0-f0",
+              "name": "需求规格说明书",
+              "ext": "docx",
+              "size": "3893KB",
+              "updated": "2026-07-24"
+            }
+          ]
+        },
+        "research": {
+          "调研资料": [
+            {
+              "id": "p2-research-调研资料-0-f0",
+              "name": "现场调研记录",
+              "ext": "docx",
+              "size": "3024KB",
+              "updated": "2026-08-09"
+            }
+          ],
+          "需求确认": [
+            {
+              "id": "p2-research-需求确认-0-f0",
+              "name": "需求确认单",
+              "ext": "xlsx",
+              "size": "1853KB",
+              "updated": "2026-07-30"
+            }
+          ]
+        },
+        "solution": {
+          "方案文档": [
+            {
+              "id": "p2-solution-方案文档-0-f0",
+              "name": "系统建设方案",
+              "ext": "docx",
+              "size": "2719KB",
+              "updated": "2026-07-30"
+            }
+          ],
+          "点位清单": [
+            {
+              "id": "p2-solution-点位清单-0-f0",
+              "name": "点位与设备清单",
+              "ext": "xlsx",
+              "size": "1850KB",
+              "updated": "2026-08-18"
+            }
+          ],
+          "评审记录": []
+        },
+        "dev": {
+          "接口文档": [
+            {
+              "id": "p2-dev-接口文档-0-f0",
+              "name": "平台接口说明",
+              "ext": "docx",
+              "size": "3986KB",
+              "updated": "2026-07-31"
+            }
+          ],
+          "测试报告": [
+            {
+              "id": "p2-dev-测试报告-0-f0",
+              "name": "功能测试报告",
+              "ext": "docx",
+              "size": "1044KB",
+              "updated": "2026-07-31"
+            }
+          ],
+          "实施记录": [
+            {
+              "id": "p2-dev-实施记录-0-f0",
+              "name": "设备安装调试记录",
+              "ext": "xlsx",
+              "size": "3393KB",
+              "updated": "2026-08-01"
+            }
+          ],
+          "设备台账": []
+        },
+        "deploy": {
+          "部署记录": [
+            {
+              "id": "p2-deploy-部署记录-0-f0",
+              "name": "现场部署记录",
+              "ext": "docx",
+              "size": "687KB",
+              "updated": "2026-07-30"
+            }
+          ],
+          "配置清单": [
+            {
+              "id": "p2-deploy-配置清单-0-f0",
+              "name": "系统配置清单",
+              "ext": "xlsx",
+              "size": "4074KB",
+              "updated": "2026-08-04"
+            }
+          ]
+        },
+        "training": {
+          "培训材料": [
+            {
+              "id": "p2-training-培训材料-0-f0",
+              "name": "用户培训手册",
+              "ext": "docx",
+              "size": "2448KB",
+              "updated": "2026-08-17"
+            }
+          ],
+          "操作手册": []
+        },
+        "trial": {
+          "试运行报告": [
+            {
+              "id": "p2-trial-试运行报告-0-f0",
+              "name": "试运行情况说明",
+              "ext": "docx",
+              "size": "3686KB",
+              "updated": "2026-07-31"
+            }
+          ],
+          "问题记录": []
+        },
+        "accept": {
+          "验收资料": [
+            {
+              "id": "p2-accept-验收资料-0-f0",
+              "name": "项目验收单",
+              "ext": "docx",
+              "size": "2766KB",
+              "updated": "2026-08-15"
+            }
+          ],
+          "竣工文档": [
+            {
+              "id": "p2-accept-竣工文档-0-f0",
+              "name": "竣工资料",
+              "ext": "docx",
+              "size": "2646KB",
+              "updated": "2026-07-24"
+            }
+          ]
+        }
+      },
+      "priority": "normal",
+      "budget": "1530000",
+      "level": "B",
+      "thirdParty": "no",
+      "deliverables": "机房基础改造、UPS 配电系统、动环监控系统部署",
+      "contract": {
+        "no": "HT-2026-0032",
+        "name": "数据中心机房改造升级项目合同",
+        "amount": "1530000",
+        "signDate": "2026-08-22",
+        "payment": "预付款 40% / 验收款 55% / 质保金 5%"
+      },
+      "logs": [
+        {
+          "time": "2026-08-22",
+          "action": "创建项目并关联合同 HT-2026-0032"
+        },
+        {
+          "time": "2026-09-03",
+          "action": "巡检现场，完成现状摸底"
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "code": "IT-2026-003",
+      "name": "园区一体机门禁考勤系统上线",
+      "customer": "XX 高新产业园区管委会",
+      "category": "智慧园区",
+      "manager": "王芳",
+      "contacts": {
+        "a": {
+          "party": "甲方",
+          "name": "孙丽华",
+          "tel": "135-0099-1823"
+        },
+        "b": {
+          "party": "乙方",
+          "name": "周建国",
+          "tel": "138-2233-8899",
+          "role": "sales"
+        }
+      },
+      "clients": [
+        {
+          "id": "clt1",
+          "name": "孙丽华",
+          "tel": "135-0099-1823"
+        }
+      ],
+      "teamOf": {
+        "tech": [
+          {
+            "id": "t1",
+            "name": "李源",
+            "tel": "13800000001"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ],
+        "sales": [
+          {
+            "id": "t2",
+            "name": "郑云飞",
+            "tel": "13800000002"
+          },
+          {
+            "id": "t6",
+            "name": "王芳",
+            "tel": "13800000006"
+          }
+        ],
+        "dev": [
+          {
+            "id": "t3",
+            "name": "汪洋",
+            "tel": "13800000003"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ]
+      },
+      "startDate": "2026-07-31",
+      "endDate": "2026-11-03",
+      "progress": 63,
+      "planStart": "2026-07-31",
+      "planEnd": "2026-11-03",
+      "stages": [
+        {
+          "key": "initiate",
+          "planStart": "2026-07-31",
+          "planEnd": "2026-08-06",
+          "status": "done",
+          "actualStart": "2026-07-31",
+          "actualEnd": "2026-08-05"
+        },
+        {
+          "key": "research",
+          "planStart": "2026-08-07",
+          "planEnd": "2026-08-21",
+          "status": "done",
+          "actualStart": "2026-08-07",
+          "actualEnd": "2026-08-20"
+        },
+        {
+          "key": "solution",
+          "planStart": "2026-08-22",
+          "planEnd": "2026-08-31",
+          "status": "done",
+          "actualStart": "2026-08-22",
+          "actualEnd": "2026-08-30"
+        },
+        {
+          "key": "dev",
+          "planStart": "2026-09-01",
+          "planEnd": "2026-09-30",
+          "status": "done",
+          "actualStart": "2026-09-01",
+          "actualEnd": "2026-09-29"
+        },
+        {
+          "key": "deploy",
+          "planStart": "2026-10-01",
+          "planEnd": "2026-10-05",
+          "status": "done",
+          "actualStart": "2026-10-01",
+          "actualEnd": "2026-10-04"
+        },
+        {
+          "key": "training",
+          "planStart": "2026-10-06",
+          "planEnd": "2026-10-09",
+          "status": "active",
+          "actualStart": "2026-10-06"
+        },
+        {
+          "key": "trial",
+          "planStart": "2026-10-10",
+          "planEnd": "2026-10-29",
+          "status": "pending"
+        },
+        {
+          "key": "accept",
+          "planStart": "2026-10-30",
+          "planEnd": "2026-11-03",
+          "status": "pending"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "initiate-0-0",
+          "name": "现场勘察与需求采集",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-07-31",
+          "end": "2026-08-02",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-1",
+          "name": "初步方案立项评审",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-08-01",
+          "end": "2026-08-02",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-2",
+          "name": "签订项目任务书",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-08-02",
+          "end": "2026-08-03",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "research-1-0",
+          "name": "原系统资料收集",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-08-07",
+          "end": "2026-08-11",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-1",
+          "name": "业务流程梳理",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-08-08",
+          "end": "2026-08-12",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-2",
+          "name": "需求范围确认",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-08-09",
+          "end": "2026-08-13",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "solution-2-0",
+          "name": "整体方案设计",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-08-22",
+          "end": "2026-08-25",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-1",
+          "name": "点位清单与设备选型",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-08-23",
+          "end": "2026-08-25",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-2",
+          "name": "方案评审与修订",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-08-24",
+          "end": "2026-08-26",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "dev-3-0",
+          "name": "硬件到货与盘点",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-01",
+          "end": "2026-09-05",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-1",
+          "name": "平台接口开发",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-02",
+          "end": "2026-09-13",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-2",
+          "name": "现场设备安装调试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-03",
+          "end": "2026-09-12",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-3",
+          "name": "联调联试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-09-04",
+          "end": "2026-09-09",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "deploy-4-0",
+          "name": "生产环境部署",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-10-01",
+          "end": "2026-10-03",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "deploy-4-1",
+          "name": "配置与数据初始化",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-10-02",
+          "end": "2026-10-03",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "training-5-0",
+          "name": "操作手册编写",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-10-06",
+          "end": "2026-10-07",
+          "status": "doing",
+          "progress": 60,
+          "milestone": false
+        },
+        {
+          "id": "training-5-1",
+          "name": "分批用户培训",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-10-07",
+          "end": "2026-10-08",
+          "status": "doing",
+          "progress": 20,
+          "milestone": true
+        },
+        {
+          "id": "trial-6-0",
+          "name": "试运行监控",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-10-10",
+          "end": "2026-10-24",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "trial-6-1",
+          "name": "问题收集与修复",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-10-11",
+          "end": "2026-10-20",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "accept-7-0",
+          "name": "验收材料整理",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-10-30",
+          "end": "2026-11-01",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "accept-7-1",
+          "name": "正式验收评审",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-10-31",
+          "end": "2026-11-01",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        }
+      ],
+      "filesDir": {
+        "initiate": {
+          "立项材料": [
+            {
+              "id": "p3-initiate-立项材料-0-f0",
+              "name": "项目立项申请",
+              "ext": "docx",
+              "size": "661KB",
+              "updated": "2026-07-23"
+            }
+          ],
+          "会议纪要": [
+            {
+              "id": "p3-initiate-会议纪要-0-f0",
+              "name": "启动会会议纪要",
+              "ext": "docx",
+              "size": "2721KB",
+              "updated": "2026-07-17"
+            }
+          ],
+          "需求文档": [
+            {
+              "id": "p3-initiate-需求文档-0-f0",
+              "name": "需求规格说明书",
+              "ext": "docx",
+              "size": "1051KB",
+              "updated": "2026-07-18"
+            }
+          ]
+        },
+        "research": {
+          "调研资料": [
+            {
+              "id": "p3-research-调研资料-0-f0",
+              "name": "现场调研记录",
+              "ext": "docx",
+              "size": "1001KB",
+              "updated": "2026-07-20"
+            }
+          ],
+          "需求确认": [
+            {
+              "id": "p3-research-需求确认-0-f0",
+              "name": "需求确认单",
+              "ext": "xlsx",
+              "size": "3164KB",
+              "updated": "2026-07-27"
+            }
+          ]
+        },
+        "solution": {
+          "方案文档": [
+            {
+              "id": "p3-solution-方案文档-0-f0",
+              "name": "系统建设方案",
+              "ext": "docx",
+              "size": "364KB",
+              "updated": "2026-07-02"
+            }
+          ],
+          "点位清单": [
+            {
+              "id": "p3-solution-点位清单-0-f0",
+              "name": "点位与设备清单",
+              "ext": "xlsx",
+              "size": "2780KB",
+              "updated": "2026-07-27"
+            }
+          ],
+          "评审记录": []
+        },
+        "dev": {
+          "接口文档": [
+            {
+              "id": "p3-dev-接口文档-0-f0",
+              "name": "平台接口说明",
+              "ext": "docx",
+              "size": "2096KB",
+              "updated": "2026-07-30"
+            }
+          ],
+          "测试报告": [
+            {
+              "id": "p3-dev-测试报告-0-f0",
+              "name": "功能测试报告",
+              "ext": "docx",
+              "size": "2958KB",
+              "updated": "2026-07-09"
+            }
+          ],
+          "实施记录": [
+            {
+              "id": "p3-dev-实施记录-0-f0",
+              "name": "设备安装调试记录",
+              "ext": "xlsx",
+              "size": "1854KB",
+              "updated": "2026-07-24"
+            }
+          ],
+          "设备台账": []
+        },
+        "deploy": {
+          "部署记录": [
+            {
+              "id": "p3-deploy-部署记录-0-f0",
+              "name": "现场部署记录",
+              "ext": "docx",
+              "size": "1423KB",
+              "updated": "2026-07-07"
+            }
+          ],
+          "配置清单": [
+            {
+              "id": "p3-deploy-配置清单-0-f0",
+              "name": "系统配置清单",
+              "ext": "xlsx",
+              "size": "1079KB",
+              "updated": "2026-07-28"
+            }
+          ]
+        },
+        "training": {
+          "培训材料": [
+            {
+              "id": "p3-training-培训材料-0-f0",
+              "name": "用户培训手册",
+              "ext": "docx",
+              "size": "3039KB",
+              "updated": "2026-07-26"
+            }
+          ],
+          "操作手册": []
+        },
+        "trial": {
+          "试运行报告": [
+            {
+              "id": "p3-trial-试运行报告-0-f0",
+              "name": "试运行情况说明",
+              "ext": "docx",
+              "size": "2565KB",
+              "updated": "2026-07-05"
+            }
+          ],
+          "问题记录": []
+        },
+        "accept": {
+          "验收资料": [
+            {
+              "id": "p3-accept-验收资料-0-f0",
+              "name": "项目验收单",
+              "ext": "docx",
+              "size": "3328KB",
+              "updated": "2026-07-13"
+            }
+          ],
+          "竣工文档": [
+            {
+              "id": "p3-accept-竣工文档-0-f0",
+              "name": "竣工资料",
+              "ext": "docx",
+              "size": "3557KB",
+              "updated": "2026-07-05"
+            }
+          ]
+        }
+      },
+      "priority": "urgent",
+      "budget": "860000",
+      "remark": "上线临近，培训与试运行窗口紧张，需重点关注。",
+      "level": "A",
+      "thirdParty": "no",
+      "deliverables": "48 台一体机门禁、考勤系统软件授权、现场调试",
+      "contract": {
+        "no": "HT-2026-0096",
+        "name": "园区一体机门禁考勤系统采购与服务合同",
+        "amount": "860000",
+        "signDate": "2026-07-31",
+        "payment": "预付款 50% / 验收款 50%"
+      },
+      "logs": [
+        {
+          "time": "2026-07-31",
+          "action": "创建项目并关联合同 HT-2026-0096"
+        },
+        {
+          "time": "2026-09-01",
+          "action": "部署完成，进入培训上线"
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "code": "IT-2026-004",
+      "name": "城区银行网点安防联网工程",
+      "customer": "省农商银行安全保卫部",
+      "category": "金融安防",
+      "manager": "陈刚",
+      "contacts": {
+        "a": {
+          "party": "甲方",
+          "name": "吴主任",
+          "tel": "139-0717-4028"
+        },
+        "b": {
+          "party": "乙方",
+          "name": "杨帆",
+          "tel": "136-3344-5566",
+          "role": "tech"
+        }
+      },
+      "clients": [
+        {
+          "id": "clt1",
+          "name": "吴主任",
+          "tel": "139-0717-4028"
+        }
+      ],
+      "teamOf": {
+        "tech": [
+          {
+            "id": "t1",
+            "name": "李源",
+            "tel": "13800000001"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ],
+        "sales": [
+          {
+            "id": "t2",
+            "name": "郑云飞",
+            "tel": "13800000002"
+          },
+          {
+            "id": "t6",
+            "name": "王芳",
+            "tel": "13800000006"
+          }
+        ],
+        "dev": [
+          {
+            "id": "t3",
+            "name": "汪洋",
+            "tel": "13800000003"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ]
+      },
+      "startDate": "2026-09-10",
+      "endDate": "2026-12-14",
+      "progress": 13,
+      "planStart": "2026-09-10",
+      "planEnd": "2026-12-14",
+      "stages": [
+        {
+          "key": "initiate",
+          "planStart": "2026-09-10",
+          "planEnd": "2026-09-16",
+          "status": "done",
+          "actualStart": "2026-09-10",
+          "actualEnd": "2026-09-15"
+        },
+        {
+          "key": "research",
+          "planStart": "2026-09-17",
+          "planEnd": "2026-10-01",
+          "status": "active",
+          "actualStart": "2026-09-17"
+        },
+        {
+          "key": "solution",
+          "planStart": "2026-10-02",
+          "planEnd": "2026-10-11",
+          "status": "pending"
+        },
+        {
+          "key": "dev",
+          "planStart": "2026-10-12",
+          "planEnd": "2026-11-10",
+          "status": "pending"
+        },
+        {
+          "key": "deploy",
+          "planStart": "2026-11-11",
+          "planEnd": "2026-11-15",
+          "status": "pending"
+        },
+        {
+          "key": "training",
+          "planStart": "2026-11-16",
+          "planEnd": "2026-11-19",
+          "status": "pending"
+        },
+        {
+          "key": "trial",
+          "planStart": "2026-11-20",
+          "planEnd": "2026-12-09",
+          "status": "pending"
+        },
+        {
+          "key": "accept",
+          "planStart": "2026-12-10",
+          "planEnd": "2026-12-14",
+          "status": "pending"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "initiate-0-0",
+          "name": "现场勘察与需求采集",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-09-10",
+          "end": "2026-09-12",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-1",
+          "name": "初步方案立项评审",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-09-11",
+          "end": "2026-09-12",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-2",
+          "name": "签订项目任务书",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-09-12",
+          "end": "2026-09-13",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "research-1-0",
+          "name": "原系统资料收集",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-09-17",
+          "end": "2026-09-21",
+          "status": "doing",
+          "progress": 60,
+          "milestone": false
+        },
+        {
+          "id": "research-1-1",
+          "name": "业务流程梳理",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-09-18",
+          "end": "2026-09-22",
+          "status": "doing",
+          "progress": 20,
+          "milestone": false
+        },
+        {
+          "id": "research-1-2",
+          "name": "需求范围确认",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-09-19",
+          "end": "2026-09-23",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "solution-2-0",
+          "name": "整体方案设计",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-10-02",
+          "end": "2026-10-05",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-1",
+          "name": "点位清单与设备选型",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-10-03",
+          "end": "2026-10-05",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-2",
+          "name": "方案评审与修订",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-10-04",
+          "end": "2026-10-06",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "dev-3-0",
+          "name": "硬件到货与盘点",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-12",
+          "end": "2026-10-16",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-1",
+          "name": "平台接口开发",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-13",
+          "end": "2026-10-24",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-2",
+          "name": "现场设备安装调试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-14",
+          "end": "2026-10-23",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-3",
+          "name": "联调联试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-10-15",
+          "end": "2026-10-20",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "deploy-4-0",
+          "name": "生产环境部署",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-11-11",
+          "end": "2026-11-13",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "deploy-4-1",
+          "name": "配置与数据初始化",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-11-12",
+          "end": "2026-11-13",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "training-5-0",
+          "name": "操作手册编写",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-11-16",
+          "end": "2026-11-17",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "training-5-1",
+          "name": "分批用户培训",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-11-17",
+          "end": "2026-11-18",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "trial-6-0",
+          "name": "试运行监控",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-11-20",
+          "end": "2026-12-04",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "trial-6-1",
+          "name": "问题收集与修复",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-11-21",
+          "end": "2026-11-30",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        },
+        {
+          "id": "accept-7-0",
+          "name": "验收材料整理",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-12-10",
+          "end": "2026-12-12",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "accept-7-1",
+          "name": "正式验收评审",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-12-11",
+          "end": "2026-12-12",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        }
+      ],
+      "filesDir": {
+        "initiate": {
+          "立项材料": [
+            {
+              "id": "p4-initiate-立项材料-0-f0",
+              "name": "项目立项申请",
+              "ext": "docx",
+              "size": "3034KB",
+              "updated": "2026-08-25"
+            }
+          ],
+          "会议纪要": [
+            {
+              "id": "p4-initiate-会议纪要-0-f0",
+              "name": "启动会会议纪要",
+              "ext": "docx",
+              "size": "460KB",
+              "updated": "2026-09-09"
+            }
+          ],
+          "需求文档": [
+            {
+              "id": "p4-initiate-需求文档-0-f0",
+              "name": "需求规格说明书",
+              "ext": "docx",
+              "size": "334KB",
+              "updated": "2026-09-08"
+            }
+          ]
+        },
+        "research": {
+          "调研资料": [
+            {
+              "id": "p4-research-调研资料-0-f0",
+              "name": "现场调研记录",
+              "ext": "docx",
+              "size": "3069KB",
+              "updated": "2026-09-10"
+            }
+          ],
+          "需求确认": [
+            {
+              "id": "p4-research-需求确认-0-f0",
+              "name": "需求确认单",
+              "ext": "xlsx",
+              "size": "2285KB",
+              "updated": "2026-08-30"
+            }
+          ]
+        },
+        "solution": {
+          "方案文档": [
+            {
+              "id": "p4-solution-方案文档-0-f0",
+              "name": "系统建设方案",
+              "ext": "docx",
+              "size": "692KB",
+              "updated": "2026-08-26"
+            }
+          ],
+          "点位清单": [
+            {
+              "id": "p4-solution-点位清单-0-f0",
+              "name": "点位与设备清单",
+              "ext": "xlsx",
+              "size": "3885KB",
+              "updated": "2026-08-14"
+            }
+          ],
+          "评审记录": []
+        },
+        "dev": {
+          "接口文档": [
+            {
+              "id": "p4-dev-接口文档-0-f0",
+              "name": "平台接口说明",
+              "ext": "docx",
+              "size": "3205KB",
+              "updated": "2026-08-20"
+            }
+          ],
+          "测试报告": [
+            {
+              "id": "p4-dev-测试报告-0-f0",
+              "name": "功能测试报告",
+              "ext": "docx",
+              "size": "1385KB",
+              "updated": "2026-09-09"
+            }
+          ],
+          "实施记录": [
+            {
+              "id": "p4-dev-实施记录-0-f0",
+              "name": "设备安装调试记录",
+              "ext": "xlsx",
+              "size": "3915KB",
+              "updated": "2026-08-31"
+            }
+          ],
+          "设备台账": []
+        },
+        "deploy": {
+          "部署记录": [
+            {
+              "id": "p4-deploy-部署记录-0-f0",
+              "name": "现场部署记录",
+              "ext": "docx",
+              "size": "548KB",
+              "updated": "2026-09-04"
+            }
+          ],
+          "配置清单": [
+            {
+              "id": "p4-deploy-配置清单-0-f0",
+              "name": "系统配置清单",
+              "ext": "xlsx",
+              "size": "2923KB",
+              "updated": "2026-08-15"
+            }
+          ]
+        },
+        "training": {
+          "培训材料": [
+            {
+              "id": "p4-training-培训材料-0-f0",
+              "name": "用户培训手册",
+              "ext": "docx",
+              "size": "651KB",
+              "updated": "2026-08-14"
+            }
+          ],
+          "操作手册": []
+        },
+        "trial": {
+          "试运行报告": [
+            {
+              "id": "p4-trial-试运行报告-0-f0",
+              "name": "试运行情况说明",
+              "ext": "docx",
+              "size": "1271KB",
+              "updated": "2026-08-16"
+            }
+          ],
+          "问题记录": []
+        },
+        "accept": {
+          "验收资料": [
+            {
+              "id": "p4-accept-验收资料-0-f0",
+              "name": "项目验收单",
+              "ext": "docx",
+              "size": "2275KB",
+              "updated": "2026-09-01"
+            }
+          ],
+          "竣工文档": [
+            {
+              "id": "p4-accept-竣工文档-0-f0",
+              "name": "竣工资料",
+              "ext": "docx",
+              "size": "2181KB",
+              "updated": "2026-08-31"
+            }
+          ]
+        }
+      },
+      "priority": "high",
+      "budget": "4120000",
+      "remark": "对接银行内网 OA 与安保平台，需多次进场勘察。",
+      "level": "A",
+      "thirdParty": "yes",
+      "deliverables": "12 家网点安防设备供货与联网调试、监控中心大屏对接",
+      "contract": {
+        "no": "HT-2026-0207",
+        "name": "城区银行网点安防联网工程合同",
+        "amount": "4120000",
+        "signDate": "2026-09-10",
+        "payment": "按项目里程碑分期支付"
+      },
+      "logs": [
+        {
+          "time": "2026-09-10",
+          "action": "创建项目并关联合同 HT-2026-0207"
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "code": "IT-2025-088",
+      "name": "大型商超客流统计与分析平台",
+      "customer": "连锁商业集团数字化部",
+      "category": "商业分析",
+      "manager": "刘敏",
+      "contacts": {
+        "a": {
+          "party": "甲方",
+          "name": "何总",
+          "tel": "136-0058-7743"
+        },
+        "b": {
+          "party": "乙方",
+          "name": "郑晓",
+          "tel": "139-5566-7788",
+          "role": "dev"
+        }
+      },
+      "clients": [
+        {
+          "id": "clt1",
+          "name": "何总",
+          "tel": "136-0058-7743"
+        }
+      ],
+      "teamOf": {
+        "tech": [
+          {
+            "id": "t1",
+            "name": "李源",
+            "tel": "13800000001"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ],
+        "sales": [
+          {
+            "id": "t2",
+            "name": "郑云飞",
+            "tel": "13800000002"
+          },
+          {
+            "id": "t6",
+            "name": "王芳",
+            "tel": "13800000006"
+          }
+        ],
+        "dev": [
+          {
+            "id": "t3",
+            "name": "汪洋",
+            "tel": "13800000003"
+          },
+          {
+            "id": "t4",
+            "name": "陈婷",
+            "tel": "13800000004"
+          }
+        ]
+      },
+      "startDate": "2026-06-28",
+      "endDate": "2026-10-01",
+      "progress": 75,
+      "planStart": "2026-06-28",
+      "planEnd": "2026-10-01",
+      "stages": [
+        {
+          "key": "initiate",
+          "planStart": "2026-06-28",
+          "planEnd": "2026-07-04",
+          "status": "done",
+          "actualStart": "2026-06-28",
+          "actualEnd": "2026-07-03"
+        },
+        {
+          "key": "research",
+          "planStart": "2026-07-05",
+          "planEnd": "2026-07-19",
+          "status": "done",
+          "actualStart": "2026-07-05",
+          "actualEnd": "2026-07-18"
+        },
+        {
+          "key": "solution",
+          "planStart": "2026-07-20",
+          "planEnd": "2026-07-29",
+          "status": "done",
+          "actualStart": "2026-07-20",
+          "actualEnd": "2026-07-28"
+        },
+        {
+          "key": "dev",
+          "planStart": "2026-07-30",
+          "planEnd": "2026-08-28",
+          "status": "done",
+          "actualStart": "2026-07-30",
+          "actualEnd": "2026-08-27"
+        },
+        {
+          "key": "deploy",
+          "planStart": "2026-08-29",
+          "planEnd": "2026-09-02",
+          "status": "done",
+          "actualStart": "2026-08-29",
+          "actualEnd": "2026-09-01"
+        },
+        {
+          "key": "training",
+          "planStart": "2026-09-03",
+          "planEnd": "2026-09-06",
+          "status": "done",
+          "actualStart": "2026-09-03",
+          "actualEnd": "2026-09-05"
+        },
+        {
+          "key": "trial",
+          "planStart": "2026-09-07",
+          "planEnd": "2026-09-26",
+          "status": "active",
+          "actualStart": "2026-09-07"
+        },
+        {
+          "key": "accept",
+          "planStart": "2026-09-27",
+          "planEnd": "2026-10-01",
+          "status": "pending"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "initiate-0-0",
+          "name": "现场勘察与需求采集",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-06-28",
+          "end": "2026-06-30",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-1",
+          "name": "初步方案立项评审",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-06-29",
+          "end": "2026-06-30",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "initiate-0-2",
+          "name": "签订项目任务书",
+          "phase": "initiate",
+          "owner": "实施-李工",
+          "start": "2026-06-30",
+          "end": "2026-07-01",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "research-1-0",
+          "name": "原系统资料收集",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-07-05",
+          "end": "2026-07-09",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-1",
+          "name": "业务流程梳理",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-07-06",
+          "end": "2026-07-10",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "research-1-2",
+          "name": "需求范围确认",
+          "phase": "research",
+          "owner": "实施-李工",
+          "start": "2026-07-07",
+          "end": "2026-07-11",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "solution-2-0",
+          "name": "整体方案设计",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-07-20",
+          "end": "2026-07-23",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-1",
+          "name": "点位清单与设备选型",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-07-21",
+          "end": "2026-07-23",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "solution-2-2",
+          "name": "方案评审与修订",
+          "phase": "solution",
+          "owner": "实施-李工",
+          "start": "2026-07-22",
+          "end": "2026-07-24",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "dev-3-0",
+          "name": "硬件到货与盘点",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-07-30",
+          "end": "2026-08-03",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-1",
+          "name": "平台接口开发",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-07-31",
+          "end": "2026-08-11",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-2",
+          "name": "现场设备安装调试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-08-01",
+          "end": "2026-08-10",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "dev-3-3",
+          "name": "联调联试",
+          "phase": "dev",
+          "owner": "开发-张伟",
+          "start": "2026-08-02",
+          "end": "2026-08-07",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "deploy-4-0",
+          "name": "生产环境部署",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-08-29",
+          "end": "2026-08-31",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "deploy-4-1",
+          "name": "配置与数据初始化",
+          "phase": "deploy",
+          "owner": "开发-张伟",
+          "start": "2026-08-30",
+          "end": "2026-08-31",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "training-5-0",
+          "name": "操作手册编写",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-09-03",
+          "end": "2026-09-04",
+          "status": "done",
+          "progress": 100,
+          "milestone": false
+        },
+        {
+          "id": "training-5-1",
+          "name": "分批用户培训",
+          "phase": "training",
+          "owner": "实施-李工",
+          "start": "2026-09-04",
+          "end": "2026-09-05",
+          "status": "done",
+          "progress": 100,
+          "milestone": true
+        },
+        {
+          "id": "trial-6-0",
+          "name": "试运行监控",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-09-07",
+          "end": "2026-09-21",
+          "status": "doing",
+          "progress": 60,
+          "milestone": false
+        },
+        {
+          "id": "trial-6-1",
+          "name": "问题收集与修复",
+          "phase": "trial",
+          "owner": "实施-李工",
+          "start": "2026-09-08",
+          "end": "2026-09-17",
+          "status": "doing",
+          "progress": 20,
+          "milestone": true
+        },
+        {
+          "id": "accept-7-0",
+          "name": "验收材料整理",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-09-27",
+          "end": "2026-09-29",
+          "status": "todo",
+          "progress": 0,
+          "milestone": false
+        },
+        {
+          "id": "accept-7-1",
+          "name": "正式验收评审",
+          "phase": "accept",
+          "owner": "实施-李工",
+          "start": "2026-09-28",
+          "end": "2026-09-29",
+          "status": "todo",
+          "progress": 0,
+          "milestone": true
+        }
+      ],
+      "filesDir": {
+        "initiate": {
+          "立项材料": [
+            {
+              "id": "p5-initiate-立项材料-0-f0",
+              "name": "项目立项申请",
+              "ext": "docx",
+              "size": "798KB",
+              "updated": "2026-06-23"
+            }
+          ],
+          "会议纪要": [
+            {
+              "id": "p5-initiate-会议纪要-0-f0",
+              "name": "启动会会议纪要",
+              "ext": "docx",
+              "size": "2251KB",
+              "updated": "2026-06-07"
+            }
+          ],
+          "需求文档": [
+            {
+              "id": "p5-initiate-需求文档-0-f0",
+              "name": "需求规格说明书",
+              "ext": "docx",
+              "size": "2302KB",
+              "updated": "2026-06-21"
+            }
+          ]
+        },
+        "research": {
+          "调研资料": [
+            {
+              "id": "p5-research-调研资料-0-f0",
+              "name": "现场调研记录",
+              "ext": "docx",
+              "size": "1127KB",
+              "updated": "2026-06-09"
+            }
+          ],
+          "需求确认": [
+            {
+              "id": "p5-research-需求确认-0-f0",
+              "name": "需求确认单",
+              "ext": "xlsx",
+              "size": "2626KB",
+              "updated": "2026-06-04"
+            }
+          ]
+        },
+        "solution": {
+          "方案文档": [
+            {
+              "id": "p5-solution-方案文档-0-f0",
+              "name": "系统建设方案",
+              "ext": "docx",
+              "size": "1424KB",
+              "updated": "2026-06-28"
+            }
+          ],
+          "点位清单": [
+            {
+              "id": "p5-solution-点位清单-0-f0",
+              "name": "点位与设备清单",
+              "ext": "xlsx",
+              "size": "1100KB",
+              "updated": "2026-06-11"
+            }
+          ],
+          "评审记录": []
+        },
+        "dev": {
+          "接口文档": [
+            {
+              "id": "p5-dev-接口文档-0-f0",
+              "name": "平台接口说明",
+              "ext": "docx",
+              "size": "3777KB",
+              "updated": "2026-06-08"
+            }
+          ],
+          "测试报告": [
+            {
+              "id": "p5-dev-测试报告-0-f0",
+              "name": "功能测试报告",
+              "ext": "docx",
+              "size": "1454KB",
+              "updated": "2026-06-04"
+            }
+          ],
+          "实施记录": [
+            {
+              "id": "p5-dev-实施记录-0-f0",
+              "name": "设备安装调试记录",
+              "ext": "xlsx",
+              "size": "602KB",
+              "updated": "2026-06-15"
+            }
+          ],
+          "设备台账": []
+        },
+        "deploy": {
+          "部署记录": [
+            {
+              "id": "p5-deploy-部署记录-0-f0",
+              "name": "现场部署记录",
+              "ext": "docx",
+              "size": "1802KB",
+              "updated": "2026-06-20"
+            }
+          ],
+          "配置清单": [
+            {
+              "id": "p5-deploy-配置清单-0-f0",
+              "name": "系统配置清单",
+              "ext": "xlsx",
+              "size": "3528KB",
+              "updated": "2026-06-24"
+            }
+          ]
+        },
+        "training": {
+          "培训材料": [
+            {
+              "id": "p5-training-培训材料-0-f0",
+              "name": "用户培训手册",
+              "ext": "docx",
+              "size": "1300KB",
+              "updated": "2026-06-24"
+            }
+          ],
+          "操作手册": []
+        },
+        "trial": {
+          "试运行报告": [
+            {
+              "id": "p5-trial-试运行报告-0-f0",
+              "name": "试运行情况说明",
+              "ext": "docx",
+              "size": "1259KB",
+              "updated": "2026-06-07"
+            }
+          ],
+          "问题记录": []
+        },
+        "accept": {
+          "验收资料": [
+            {
+              "id": "p5-accept-验收资料-0-f0",
+              "name": "项目验收单",
+              "ext": "docx",
+              "size": "2961KB",
+              "updated": "2026-06-20"
+            }
+          ],
+          "竣工文档": [
+            {
+              "id": "p5-accept-竣工文档-0-f0",
+              "name": "竣工资料",
+              "ext": "docx",
+              "size": "3569KB",
+              "updated": "2026-05-31"
+            }
+          ]
+        }
+      },
+      "priority": "high",
+      "budget": "960000",
+      "remark": "验收临近，存在逾期风险，需加速试运行收尾。",
+      "level": "B",
+      "thirdParty": "yes",
+      "deliverables": "客流统计平台软件、前端大屏、会员系统数据对接",
+      "contract": {
+        "no": "HT-2025-0777",
+        "name": "商超客流统计与分析平台建设合同",
+        "amount": "960000",
+        "signDate": "2026-06-28",
+        "payment": "预付款 30% / 上线款 50% / 验收款 20%"
+      },
+      "logs": [
+        {
+          "time": "2026-06-28",
+          "action": "创建项目并关联合同 HT-2025-0777"
+        },
+        {
+          "time": "2026-08-12",
+          "action": "平台正式上线，进入试运行"
+        },
+        {
+          "time": "2026-09-08",
+          "action": "试运行问题清单整理，推进验收"
+        }
+      ]
+    }
+  ],
+  "team": [
+    {
+      "id": "t1",
+      "name": "李源",
+      "roles": [
+        "tech"
+      ],
+      "tel": "13800000001",
+      "email": "liyuan@corp.com",
+      "dept": "技术部",
+      "note": "擅长网络/门禁实施"
+    },
+    {
+      "id": "t2",
+      "name": "郑云飞",
+      "roles": [
+        "sales"
+      ],
+      "tel": "13800000002",
+      "email": "zheng@corp.com",
+      "dept": "销售部",
+      "note": "区域销售"
+    },
+    {
+      "id": "t3",
+      "name": "汪洋",
+      "roles": [
+        "dev"
+      ],
+      "tel": "13800000003",
+      "email": "wangyang@corp.com",
+      "dept": "研发部",
+      "note": "二开与接口开发"
+    },
+    {
+      "id": "t4",
+      "name": "陈婷",
+      "roles": [
+        "tech",
+        "dev"
+      ],
+      "tel": "13800000004",
+      "email": "chenting@corp.com",
+      "dept": "技术部",
+      "note": "现场实施+二次开发"
+    },
+    {
+      "id": "t5",
+      "name": "张启凡",
+      "roles": [
+        "pm"
+      ],
+      "tel": "13900000005",
+      "email": "pm.zhang@corp.com",
+      "dept": "项目管理部",
+      "note": "项目经理（本机用户）"
+    },
+    {
+      "id": "t6",
+      "name": "王芳",
+      "roles": [
+        "sales",
+        "pm"
+      ],
+      "tel": "13800000006",
+      "email": "wangfang@corp.com",
+      "dept": "销售部",
+      "note": ""
+    }
+  ],
+  "templates": [
+    {
+      "id": "t1",
+      "name": "项目计划书",
+      "category": "立项类",
+      "desc": "覆盖项目背景、目标、范围、里程碑、资源与风险管理。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "合同编号",
+        "金额",
+        "项目经理",
+        "技术支持",
+        "销售",
+        "计划开始",
+        "交付日期"
+      ],
+      "content": "{项目名称}项目计划书\n\n一、项目背景\n客户：{客户}    项目经理：{项目经理}\n\n二、项目目标与范围\n{需求范围}\n\n三、计划周期\n{计划起止时间}\n\n四、预算\n{预算}\n\n五、里程碑与交付\n项目于{计划起止时间}内完成交付，分阶段开展调研、方案、开发对接、部署上线与验收归档。\n\n六、风险与保障\n由项目经理{项目经理}统筹，技术支持与开发团队协同推进，定期评审进度与风险。",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>项目计划书</h1>\n<p style=\"text-align:center;color:#8A97A8\">项目编号：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目编号\">{项目编号}</span>&nbsp;合同编号：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"合同编号\">{合同编号}</span></p>\n<h2>一、项目基本信息</h2>\n<table>\n<tr><th style=\"width:26%\">项目名称</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span></td></tr>\n<tr><th>甲方（客户）</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span></td></tr>\n<tr><th>合同金额</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"金额\">{金额}</span></td></tr>\n<tr><th>计划周期</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"计划开始\">{计划开始}</span> 至 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span></td></tr>\n<tr><th>项目经理</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span></td></tr>\n</table>\n<h2>二、项目背景与目标</h2>\n<p>本项目面向 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span> 的实际业务需求，提供系统集成与实施服务。项目目标是按期、保质完成系统建设并顺利通过验收。</p>\n<h2>三、实施范围</h2>\n<p>项目按调研立项、需求分析、开发对接、部署培训、试运行、验收归档等阶段推进，覆盖现场实施、二次开发与联调测试。</p>\n<h2>四、组织分工</h2>\n<ul><li>项目经理：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span>（总体统筹）</li><li>技术支持：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span></li><li>销售对接：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"销售\">{销售}</span></li></ul>\n<h2>五、里程碑与风险保障</h2>\n<p>项目于 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"计划开始\">{计划开始}</span> 启动，计划 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span> 前完成交付。建立周例会与风险台账机制，由项目经理统筹，技术与开发团队协同保障进度与质量。</p>",
+      "isDefault": true,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t2",
+      "name": "验收单",
+      "category": "验收类",
+      "desc": "验收范围、标准、结论与双方签字确认。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "项目经理",
+        "交付日期",
+        "当前日期"
+      ],
+      "content": "{项目名称}项目验收单\n\n一、验收基本信息\n客户：{客户}    项目经理：{项目经理}\n\n二、验收范围与标准\n依据合同约定与验收标准，对项目交付物、功能与文档进行核验。\n\n三、验收结论\n{验收结论}\n\n四、签字确认\n甲方（客户）签字：____________   日期：{验收日期}\n乙方（承建方）签字：____________   日期：{验收日期}",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>项目验收单</h1>\n<table>\n<tr><th style=\"width:26%\">项目名称</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span></td></tr>\n<tr><th>甲方（客户）</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span></td></tr>\n<tr><th>项目经理</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span></td></tr>\n<tr><th>验收日期</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span></td></tr>\n</table>\n<h2>一、验收范围与标准</h2>\n<p>依据合同约定及相关技术标准，对项目交付的软硬件、系统功能、文档资料进行逐项核验，确认满足上线运行要求。</p>\n<h2>二、验收结论</h2>\n<p>经双方共同验收，本项目交付物齐全、功能运行正常、文档完备，<b>同意通过验收</b>。</p>\n<h2>三、签字确认</h2>\n<table>\n<tr><th>甲方（客户）</th><th>乙方（承建方）</th></tr>\n<tr><td style=\"height:64px\">签字（盖章）：<br/>甲方签名：____________<br/>日期：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span></td><td style=\"height:64px\">签字（盖章）：<br/><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"签名\">{签名}</span><br/>日期：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span></td></tr>\n</table>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t3",
+      "name": "会议纪要",
+      "category": "会议纪要",
+      "desc": "记录会议主题、参会人、议题、决定事项与行动计划。",
+      "fields": [
+        "项目名称",
+        "当前日期",
+        "项目经理",
+        "技术支持"
+      ],
+      "content": "{项目名称}会议纪要\n\n会议主题：{会议主题}\n会议日期：{会议日期}\n参会人：{参会人}\n\n一、会议议题\n{会议主题}相关进展汇报与问题协同。\n\n二、决定事项\n{决定事项}\n\n三、后续行动\n各责任方在{会议日期}后推进落实，下次会议做进展回顾。",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>会议纪要</h1>\n<p>会议时间：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span>&nbsp;&nbsp;主持人：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span></p>\n<p>参会人员：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span>、<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span>、甲方相关负责人</p>\n<h2>一、会议议题</h2>\n<ol><li>项目当前进展汇报</li><li>现场问题与需求协同</li><li>下一阶段工作安排</li></ol>\n<h2>二、会议内容</h2>\n<p>会上通报了 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span> 各阶段完成情况，对当前存在的问题进行了梳理，并明确责任人和完成时限。</p>\n<h2>三、决定事项与行动计划</h2>\n<table>\n<tr><th style=\"width:44%\">事项</th><th style=\"width:24%\">责任人</th><th>完成时间</th></tr>\n<tr><td>完成现场设备调试</td><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span></td><td>会前确认</td></tr>\n<tr><td>输出问题整改清单</td><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span></td><td>会后 3 日</td></tr>\n</table>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t4",
+      "name": "调研确认表",
+      "category": "需求类",
+      "desc": "调研项、调研结论与客户确认。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "项目经理",
+        "当前日期",
+        "技术支持"
+      ],
+      "content": "{项目名称}调研确认表\n\n客户：{客户}    调研人：{调研人}\n调研日期：{调研日期}\n\n一、调研项\n{调研项}\n\n二、确认结论\n{确认结论}\n\n客户确认签字：____________",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>调研确认表</h1>\n<table>\n<tr><th style=\"width:26%\">客户单位</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span></td></tr>\n<tr><th>调研人</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span></td></tr>\n<tr><th>调研日期</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span></td></tr>\n</table>\n<h2>一、调研项</h2>\n<table>\n<tr><th style=\"width:34%\">调研内容</th><th>调研结论 / 现状说明</th></tr>\n<tr><td>业务流程与使用场景</td><td>待现场确认填写</td></tr>\n<tr><td>现有系统与对接环境</td><td>待现场确认填写</td></tr>\n<tr><td>网络与点位条件</td><td>待现场确认填写</td></tr>\n</table>\n<h2>二、确认结论</h2>\n<p>以上调研内容经双方核对无误，作为后续方案设计与实施依据。</p>\n<p>客户确认签字：____________&nbsp;&nbsp;日期：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span></p>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t5",
+      "name": "实施方案",
+      "category": "方案类",
+      "desc": "实施方案、步骤、时间节点与人员分工。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "项目经理",
+        "技术支持",
+        "开发",
+        "计划开始",
+        "交付日期"
+      ],
+      "content": "{项目名称}实施方案\n\n一、总体思路\n结合{项目管理阶段}阶段要求，围绕业务需求开展方案设计与实施。\n\n二、实施步骤\n1. 环境与资料准备\n2. 部署与配置\n3. 联调与验证\n\n三、时间节点\n{计划起止时间}\n\n四、人员分工\n{方案编制人}统筹实施，技术支持与开发团队协同完成。",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>实施方案</h1>\n<h2>一、总体思路</h2>\n<p>结合 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span> 的业务需求，围绕 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span> 建设目标，按\"环境准备—部署配置—联调验证—上线培训\"的路径组织实施，确保 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span> 前交付。</p>\n<h2>二、实施步骤</h2>\n<ol>\n<li><b>环境与资料准备</b>：完成现场勘察、网络与设备条件确认。</li>\n<li><b>部署与配置</b>：由 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span> 完成平台安装、点位配置与数据初始化。</li>\n<li><b>接口与二次开发</b>：由 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"开发\">{开发}</span> 完成平台对接与定制功能开发。</li>\n<li><b>联调与验证</b>：全流程联调测试，修复遗留问题。</li>\n</ol>\n<h2>三、时间节点</h2>\n<table>\n<tr><th>阶段</th><th>计划开始</th><th>计划完成</th></tr>\n<tr><td>整体实施</td><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"计划开始\">{计划开始}</span></td><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span></td></tr>\n</table>\n<h2>四、人员分工</h2>\n<p>项目经理 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span> 统筹实施；技术支持 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span> 负责现场部署；开发 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"开发\">{开发}</span> 负责接口与二开。</p>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t6",
+      "name": "培训签到表",
+      "category": "培训类",
+      "desc": "培训主题、时间、讲师与参训人签到。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "项目经理",
+        "当前日期"
+      ],
+      "content": "{项目名称}培训签到表\n\n培训主题：{培训主题}\n讲师：{讲师}    培训日期：{培训日期}\n\n参训人员签到：\n1. ____________    2. ____________    3. ____________\n4. ____________    5. ____________    6. ____________\n\n培训效果反馈：\n________________________________________",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>培训签到表</h1>\n<p>培训主题：系统操作与日常运维培训</p>\n<p>培训单位：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span>&nbsp;&nbsp;讲师：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span>&nbsp;&nbsp;培训日期：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span></p>\n<h2>一、参训人员签到</h2>\n<table>\n<tr><th style=\"width:8%\">序号</th><th style=\"width:30%\">姓名</th><th style=\"width:32%\">部门 / 岗位</th><th>签字</th></tr>\n<tr><td>1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>4</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>5</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>6</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>\n</table>\n<h2>二、培训内容</h2>\n<ul><li>系统功能与操作流程介绍</li><li>日常使用与常见问题处理</li><li>运维注意事项与联系方式</li></ul>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t7",
+      "name": "试运行报告",
+      "category": "试运行类",
+      "desc": "试运行周期、问题记录、运行情况与结论。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "计划开始",
+        "交付日期",
+        "项目经理"
+      ],
+      "content": "{项目名称}试运行报告\n\n客户：{客户}\n试运行周期：{试运行周期}\n\n一、运行情况\n{运行情况}\n\n二、问题记录与处理\n{问题记录}\n\n三、结论与建议\n试运行期间系统运行稳定，主要问题已闭环，具备正式验收条件。",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>试运行报告</h1>\n<table>\n<tr><th style=\"width:26%\">客户单位</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span></td></tr>\n<tr><th>试运行周期</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"计划开始\">{计划开始}</span> 至 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span></td></tr>\n<tr><th>负责人</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span></td></tr>\n</table>\n<h2>一、运行情况</h2>\n<p>试运行期间系统整体运行稳定，核心业务功能正常，数据采集与展示准确，满足日常使用要求。</p>\n<h2>二、问题记录与处理</h2>\n<table>\n<tr><th style=\"width:40%\">问题描述</th><th style=\"width:22%\">处理状态</th><th>备注</th></tr>\n<tr><td>试运行反馈问题</td><td>已闭环</td><td>详见问题台账</td></tr>\n</table>\n<h2>三、结论与建议</h2>\n<p>试运行期间主要问题均已处理完毕，系统具备正式上线及验收条件，建议转入正式验收。</p>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t8",
+      "name": "上线通知",
+      "category": "上线类",
+      "desc": "通知客户系统正式上线时间、切换安排与注意事项。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "交付日期",
+        "项目经理",
+        "技术支持"
+      ],
+      "content": "关于{项目名称}正式上线的通知\n\n尊敬的{客户}：\n\n经双方联调与验证，{项目名称}定于{上线时间}正式上线，现将相关安排通知如下：\n\n一、上线时间\n{上线时间}\n\n二、切换安排\n{切换安排}\n\n三、注意事项\n上线期间如遇问题，请及时联系项目组，我方将第一时间响应处理。\n\n特此通知。",
+      "contentHTML": "\n<h1>关于<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>正式上线的通知</h1>\n<p>尊敬的 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span>：</p>\n<p>经双方联调与验证，<b><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span></b> 定于 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span> 正式上线投入使用，现将相关安排通知如下：</p>\n<h2>一、上线时间</h2>\n<p>系统定于 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"交付日期\">{交付日期}</span> 正式上线。</p>\n<h2>二、切换安排</h2>\n<ol><li>上线前完成数据核对与最终配置确认；</li><li>上线当日由 <span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span> 现场保障，<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span> 全程跟进；</li><li>切换后进入运行观察期。</li></ol>\n<h2>三、注意事项</h2>\n<p>上线期间如遇问题，请及时联系项目组，我方将第一时间响应处理。</p>\n<p style=\"text-align:right;margin-top:24px\">项目组<br/><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"签名\">{签名}</span><br/><span style=\"color:#9AA7B8;font-size:10pt\"><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span></span></p>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t9",
+      "name": "需求变更单",
+      "category": "变更类",
+      "desc": "记录需求变更内容、影响评估与确认签字。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "当前日期",
+        "项目经理"
+      ],
+      "content": "{项目名称}需求变更单\n\n客户：{客户}\n\n一、变更内容\n{变更内容}\n\n二、影响评估\n{影响评估}\n\n三、变更确认\n甲方（客户）确认：____________\n乙方（承建方）确认：____________",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>需求变更单</h1>\n<table>\n<tr><th style=\"width:26%\">客户单位</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span></td></tr>\n<tr><th>提出日期</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span></td></tr>\n<tr><th>受理人</th><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span></td></tr>\n</table>\n<h2>一、变更内容</h2>\n<p>（在此填写需求变更的具体内容、涉及模块与变更原因。）</p>\n<h2>二、影响评估</h2>\n<table>\n<tr><th style=\"width:26%\">评估项</th><th>评估结论</th></tr>\n<tr><td>工作量影响</td><td>待评估</td></tr>\n<tr><td>进度影响</td><td>待评估</td></tr>\n<tr><td>费用影响</td><td>待评估</td></tr>\n</table>\n<h2>三、变更确认</h2>\n<table>\n<tr><th>甲方（客户）确认</th><th>乙方（承建方）确认</th></tr>\n<tr><td style=\"height:56px\">签字（盖章）：<br/><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"签名\">{签名}</span></td><td style=\"height:56px\">签字（盖章）：<br/>日期：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span></td></tr>\n</table>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    },
+    {
+      "id": "t10",
+      "name": "项目周报",
+      "category": "汇报类",
+      "desc": "本周进展、下周计划、风险项与需要协调事项。",
+      "fields": [
+        "项目名称",
+        "甲方名称",
+        "项目经理",
+        "技术支持",
+        "当前日期"
+      ],
+      "content": "{项目名称}项目周报\n\n项目经理：{项目经理}\n\n一、本周进展\n{本周进展}\n\n二、下周计划\n{下周计划}\n\n三、风险与问题\n{风险项}\n\n四、需协调事项\n请各相关方及时反馈，确保项目按计划推进。",
+      "contentHTML": "\n<h1><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目名称\">{项目名称}</span>项目周报</h1>\n<p>报告日期：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"当前日期\">{当前日期}</span>&nbsp;&nbsp;项目经理：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"项目经理\">{项目经理}</span>&nbsp;&nbsp;客户：<span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"甲方名称\">{甲方名称}</span></p>\n<h2>一、本周进展</h2>\n<ul><li>完成本周计划任务，现场推进正常；</li><li>遗留问题持续跟踪处理。</li></ul>\n<h2>二、下周计划</h2>\n<ul><li>按计划推进下一阶段实施与联调；</li><li>输出阶段性交付物。</li></ul>\n<h2>三、风险与问题</h2>\n<table>\n<tr><th style=\"width:46%\">风险 / 问题</th><th style=\"width:22%\">等级</th><th>应对措施</th></tr>\n<tr><td>需甲方配合事项</td><td>关注</td><td><span class=\"tpl-ph\" contenteditable=\"false\" data-field=\"技术支持\">{技术支持}</span> 跟进协调</td></tr>\n</table>\n<h2>四、需协调事项</h2>\n<p>请各相关方及时反馈，确保项目按计划推进。</p>",
+      "isDefault": false,
+      "builtin": true,
+      "updatedAt": "2026-09-11"
+    }
+  ],
+  "settings": {
+    "seeded": true
+  }
+}
