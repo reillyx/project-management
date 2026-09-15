@@ -845,11 +845,12 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
     openProductModal(root, {
       title: '添加设备',
       defaults: { name: '', spec: '', qty: '' },
-      onSave: f => {
-        const item = { id: `prod_${Date.now()}`, ...f };
-        updateProject(proj.id, { products: [...(proj.products ?? []), item] });
-        addLog({ action: 'create', target: 'product', projectId: proj.id, detail: `「${proj.name}」新增设备「${f.name}」` });
-        toast(`已添加设备「${f.name}」`);
+      multiple: true,
+      onSave: forms => {
+        const items = forms.map((f, index) => ({ id: `prod_${Date.now()}_${index}`, ...f }));
+        updateProject(proj.id, { products: [...(proj.products ?? []), ...items] });
+        addLog({ action: 'create', target: 'product', projectId: proj.id, detail: `「${proj.name}」新增设备「${items.map(item => item.name).join('、')}」` });
+        toast(`已添加 ${items.length} 个设备`);
       },
     });
   });
@@ -862,7 +863,8 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
       openProductModal(root, {
         title: '编辑设备',
         defaults: { name: item.name, spec: item.spec, qty: item.qty },
-        onSave: f => {
+        onSave: forms => {
+          const f = forms[0];
           updateProject(proj.id, { products: (proj.products ?? []).map(x => (x.id === item.id ? { ...x, ...f } : x)) });
           addLog({ action: 'update', target: 'product', projectId: proj.id, detail: `「${proj.name}」修改设备「${item.name}」` });
           toast('设备信息已保存');
@@ -964,7 +966,8 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
       openProductModal(root, {
         title: '编辑产品/设备',
         defaults: { name: item.name, spec: item.spec, qty: item.qty },
-        onSave: f => {
+        onSave: forms => {
+          const f = forms[0];
           updateProject(proj.id, { products: (proj.products ?? []).map(x => (x.id === pid ? { ...x, ...f } : x)) });
           toast('产品信息已保存');
         },
@@ -1274,7 +1277,8 @@ interface IntegrateForm {
 export function openProductModal(root: HTMLElement, opts: {
   title: string;
   defaults: ProductForm;
-  onSave: (f: ProductForm) => void;
+  multiple?: boolean;
+  onSave: (forms: ProductForm[]) => void;
 }): void {
   const d = opts.defaults;
   const catalog = getProductCatalog();
@@ -1287,14 +1291,20 @@ export function openProductModal(root: HTMLElement, opts: {
         <button type="button" class="text-ink-faint hover:text-ink" data-pm-close>${icon('x', 18)}</button>
       </div>
       <div class="p-4 space-y-3">
-        <label class="block"><span class="text-[12px] text-ink-soft">产品/设备名称 <span class="text-[#E36C0A]">*</span></span>
-          <input id="pm-name" class="input w-full mt-1" placeholder="搜索或输入设备名称" value="${esc(d.name)}" autocomplete="off" />
+        <label class="block"><span class="text-[12px] text-ink-soft">产品/设备名称${opts.multiple ? '（可多选）' : ''} <span class="text-[#E36C0A]">*</span></span>
+          <input id="pm-search" class="input w-full mt-1" placeholder="搜索设备名称" value="${opts.multiple ? '' : esc(d.name)}" autocomplete="off" />
         </label>
         <div id="pm-results" class="border border-line rounded-md max-h-48 overflow-y-auto ${catalog.length ? '' : 'hidden'}">
-          ${catalog.map((p) => `<button type="button" class="w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[13px] hover:bg-canvas" data-pm-option="${esc(p.name)}">
-            <span>${esc(p.name)}</span>${p.spec ? `<span class="text-[11px] text-ink-faint">${esc(p.spec)}</span>` : ''}
-          </button>`).join('')}
+          ${catalog.map((p) => opts.multiple
+            ? `<label class="flex items-center gap-2 px-3 py-2 rounded hover:bg-canvas cursor-pointer" data-pm-row="${esc(p.name)}">
+                <input type="checkbox" data-pm-option value="${esc(p.name)}">
+                <span>${esc(p.name)}</span>${p.spec ? `<span class="text-[11px] text-ink-faint ml-auto">${esc(p.spec)}</span>` : ''}
+              </label>`
+            : `<button type="button" class="w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[13px] hover:bg-canvas" data-pm-option="${esc(p.name)}">
+                <span>${esc(p.name)}</span>${p.spec ? `<span class="text-[11px] text-ink-faint">${esc(p.spec)}</span>` : ''}
+              </button>`).join('')}
         </div>
+        ${opts.multiple ? '<div id="pm-selected" class="text-[12px] text-ink-soft">已选择：未选择设备</div>' : ''}
         <div class="grid grid-cols-2 gap-3">
           <label class="block"><span class="text-[12px] text-ink-soft">规格 / 型号</span>
             <input id="pm-spec" class="input w-full mt-1" placeholder="如：标准款 / A型" value="${esc(d.spec)}" />
@@ -1313,25 +1323,38 @@ export function openProductModal(root: HTMLElement, opts: {
   bg.addEventListener('click', (ev: MouseEvent) => { if (ev.target === bg) close(); });
   bg.querySelector('[data-pm-close]')?.addEventListener('click', close);
   bg.querySelector('[data-pm-cancel]')?.addEventListener('click', close);
-  const $name = bg.querySelector('#pm-name') as HTMLInputElement;
+  const $search = bg.querySelector('#pm-search') as HTMLInputElement;
   const $results = bg.querySelector('#pm-results') as HTMLElement;
   const $spec = bg.querySelector('#pm-spec') as HTMLInputElement;
   const $qty = bg.querySelector('#pm-qty') as HTMLInputElement;
   const updateResults = (): void => {
-    const query = $name.value.trim().toLowerCase();
+    const query = $search.value.trim().toLowerCase();
     let visible = 0;
-    $results.querySelectorAll<HTMLButtonElement>('[data-pm-option]').forEach((button) => {
-      const matches = !query || button.dataset.pmOption?.toLowerCase().includes(query);
-      button.classList.toggle('hidden', !matches);
+    $results.querySelectorAll<HTMLElement>('[data-pm-row], [data-pm-option]').forEach((row) => {
+      const value = row.dataset.pmRow || row.getAttribute('data-pm-option') || '';
+      const matches = !query || value.toLowerCase().includes(query);
+      row.classList.toggle('hidden', !matches);
       if (matches) visible += 1;
     });
     $results.classList.toggle('hidden', visible === 0);
   };
-  $name.addEventListener('input', updateResults);
-  $results.querySelectorAll<HTMLButtonElement>('[data-pm-option]').forEach((button) => {
+  $search.addEventListener('input', updateResults);
+  const selected = new Set<string>();
+  const $selected = bg.querySelector('#pm-selected');
+  const updateSelected = (): void => {
+    if ($selected) $selected.textContent = selected.size ? `已选择：${Array.from(selected).join('、')}` : '已选择：未选择设备';
+  };
+  $results.querySelectorAll<HTMLInputElement>('[data-pm-option][type="checkbox"]').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) selected.add(checkbox.value);
+      else selected.delete(checkbox.value);
+      updateSelected();
+    });
+  });
+  $results.querySelectorAll<HTMLButtonElement>('[data-pm-option]:not([type])').forEach((button) => {
     button.addEventListener('click', () => {
       const value = button.dataset.pmOption || '';
-      $name.value = value;
+      $search.value = value;
       if (!$spec.value) {
         const hit = catalog.find((p) => p.name === value);
         if (hit?.spec) $spec.value = hit.spec;
@@ -1340,14 +1363,15 @@ export function openProductModal(root: HTMLElement, opts: {
     });
   });
   bg.querySelector('[data-pm-save]')?.addEventListener('click', () => {
-    const name = $name.value.trim();
-    if (!name) { toast('请输入或选择产品/设备', 'warn'); return; }
-    opts.onSave({ name, spec: $spec.value.trim(), qty: $qty.value.trim() });
+    const names = opts.multiple ? Array.from(selected) : [$search.value.trim()];
+    if (!names.length || !names[0]) { toast('请至少选择一个产品/设备', 'warn'); return; }
+    opts.onSave(names.map(name => ({ name, spec: $spec.value.trim(), qty: $qty.value.trim() })));
     close();
   });
   root.appendChild(bg);
   setTimeout(() => {
-    if (d.name) { $qty.focus(); } else { $name.focus(); }
+    if (opts.multiple) $search.focus();
+    else if (d.name) { $qty.focus(); } else { $search.focus(); }
   }, 0);
 }
 
