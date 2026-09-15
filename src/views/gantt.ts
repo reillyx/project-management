@@ -1,5 +1,6 @@
 // 甘特图渲染（阶段甘特 / 详细甘特，共用时间轴 + 今日线）
 import type { Project, ProjectStage, PhaseKey } from '../data/types';
+import { updateStage } from '../store';
 import { PHASE_META } from '../data/types';
 import { diffDays, fmtDate, monthTicks, toISO, todayISO } from '../lib';
 import { esc, icon, stageStatusBadge, taskStatusBadge } from '../ui';
@@ -42,28 +43,20 @@ interface PhaseRow {
   color: string;
 }
 
-/** 按自然周（周一起）把时间轴切分为周块，标签显示该块起始具体日期 */
-function weekCells(ax: Axis): { label: string; fromIdx: number; days: number }[] {
+/** 按天绘制时间轴，确保每个日期都有明确刻度 */
+function dayCells(ax: Axis): { label: string; fromIdx: number; days: number }[] {
   const md = (d: Date) => `${d.getMonth() + 1}/${d.getDate()}`;
   const s = new Date(`${ax.start}T00:00:00`);
-  const dow = (s.getDay() + 6) % 7; // Mon=0 ... Sun=6
-  const cells: { label: string; fromIdx: number; days: number }[] = [];
-  const firstDays = Math.min(7 - dow, ax.totalDays);
-  cells.push({ label: md(s), fromIdx: 0, days: firstDays });
-  let cursor = firstDays;
-  while (cursor < ax.totalDays) {
-    const days = Math.min(7, ax.totalDays - cursor);
-    const d = new Date(`${ax.start}T00:00:00`);
-    d.setDate(d.getDate() + cursor);
-    cells.push({ label: md(d), fromIdx: cursor, days });
-    cursor += days;
-  }
-  return cells;
+  return Array.from({ length: ax.totalDays }, (_, index) => {
+    const d = new Date(s);
+    d.setDate(d.getDate() + index);
+    return { label: md(d), fromIdx: index, days: 1 };
+  });
 }
 
 /** 数据区按周整列画细竖线（每周起一根，贯穿全部行） */
 function weekGridHtml(ax: Axis): string {
-  return weekCells(ax)
+  return dayCells(ax)
     .filter(w => w.fromIdx > 0)
     .map(w => `<div class="absolute top-0 bottom-0 w-px bg-[#ECF0F5]" style="left:${w.fromIdx * DAY_W}px"></div>`)
     .join('');
@@ -73,8 +66,8 @@ function renderHeader(ax: Axis, leftLabel: string): string {
   const monthRow = ax.months
     .map(m => `<div class="shrink-0 border-r border-hair flex items-center justify-center text-[11px] font-medium text-ink-soft" style="width:${m.days * DAY_W}px">${m.label}</div>`)
     .join('');
-  const weekRow = weekCells(ax)
-    .map(w => `<div class="shrink-0 border-r border-hair flex items-center justify-center text-[10px] text-ink-soft font-medium" style="width:${w.days * DAY_W}px">${w.label}</div>`)
+  const dayRow = dayCells(ax)
+    .map(w => `<div class="shrink-0 border-r border-hair flex items-center justify-center text-[9px] text-ink-soft font-medium" style="width:${w.days * DAY_W}px">${w.label}</div>`)
     .join('');
   const leftCell = (label?: string) =>
     label ? `<div class="px-3 flex items-center text-[12px] font-semibold text-ink-soft shrink-0 border-r border-line">${label}</div>` : '';
@@ -85,7 +78,7 @@ function renderHeader(ax: Axis, leftLabel: string): string {
       </div>
       <div class="flex-1 flex items-stretch">
         ${leftCell(leftLabel)}
-        <div class="flex relative" style="width:${ax.totalDays * DAY_W}px">${weekRow}</div>
+      <div class="flex relative" style="width:${ax.totalDays * DAY_W}px">${dayRow}</div>
       </div>
     </div>`;
 }
@@ -122,7 +115,11 @@ export function renderPhaseGantt(root: HTMLElement, p: Project): void {
             <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:${r.color}"></span>
             <div class="flex-1 min-w-0">
               <div class="text-[13px] text-ink font-medium">${r.name}</div>
-              <div class="text-[10px] text-ink-faint">${fmtDate(st.planStart)} — ${fmtDate(st.planEnd)}</div>
+              <div class="flex items-center gap-1 mt-0.5">
+                <input type="date" class="w-[92px] text-[10px] text-ink-faint bg-transparent border-0 p-0 focus:outline-none focus:ring-1 focus:ring-brand rounded" value="${st.planStart}" data-stage-date="start" data-stage-key="${st.key}" aria-label="${r.name} 计划开始日期">
+                <span class="text-[10px] text-ink-faint">—</span>
+                <input type="date" class="w-[92px] text-[10px] text-ink-faint bg-transparent border-0 p-0 focus:outline-none focus:ring-1 focus:ring-brand rounded" value="${st.planEnd}" data-stage-date="end" data-stage-key="${st.key}" aria-label="${r.name} 计划结束日期">
+              </div>
             </div>
             ${statusBadge}
           </div>`;
@@ -183,13 +180,30 @@ export function renderPhaseGantt(root: HTMLElement, p: Project): void {
   root.querySelector('[data-back]')?.addEventListener('click', () => {
     window.location.hash = '#/projects';
   });
+  root.querySelectorAll<HTMLInputElement>('[data-stage-date]').forEach(input => {
+    input.addEventListener('change', () => {
+      const key = input.dataset.stageKey as PhaseKey;
+      const field = input.dataset.stageDate;
+      const stage = p.stages.find(item => item.key === key);
+      if (!stage || (field !== 'start' && field !== 'end') || !input.value) return;
+      const nextStart = field === 'start' ? input.value : stage.planStart;
+      const nextEnd = field === 'end' ? input.value : stage.planEnd;
+      if (nextStart > nextEnd) {
+        input.value = field === 'start' ? stage.planStart : stage.planEnd;
+        return;
+      }
+      updateStage(p.id, key, field === 'start' ? { planStart: input.value } : { planEnd: input.value });
+      renderPhaseGantt(root, p);
+    });
+  });
   root.querySelector('[data-print-gantt]')?.addEventListener('click', () => {
     openGanttPrint(p);
   });
 
   // 点击阶段 -> 详细甘特
   root.querySelectorAll('[data-phase]').forEach(el => {
-    el.addEventListener('click', () => {
+    el.addEventListener('click', (event: Event) => {
+      if (event.target instanceof HTMLElement && event.target.closest('input')) return;
       const k = el.getAttribute('data-phase');
       if (k) window.location.hash = `#/gantt/${p.id}/${k}`;
     });
