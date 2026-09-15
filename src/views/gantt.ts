@@ -262,8 +262,9 @@ export function renderDetailGantt(root: HTMLElement, p: Project, phaseKey?: stri
       <button class="btn" data-back>${icon('chevron', 12)} 阶段甘特</button>
       <div class="flex-1 min-w-0">
         <div class="text-[15px] font-semibold text-ink truncate">${esc(p.name)}</div>
-        <div class="text-[11px] text-ink-faint">${esc(p.code)} · 详细甘特（${ph ? PHASE_META[ph].name : '全部任务'}）</div>
+        <div class="text-[11px] text-ink-faint">${esc(p.code)} · ${ph ? PHASE_META[ph].name : '全部阶段'} · ${tasks.length} 项任务 · ${fmtDate(rangeStart)} — ${fmtDate(rangeEnd)}</div>
       </div>
+      ${ph ? `<span class="px-2 py-1 rounded-md text-[11px] font-medium text-white" style="background:${PHASE_META[ph].color}">当前阶段：${PHASE_META[ph].name}</span>` : ''}
       <a href="#/project/${p.id}" class="btn">${icon('doc', 14)} 项目详情</a>
     </div>
 

@@ -296,7 +296,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
         <div class="text-[12px] text-ink-faint mt-0.5">${esc(p.code)} · ${esc(p.customer)}</div>
       </div>
       <a href="#/gantt/${p.id}" class="btn">${icon('calendar', 14)} 阶段甘特</a>
-      <a href="#/gantt/${p.id}/${previewStage ? previewStage.key : 'dev'}" class="btn">${icon('list', 14)} 详细甘特</a>
+      <a href="#/gantt/${p.id}/${previewStage ? previewStage.key : 'dev'}" class="btn">${icon('calendar', 14)} ${previewStage ? `${PHASE_META[previewStage.key].name}甘特` : '当前阶段甘特'}</a>
       <a href="#/files/${p.id}" class="btn">${icon('folder', 14)} 文件管理</a>
       <button class="btn-primary" data-prj-gen="${p.id}">${icon('doc', 14)} 生成文档</button>
       ${isOn('notify') ? `<select data-prj-notify title="自动通知" class="input w-auto py-1 px-2 text-[12px]"><option value="">自动通知 ▾</option>${['上线通知','变更通知','会议纪要','培训通知'].map(t => `<option value="${t}">${t}</option>`).join('')}</select>` : ''}
@@ -414,7 +414,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
             <span class="text-[14px] font-semibold text-ink flex items-center gap-2">${icon('check', 15)} 阶段任务 <span class="text-[11px] font-normal text-ink-faint">${previewStage ? `· ${PHASE_META[previewStage.key].name}` : ''}</span></span>
             <div class="flex items-center gap-2">
               <button class="btn py-1 px-2.5" data-task-add>${icon('plus', 13)} 添加任务</button>
-              <a href="#/gantt/${p.id}/${previewStage ? previewStage.key : 'dev'}" class="text-[12px] text-brand-deep hover:underline">详细甘特 ${icon('chevron', 13)}</a>
+              <a href="#/gantt/${p.id}/${previewStage ? previewStage.key : 'dev'}" class="text-[12px] text-brand-deep hover:underline">${previewStage ? `${PHASE_META[previewStage.key].name}甘特` : '当前阶段甘特'} ${icon('chevron', 13)}</a>
             </div>
           </div>
           <table class="w-full"><thead class="bg-canvas/50"><tr>
