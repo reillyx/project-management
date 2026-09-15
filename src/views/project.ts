@@ -769,7 +769,7 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
       title: '添加任务',
       phaseHint: `将添加到当前阶段（${STAGE_STATUS[proj.stages[ai]?.status || 'pending']}）`,
       defaults: {
-        name: '', owner: proj.manager, status: 'todo', progress: 0, milestone: false,
+        name: '', owner: getTeam()[0]?.name || '', status: 'todo', progress: 0, milestone: false,
         start: proj.stages[ai]?.planStart ?? '', end: proj.stages[ai]?.planEnd ?? '',
       },
       onSave: (f) => {
