@@ -14,6 +14,7 @@ export interface ProjectForm {
   priority: Project['priority'];
   clientName: string;
   clientTel: string;
+  contractFiles?: { name: string; size: number; uploadedAt: string; data?: string }[];
   planStart: string;
   planEnd: string;
   teamOf?: Project['teamOf'];
@@ -71,6 +72,15 @@ export function createEmptyProject(form: ProjectForm): Project {
     },
     ...(clients.length ? { clients } : {}),
     ...(form.teamOf ? { teamOf: form.teamOf } : {}),
+    ...(form.contractFiles?.length ? {
+      contract: {
+        no: '',
+        name: '',
+        amount: '',
+        signDate: '',
+        files: form.contractFiles,
+      },
+    } : {}),
     startDate: stages[0].planStart,
     endDate: planEnd,
     progress: 0,
@@ -387,8 +397,14 @@ function renderProjectsInner(
 export function openNewModal(root: HTMLElement): void {
   const bg = document.createElement('div');
   bg.className = 'modal-mask';
+  const team = getTeam();
+  const roles = (['tech', 'sales', 'dev'] as const).map(role => ({
+    role,
+    label: ROLE_META[role].label,
+    members: team.filter(m => m.roles.includes(role)),
+  }));
   bg.innerHTML = `
-    <div class="bg-white rounded-lg w-[480px] max-w-full shadow-xl border border-line">
+    <div class="bg-white rounded-lg w-[620px] max-w-full shadow-xl border border-line">
       <div class="flex items-center justify-between px-5 py-3.5 border-b border-hair">
         <div class="text-[15px] font-semibold text-ink">${icon('plus', 16)} 新建项目</div>
         <button class="modal-close btn-ghost">${icon('x', 16)}</button>
@@ -404,9 +420,13 @@ export function openNewModal(root: HTMLElement): void {
             <input id="np-code" class="input w-full read-only" value="${nextCode()}" readonly title="自动生成的编号" />
           </div>
           <div>
-            <label class="field-label">客户名称</label>
-            <input id="np-customer" class="input w-full" placeholder="请输入客户名称" />
+            <label class="field-label">客户全称 *</label>
+            <input id="np-customer" class="input w-full" placeholder="请输入客户公司/单位全称" />
           </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="field-label">客户联系人</label><input id="np-client-name" class="input w-full" placeholder="联系人姓名" /></div>
+          <div><label class="field-label">联系方式</label><input id="np-client-tel" class="input w-full" placeholder="手机号或座机" /></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
@@ -426,7 +446,23 @@ export function openNewModal(root: HTMLElement): void {
             <option value="urgent">紧急</option>
           </select>
         </div>
-        <div class="text-[11px] text-ink-faint bg-brand-soft/60 border border-brand/20 rounded-md px-2.5 py-2">其余信息（对接人、我方对接人员、合同、业务类别等）可在项目详情页中补充完善。</div>
+        <div>
+          <label class="field-label">安排我方人员</label>
+          <div class="space-y-2 mt-1">
+            ${roles.map(({ role, label, members }) => `
+              <div class="flex items-center gap-2">
+                <span class="w-16 text-[12px] text-ink-soft">${label}</span>
+                <div class="flex flex-wrap gap-x-3 gap-y-1">
+                  ${members.length ? members.map(m => `<label class="inline-flex items-center gap-1 text-[12px] text-ink"><input type="checkbox" class="np-team" data-role="${role}" value="${esc(m.id)}" />${esc(m.name)}</label>`).join('') : '<span class="text-[11px] text-ink-faint">暂无可选人员</span>'}
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div>
+          <label class="field-label">合同附件</label>
+          <input id="np-contract-files" type="file" multiple class="input w-full" />
+          <div id="np-contract-list" class="text-[11px] text-ink-faint mt-1">未选择文件</div>
+        </div>
       </div>
       <div class="flex justify-end gap-2 px-5 py-3.5 border-t border-hair bg-canvas/40 rounded-b-lg">
         <button class="modal-close btn">取消</button>
@@ -440,22 +476,56 @@ export function openNewModal(root: HTMLElement): void {
   bg.addEventListener('click', e => {
     if (e.target === bg) close();
   });
+  const contractFiles: { name: string; size: number; uploadedAt: string; data?: string }[] = [];
+  const fileInput = bg.querySelector<HTMLInputElement>('#np-contract-files');
+  fileInput?.addEventListener('change', () => {
+    const files = Array.from(fileInput.files || []);
+    contractFiles.length = 0;
+    const reads = files.map(file => new Promise<void>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        contractFiles.push({ name: file.name, size: file.size, uploadedAt: todayISO(), data: typeof reader.result === 'string' ? reader.result : undefined });
+        resolve();
+      };
+      reader.onerror = () => reject(reader.error || new Error('合同附件读取失败'));
+      reader.readAsDataURL(file);
+    }));
+    void Promise.all(reads).then(() => {
+      const list = bg.querySelector('#np-contract-list');
+      if (list) list.textContent = contractFiles.map(f => f.name).join('、') || '未选择文件';
+    }).catch(() => toast('合同附件读取失败，请重试'));
+  });
   bg.querySelector('#np-submit')?.addEventListener('click', () => {
     const name = (bg.querySelector('#np-name') as HTMLInputElement).value.trim();
     const code = (bg.querySelector('#np-code') as HTMLInputElement).value.trim();
     const customer = (bg.querySelector('#np-customer') as HTMLInputElement).value.trim();
+    const clientName = (bg.querySelector('#np-client-name') as HTMLInputElement).value.trim();
+    const clientTel = (bg.querySelector('#np-client-tel') as HTMLInputElement).value.trim();
     const priority = (bg.querySelector('#np-priority') as HTMLSelectElement).value as Project['priority'];
     const planStart = (bg.querySelector('#np-plan-start') as HTMLInputElement).value;
     const planEnd = (bg.querySelector('#np-plan-end') as HTMLInputElement).value;
     if (!name) {
-      alert('请输入项目名称');
+      toast('请输入项目名称');
+      return;
+    }
+    if (!customer) {
+      toast('请输入客户全称');
       return;
     }
     if (!planStart) {
-      alert('请填写计划开始时间');
+      toast('请填写计划开始时间');
       return;
     }
-    const p = createEmptyProject({ name, code, customer, category: '', priority, clientName: '', clientTel: '', planStart, planEnd });
+    const teamOf: NonNullable<Project['teamOf']> = { tech: [], sales: [], dev: [] };
+    bg.querySelectorAll<HTMLInputElement>('.np-team:checked').forEach(input => {
+      const member = team.find(m => m.id === input.value);
+      const role = input.dataset.role as 'tech' | 'sales' | 'dev' | undefined;
+      if (member && role) {
+        teamOf[role].push({ id: member.id, name: member.name, tel: member.tel });
+      }
+    });
+    const hasTeam = Object.values(teamOf).some(list => list.length > 0);
+    const p = createEmptyProject({ name, code, customer, category: '', priority, clientName, clientTel, teamOf: hasTeam ? teamOf : undefined, contractFiles, planStart, planEnd });
     addProject(p);
     close();
     navigate(`#/project/${p.id}`);
