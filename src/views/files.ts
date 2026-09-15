@@ -285,6 +285,7 @@ export function renderAllFiles(root: HTMLElement, projects: Project[]): void {
   // 状态
   const st = {
     filterProject: '',
+    uploadProject: '',
     q: '',
     cat: '' as '' | FileCatKey,
     tab: '' as '' | '7d' | '30d',
@@ -455,7 +456,14 @@ export function renderAllFiles(root: HTMLElement, projects: Project[]): void {
         <div class="border-2 border-dashed border-line rounded-xl px-6 py-8 text-center transition-colors cursor-pointer" data-drop-target>
           <div class="text-ink-faint mb-1">${icon('upload', 22)}</div>
           <div class="text-[13px] text-ink-soft">拖拽文件到此处上传，或点击选择文件</div>
-          <div class="text-[11px] text-ink-faint mt-1">上传到选中的项目；若未选择项目则上传到「全部项目」下的第一个项目</div>
+        <div class="text-[11px] text-ink-faint mt-1">请先选择上传所属项目，文件将保存到该项目的合同附件</div>
+        </div>
+        <div class="mt-2 flex items-center gap-2">
+        <label class="text-[12px] text-ink-soft whitespace-nowrap" for="uploadProject">上传到项目</label>
+        <select id="uploadProject" class="input w-72 max-w-full">
+          <option value="">请选择项目</option>
+          ${projects.map(pr => `<option value="${pr.id}" ${st.uploadProject === pr.id ? 'selected' : ''}>${esc(pr.name)}（${esc(pr.code)}）</option>`).join('')}
+        </select>
         </div>
         ${ctx.uploading ? `
         <div class="mt-2 card p-3 space-y-2">
@@ -610,8 +618,12 @@ export function renderAllFiles(root: HTMLElement, projects: Project[]): void {
 
     // 拖拽上传
     const dz = root.querySelector('[data-drop-target]') as HTMLElement | null;
+    const uploadProject = root.querySelector('#uploadProject') as HTMLSelectElement | null;
+    uploadProject?.addEventListener('change', () => {
+      st.uploadProject = uploadProject.value;
+    });
     if (dz) {
-      const targetProject = st.filterProject ? getProject(st.filterProject) : projects[0];
+      const targetProject = st.uploadProject ? getProject(st.uploadProject) : undefined;
       dz.addEventListener('click', () => {
         pickFiles('.doc,.docx,.pdf,.xls,.xlsx,.ppt,.pptx,.zip,.jpg,.png,.gif', async (files) => {
           await runDropUpload(targetProject, files);
@@ -633,7 +645,7 @@ export function renderAllFiles(root: HTMLElement, projects: Project[]): void {
     { uploading: false, upMsg: '', upDone: 0, upTotal: 0, upPercent: 0, upText: '' };
 
   const runDropUpload = async (target: Project | undefined, files: File[]): Promise<void> => {
-    if (!target) { toast('没有可上传的项目', 'warn'); return; }
+    if (!target) { toast('请先选择上传所属项目', 'warn'); return; }
     ctx.uploading = true;
     ctx.upTotal = files.length;
     ctx.upDone = 0;
