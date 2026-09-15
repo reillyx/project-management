@@ -113,6 +113,9 @@ router.post('/api/sync', (req: Request, res: Response) => {
   if (Array.isArray(b.projects)) d.projects = b.projects;
   if (Array.isArray(b.team)) d.team = b.team;
   if (Array.isArray(b.templates)) d.templates = b.templates;
+  if (Array.isArray(b.signatures)) d.signatures = b.signatures;
+  if (Array.isArray(b.hours)) d.hours = b.hours;
+  if (Array.isArray(b.logs)) d.logs = b.logs;
   if (b.settings) d.settings = b.settings;
   saveDB();
   res.json({ success: true, updatedAt: new Date().toISOString() });

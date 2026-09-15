@@ -146,7 +146,7 @@ export function renderTasks(): string {
     `<button data-group="${k}" class="px-3 py-1.5 text-sm rounded-lg transition ${group === k ? 'bg-[#5B9BD5] text-white' : 'bg-white text-slate-600 border hover:bg-slate-50'}">${label}</button>`;
 
   return `
-  <div class="max-w-[1400px] mx-auto space-y-4">
+  <div data-view="tasks" class="max-w-[1400px] mx-auto space-y-4">
     <!-- 顶部：视角tab + 分组 + 视图切换 -->
     <div class="flex items-center justify-between flex-wrap gap-3">
       <div class="flex items-center gap-1 border-b border-slate-200">

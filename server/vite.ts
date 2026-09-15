@@ -2,6 +2,7 @@
 // ABOUTME: Handles dev middleware and production static file serving
 
 import type { Application, Request, Response } from 'express';
+import type { Server } from 'node:http';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
@@ -13,12 +14,16 @@ const isDev = process.env.COZE_PROJECT_ENV !== 'PROD';
 /**
  * 集成 Vite 开发服务器（中间件模式）
  */
-export async function setupViteMiddleware(app: Application) {
+export async function setupViteMiddleware(app: Application, httpServer: Server) {
   const vite = await createViteServer({
     ...viteConfig,
     server: {
       ...viteConfig.server,
       middlewareMode: true,
+      hmr: {
+        ...(typeof viteConfig.server?.hmr === 'object' ? viteConfig.server.hmr : {}),
+        server: httpServer,
+      },
     },
     appType: 'spa',
   });
@@ -58,9 +63,10 @@ export function setupStaticServer(app: Application) {
 /**
  * 根据环境设置 Vite
  */
-export async function setupVite(app: Application) {
+export async function setupVite(app: Application, httpServer?: Server) {
   if (isDev) {
-    await setupViteMiddleware(app);
+    if (!httpServer) throw new Error('HTTP server is required for Vite development middleware');
+    await setupViteMiddleware(app, httpServer);
   } else {
     setupStaticServer(app);
   }

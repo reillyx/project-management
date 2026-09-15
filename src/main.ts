@@ -11,6 +11,8 @@ import {
   setSignatures,
   getHours,
   setHours,
+  getLogs,
+  setLogs,
   getSettings,
 } from './store';
 import { applySysSettings } from './lib';
@@ -111,6 +113,7 @@ async function persist(): Promise<void> {
       templates: getTemplates(),
       signatures: getSignatures(),
       hours: getHours(),
+      logs: getLogs(),
       settings: { seeded },
     });
   } catch {
@@ -144,6 +147,7 @@ async function boot(): Promise<void> {
     }
     if (Array.isArray(s.signatures) && s.signatures.length > 0) setSignatures(s.signatures);
     if (Array.isArray(s.hours) && s.hours.length > 0) setHours(s.hours);
+    if (Array.isArray(s.logs)) setLogs(s.logs);
     await persist();
     render();
   } catch {
@@ -208,10 +212,10 @@ function render(): void {
       renderGanttPage(root, route);
       break;
     case 'files':
-      renderFiles(root, route.projectId);
+      renderFiles(root, route.projectId, route.phase);
       break;
     case 'tasks':
-      renderTasks();
+      root.innerHTML = renderTasks();
       wireTasks();
       break;
     case 'templates':

@@ -364,6 +364,9 @@ export function addLog(entry: Omit<OperationLog, 'time' | 'user'>): void {
 export function getLogs(): OperationLog[] {
   return loadLogs();
 }
+export function setLogs(logs: OperationLog[]): void {
+  persistLogs(logs);
+}
 export function clearLogs(): void {
   persistLogs([]);
 }

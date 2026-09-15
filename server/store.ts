@@ -2,12 +2,16 @@
 // 数据落在应用同级 data/db.json，AI 助手可通过 REST 接口读写，也可直接编辑该文件。
 import fs from 'node:fs';
 import path from 'node:path';
-import type { Project, TeamMember, TemplateDoc } from '../src/data/types';
+import type { Project, Signature, TeamMember, TemplateDoc, TimeRecord } from '../src/data/types';
+import type { OperationLog } from '../src/store';
 
 export interface DB {
   projects: Project[];
   team: TeamMember[];
   templates: TemplateDoc[];
+  signatures: Signature[];
+  hours: TimeRecord[];
+  logs: OperationLog[];
   settings: Record<string, string | number | boolean>;
 }
 
@@ -19,7 +23,7 @@ const dbFile = path.join(dataDir, 'db.json');
 let db: DB | null = null;
 
 function emptyDB(): DB {
-  return { projects: [], team: [], templates: [], settings: {} };
+  return { projects: [], team: [], templates: [], signatures: [], hours: [], logs: [], settings: {} };
 }
 
 export function getDB(): DB {

@@ -1,5 +1,6 @@
 // 前端 API 客户端：与后端预留的扣子/AI 接口同源调用，做持久化与数据同步。
 import type { Project, Signature, TeamMember, TemplateDoc, TimeRecord } from './data/types';
+import type { OperationLog } from './store';
 
 export interface SyncPayload {
   projects: Project[];
@@ -7,6 +8,7 @@ export interface SyncPayload {
   templates: TemplateDoc[];
   signatures: Signature[];
   hours: TimeRecord[];
+  logs: OperationLog[];
   settings: Record<string, string | number | boolean>;
 }
 

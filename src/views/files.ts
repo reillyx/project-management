@@ -668,7 +668,7 @@ export function renderAllFiles(root: HTMLElement, projects: Project[]): void {
 }
 
 // ===================== 单项目文件管理器 =====================
-export function renderFiles(root: HTMLElement, projectId?: string): void {
+export function renderFiles(root: HTMLElement, projectId?: string, phase?: string): void {
   const projects = getProjects();
   // 一级菜单进入（无 projectId）：展示所有项目全部文件总览
   if (!projectId || !getProject(projectId)) {
@@ -709,6 +709,9 @@ export function renderFiles(root: HTMLElement, projectId?: string): void {
   }
   const projRef = p;
 
+  const initialStage = phase && USAGE_DIR_LIST.some(u => u.stage === phase)
+    ? phase as PhaseKey
+    : 'initiate';
   const render = (selStage: PhaseKey, selFolder?: string): void => {
     const folders = USAGE_DIR_LIST.find(u => u.stage === selStage)?.folders ?? [];
     const dir = p.filesDir[selStage] ?? {};
@@ -803,7 +806,7 @@ export function renderFiles(root: HTMLElement, projectId?: string): void {
       <span class="text-ink-faint">›</span>
       ${crumb(`#/project/${pid}`, p.name)}
       <span class="text-ink-faint">›</span>
-      ${crumb(`#/files/${pid}`, PHASE_META[selStage].name, true)}
+      ${crumb(`#/files/${pid}/${selStage}`, PHASE_META[selStage].name, true)}
       ${selFolder ? `<span class="text-ink-faint">›</span><span class="text-ink-soft">${esc(selFolder)}</span>` : ''}
     </nav>`;
 
@@ -1049,5 +1052,5 @@ export function renderFiles(root: HTMLElement, projectId?: string): void {
   const ctx: { uploading: boolean; upMsg: string; upDone: number; upTotal: number; upPercent: number; upText: string } =
     { uploading: false, upMsg: '', upDone: 0, upTotal: 0, upPercent: 0, upText: '' };
 
-  render('initiate');
+  render(initialStage);
 }
