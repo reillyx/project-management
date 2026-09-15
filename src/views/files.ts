@@ -133,6 +133,7 @@ async function uploadInto(
     });
     onProgress?.(i + 1, total);
   }
+
   if (opts.contract) {
     const cur = p.contract?.files ?? [];
     const mapped = entries.map((e) => ({
@@ -153,6 +154,16 @@ async function uploadInto(
     updateProject(p.id, { filesDir: dir });
   }
   return entries.length;
+}
+
+/** 从任务清单上传成果文件，统一写入项目阶段目录。 */
+export async function uploadTaskFiles(
+  p: Project,
+  stage: PhaseKey,
+  folder: string,
+  files: File[],
+): Promise<number> {
+  return uploadInto(p, { stage, folder }, files);
 }
 
 /** 全项目文件总览：收集所有项目（合同附件 + 阶段目录）的全部文件 */

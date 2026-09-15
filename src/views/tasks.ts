@@ -1,5 +1,7 @@
-import { PHASE_META, type Project, type ProjectTask } from '../data/types';
+import { PHASE_META, type PhaseKey, type Project, type ProjectTask } from '../data/types';
 import { getProject, getProjects, updateProject } from '../store';
+import { USAGE_DIR_LIST } from '../data/mock';
+import { uploadTaskFiles } from './files';
 import { daysUntil, fmtDate } from '../lib';
 import { esc, icon, progressBar, toast } from '../ui';
 
@@ -295,8 +297,8 @@ function listRow({ project, task }: TaskRow): string {
     <div class="w-[120px]"><div class="text-xs text-slate-400 mb-0.5">${progress}%</div>${progressBar(task.progress ?? 0)}</div>
     <button data-st="${esc(task.id)}" class="w-[70px] shrink-0">${statusBadge(task)}</button>
     <div class="w-[52px] text-right shrink-0">${ld}</div>
-    <div class="w-[68px] flex justify-end gap-1 shrink-0">
-      ${(task.status as string) === 'done' ? '' : `<button data-done="${esc(task.id)}" class="p-1 rounded hover:bg-emerald-100 text-slate-400 hover:text-emerald-600 transition opacity-0 group-hover:opacity-100" title="快速完成">${icon('check', 15)}</button>`}
+    <div class="w-[110px] flex justify-end gap-1 shrink-0">
+      ${(task.status as string) === 'done' ? `<button data-upload-task="${esc(task.id)}" class="p-1 rounded hover:bg-brand-soft text-brand-deep transition" title="上传任务成果">${icon('upload', 15)}</button>` : `<button data-done="${esc(task.id)}" class="p-1 rounded hover:bg-emerald-100 text-slate-400 hover:text-emerald-600 transition opacity-0 group-hover:opacity-100" title="快速完成">${icon('check', 15)}</button>`}
     </div>
   </div>`;
 }
@@ -326,6 +328,7 @@ function cardRow({ project, task }: TaskRow): string {
     </div>
     <div class="mt-2.5 flex items-center justify-between">
       <button data-st="${esc(task.id)}">${statusBadge(task)}</button>
+     ${(task.status as string) === 'done' ? `<button data-upload-task="${esc(task.id)}" class="text-xs text-brand-deep hover:underline">${icon('upload', 12)} 上传成果</button>` : ''}
     </div>
   </div>`;
 }
@@ -434,9 +437,51 @@ export function wireTasks(): void {
       if (doneBtn) { quickDone(doneBtn.dataset.done as string); return; }
       const dateBtn = t.closest<HTMLElement>('[data-date]');
       if (dateBtn) { openDateEditor(dateBtn, dateBtn.dataset.date as string); return; }
+      const uploadBtn = t.closest<HTMLElement>('[data-upload-task]');
+      if (uploadBtn) { openTaskUpload(uploadBtn.dataset.uploadTask as string); return; }
   });
   const body = root.querySelector<HTMLElement>('#tk-body');
   if (body) body.innerHTML = renderBody();
+}
+
+function openTaskUpload(taskId: string): void {
+  const row = findRow(taskId);
+  if (!row || row.task.status !== 'done') return;
+  const dirs = USAGE_DIR_LIST.find(item => item.stage === row.task.phase as PhaseKey)?.folders ?? [];
+  if (!dirs.length) { toast('该阶段暂无可用文件目录', 'warn'); return; }
+  const bg = document.createElement('div');
+  bg.className = 'modal-mask';
+  bg.innerHTML = `<div class="modal" style="max-width:420px">
+    <div class="px-4 py-3 border-b border-line flex items-center justify-between">
+      <span class="text-[15px] font-semibold text-ink">${icon('upload', 16)} 上传任务成果</span>
+      <button class="text-ink-faint hover:text-ink" data-task-upload-close>${icon('x', 18)}</button>
+    </div>
+    <div class="p-4 space-y-3">
+      <div class="text-[12px] text-ink-soft">任务：<span class="font-medium text-ink">${esc(row.task.name)}</span></div>
+      <label class="block"><span class="text-[12px] text-ink-soft">保存到「${esc(PHASE_META[row.task.phase].name)}」阶段的目录</span>
+        <select id="task-upload-folder" class="input w-full mt-1">${dirs.map(folder => `<option value="${esc(folder)}">${esc(folder)}</option>`).join('')}</select>
+      </label>
+      <input id="task-upload-files" type="file" class="input w-full" multiple accept=".doc,.docx,.pdf,.xls,.xlsx,.ppt,.pptx,.zip,.jpg,.jpeg,.png" />
+    </div>
+    <div class="flex justify-end gap-2 px-4 py-3 border-t border-line">
+      <button class="btn" data-task-upload-cancel>取消</button>
+      <button class="btn-primary" data-task-upload-save>上传</button>
+    </div>
+  </div>`;
+  const close = (): void => bg.remove();
+  bg.addEventListener('click', event => { if (event.target === bg) close(); });
+  bg.querySelector('[data-task-upload-close]')?.addEventListener('click', close);
+  bg.querySelector('[data-task-upload-cancel]')?.addEventListener('click', close);
+  bg.querySelector('[data-task-upload-save]')?.addEventListener('click', async () => {
+    const input = bg.querySelector<HTMLInputElement>('#task-upload-files');
+    const folder = bg.querySelector<HTMLSelectElement>('#task-upload-folder')?.value ?? '';
+    const files = Array.from(input?.files ?? []);
+    if (!files.length) { toast('请选择要上传的成果文件', 'warn'); return; }
+    const count = await uploadTaskFiles(row.project, row.task.phase as PhaseKey, folder, files);
+    toast(`已上传 ${count} 个成果文件到「${folder}」`, 'success');
+    close();
+  });
+  document.body.appendChild(bg);
 }
 
 /* 已开状态菜单关闭 */
