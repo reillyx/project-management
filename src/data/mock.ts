@@ -113,7 +113,9 @@ function buildTasks(stages: ProjectStage[]): ProjectTask[] {
         id: `${st.key}-${i}-${j}`,
         name: t.name,
         phase: st.key,
-        owner: st.key === 'dev' || st.key === 'deploy' ? '开发-张伟' : '实施-李工',
+        owner: st.key === 'dev' || st.key === 'deploy'
+          ? (TEAM.find(member => member.roles.includes('dev'))?.name || '')
+          : (TEAM.find(member => member.roles.includes('tech'))?.name || ''),
         start,
         end: addDays(start, Math.max(1, t.days - 1)),
         status,

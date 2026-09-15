@@ -1174,7 +1174,10 @@ function openTaskModal(root: HTMLElement, opts: TaskModalOpts): void {
   const proj = getProject(curId);
   if (ownerSel) {
     const candidates: string[] = [];
-    if (proj?.manager) candidates.push(proj.manager);
+    getTeam().forEach(member => {
+      if (member.name && !candidates.includes(member.name)) candidates.push(member.name);
+    });
+    if (proj?.manager && !candidates.includes(proj.manager)) candidates.push(proj.manager);
     (proj?.teamOf ? Object.values(proj.teamOf).flat() : []).forEach(m => {
       if (m?.name && !candidates.includes(m.name)) candidates.push(m.name);
     });

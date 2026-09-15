@@ -210,7 +210,17 @@ export function removeTeamMember(id: string): void {
 
 /** 用后端数据整体替换（启动时指定展示来源） */
 export function setProjects(list: Project[]): void {
-  state.projects = list;
+  const teamNames = {
+    tech: teamState.find(m => m.roles.includes('tech'))?.name || '',
+    dev: teamState.find(m => m.roles.includes('dev'))?.name || '',
+  };
+  state.projects = list.map(project => ({
+    ...project,
+    tasks: (project.tasks || []).map(task => {
+      const legacyRole = task.owner === '实施-李工' ? 'tech' : task.owner === '开发-张伟' ? 'dev' : '';
+      return legacyRole && teamNames[legacyRole] ? { ...task, owner: teamNames[legacyRole] } : task;
+    }),
+  }));
 }
 export function setTeam(list: TeamMember[]): void {
   teamState.length = 0;
