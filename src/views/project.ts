@@ -424,7 +424,6 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
           </tbody></table>
         </div>
 
-        <div id="stagePanel" class="fixed top-0 right-0 bottom-0 w-[340px] max-w-[86vw] bg-white shadow-2xl border-l border-line z-40 transition-transform duration-200 translate-x-full"></div>
       </div>
 
       <div class="space-y-4">
@@ -603,66 +602,13 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
   bindStageDate('start');
   bindStageDate('end');
 
-  // 阶段时间轴：点击节点 → 右侧滑出阶段任务面板；点击空白/关闭按钮收起
-  const getStagePanel = (): HTMLElement | null => root.querySelector<HTMLElement>('#stagePanel');
-  const closeStagePanel = (): void => {
-    const pt = getStagePanel();
-    if (!pt) return;
-    pt.classList.add('translate-x-full');
-    pt.classList.remove('translate-x-0');
-  };
-  const openStagePanel = (key: PhaseKey): void => {
-    const pt = getStagePanel();
-    if (!pt) return;
-    const proj = getProject(p.id);
-    const st = proj?.stages.find(s => s.key === key);
-    const tasks = proj ? proj.tasks.filter(t => t.phase === key) : [];
-    const col = st ? (st.status === 'pending' ? '#C5CEDA' : st.status === 'done' ? '#70AD47' : '#5B9BD5') : '#5B9BD5';
-    const rows = tasks.length
-      ? tasks
-          .map(
-            t => `<div class="flex items-center justify-between gap-2 py-2.5 border-b border-hair">
-            <div class="min-w-0">
-              <div class="text-[13px] text-ink truncate">${esc(t.name)}</div>
-              <div class="text-[11px] text-ink-faint mt-0.5 truncate">${ownerChips(t.owner)}</div>
-            </div>
-            <div class="flex items-center gap-2 shrink-0">
-              ${taskStatusBadge(t.status)}
-            </div>
-          </div>`
-          )
-          .join('')
-      : `<div class="py-10 text-center text-ink-faint text-[12px]">该阶段暂无任务</div>`;
-    pt.innerHTML = `<div class="flex items-center justify-between px-4 h-12 border-b border-hair">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${col}"></span>
-          <span class="text-[14px] font-bold text-ink truncate">${PHASE_META[key].name}</span>
-          <span class="text-[11px] text-ink-faint shrink-0">计划 ${st ? fmtDate(st.planStart) : ''} ~ ${st ? fmtDate(st.planEnd) : ''}</span>
-        </div>
-        <button data-panel-close class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-canvas text-ink-faint shrink-0">${icon('x', 15)}</button>
-      </div>
-      <div class="px-4" data-panel-body>${rows}</div>`;
-    pt.classList.remove('translate-x-full');
-    pt.classList.add('translate-x-0');
-  };
-
-  root.addEventListener('click', (ev: MouseEvent) => {
-    if ((ev.target as HTMLElement).closest('[data-panel-close]')) closeStagePanel();
-  });
-  document.addEventListener('click', (ev: MouseEvent) => {
-    const t = ev.target as HTMLElement;
-    if (getStagePanel()?.classList.contains('translate-x-full')) return;
-    if (!t.closest('#stagePanel') && !t.closest('[data-stage-node],[data-stage-status],input')) closeStagePanel();
-  });
-
-  // 初始定位：默认滚动到当前阶段并展开其详情面板
+  // 初始定位：默认滚动到当前阶段
   if (previewStage) {
     const scrollEl = root.querySelector<HTMLElement>('#stageScroll');
     const node = root.querySelector<HTMLElement>(`[data-stage-node="${previewStage.key}"]`);
     if (scrollEl && node) {
       scrollEl.scrollLeft = Math.max(0, node.offsetLeft - scrollEl.clientWidth / 2 + node.offsetWidth / 2);
     }
-    openStagePanel(previewStage.key);
   }
 
   // 时间轴左右箭头：滚动
