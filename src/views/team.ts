@@ -187,8 +187,8 @@ export function renderTeam(root: HTMLElement): void {
            <div class="mt-2 text-[11.5px] text-[#C00000]">删除后这些项目中的该成员将置灰显示。</div>`
         : `<div class="mt-2 text-[12.5px] text-ink-soft">该成员尚未参与任何项目，可安全删除。</div>`;
       const bg = document.createElement('div');
-      bg.className = 'modal-backdrop';
-      bg.innerHTML = `<div class="modal-card">
+      bg.className = 'modal-mask';
+      bg.innerHTML = `<div class="bg-white rounded-lg w-[520px] max-w-full shadow-xl border border-line">
         <div class="modal-header">
           <div class="text-[15px] font-semibold text-ink flex items-center gap-2">${icon('alert', 16)} 删除成员</div>
           <button class="modal-close btn-ghost">${icon('x', 16)}</button>
