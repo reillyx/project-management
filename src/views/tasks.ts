@@ -198,14 +198,15 @@ export function renderTasks(): string {
     </div>
 
     <!-- 内容区 -->
-    <div id="tk-group-title" class="bg-white rounded-lg shadow-sm border border-slate-100 px-4 py-2.5 flex items-center gap-3 text-xs font-medium text-slate-500">
+    <div id="tk-group-title" class="bg-white rounded-lg shadow-sm border border-slate-100 px-2 py-2.5 flex items-center gap-2 text-xs font-medium text-slate-500">
+      <div class="w-[32px] shrink-0">编号</div>
       <div class="flex-1 min-w-0">任务</div>
-      <div class="w-[110px] shrink-0">负责人</div>
-      <div class="w-[90px] shrink-0">阶段</div>
-      <div class="w-[96px] shrink-0">截止日期</div>
-      <div class="w-[70px] shrink-0">项目状态</div>
-      <div class="w-[52px] shrink-0 text-right">倒计时</div>
-      <div class="w-[110px] shrink-0 text-right">操作</div>
+      <div class="w-[100px] shrink-0">负责人</div>
+      <div class="w-[64px] shrink-0">阶段</div>
+      <div class="w-[84px] shrink-0">截止日期</div>
+      <div class="w-[64px] shrink-0">项目状态</div>
+      <div class="w-[48px] shrink-0 text-right">倒计时</div>
+      <div class="w-[72px] shrink-0 text-right">操作</div>
     </div>
     <div id="tk-body"></div>
   </div>`;
@@ -253,7 +254,7 @@ function renderBody(): string {
     });
   }
 
-  const renderOne = (r: TaskRow) => view === 'list' ? listRow(r) : cardRow(r);
+  let rowNumber = 0;
 
   return groups.map(g => {
     const isCollapsed = collapsed.has(g.key);
@@ -264,19 +265,20 @@ function renderBody(): string {
         <span class="text-xs font-normal text-slate-400">(${g.rows.length})</span>
         <span class="ml-auto text-slate-400">${icon(isCollapsed ? 'chevron-right' : 'chevron-down', 16)}</span>
       </button>
-      ${isCollapsed ? '' : `<div class="mt-1">${g.rows.map(renderOne).join('')}</div>`}
+      ${isCollapsed ? '' : `<div class="mt-1">${g.rows.map(r => view === 'list' ? listRow(r, ++rowNumber) : cardRow(r)).join('')}</div>`}
     </section>`;
   }).join('');
 }
 
 /* ---------- 列表行 ---------- */
-function listRow({ project, task }: TaskRow): string {
+function listRow({ project, task }: TaskRow, rowNumber: number): string {
   const u = urgencyOf(task);
   const bg = URGENCY_BG[u] || '';
   const doneCls = u === 'done' ? 'line-through text-[#A0AEC0]' : '';
   const ld = countdown(task);
   return `
-  <div class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition mb-1" style="background:${bg || 'transparent'};border-left:4px solid ${URGENCY_BAR[u]}">
+  <div class="flex items-center gap-2 py-2 px-2 rounded-lg hover:bg-slate-50 transition mb-1" style="background:${bg || 'transparent'};border-left:4px solid ${URGENCY_BAR[u]}">
+    <div class="w-[32px] shrink-0 text-xs text-slate-400">${rowNumber}</div>
     <div class="w-[100px] flex-1 min-w-0">
       <div class="flex items-center gap-1.5">
         ${task.milestone ? '<span title="关键任务" style="color:#D69E2E">★</span>' : ''}
@@ -284,12 +286,12 @@ function listRow({ project, task }: TaskRow): string {
       </div>
       <div class="text-xs text-slate-400 truncate">${esc(project.name)}</div>
     </div>
-    <div class="w-[110px] truncate">${ownerChips(task.owner || '')}</div>
-    <div class="w-[90px] text-sm text-slate-600 truncate">${esc(phaseName(task.phase as string))}</div>
-    <button data-date="${esc(task.id)}" title="点击修改截止日期" class="w-[96px] text-sm text-slate-600 hover:text-[#5B9BD5] truncate">${task.end ? esc(fmtDate(task.end)) : '—'}</button>
-    <button data-st="${esc(task.id)}" class="w-[70px] shrink-0">${statusBadge(task)}</button>
-    <div class="w-[52px] text-right shrink-0">${ld}</div>
-    <div class="w-[110px] flex justify-end gap-1 shrink-0">
+    <div class="w-[100px] truncate">${ownerChips(task.owner || '')}</div>
+    <div class="w-[64px] text-sm text-slate-600 truncate">${esc(phaseName(task.phase as string))}</div>
+    <button data-date="${esc(task.id)}" title="点击修改截止日期" class="w-[84px] text-sm text-slate-600 hover:text-[#5B9BD5] truncate">${task.end ? esc(fmtDate(task.end)) : '—'}</button>
+    <button data-st="${esc(task.id)}" class="w-[64px] shrink-0">${statusBadge(task)}</button>
+    <div class="w-[48px] text-right shrink-0">${ld}</div>
+    <div class="w-[72px] flex justify-end gap-1 shrink-0">
       ${(task.status as string) === 'done' ? `<button data-upload-task="${esc(task.id)}" class="p-1 rounded hover:bg-brand-soft text-brand-deep transition" title="上传任务成果">${icon('upload', 15)}</button>` : `<button data-done="${esc(task.id)}" class="p-1 rounded hover:bg-emerald-100 text-slate-400 hover:text-emerald-600 transition opacity-0 group-hover:opacity-100" title="快速完成">${icon('check', 15)}</button>`}
     </div>
   </div>`;
