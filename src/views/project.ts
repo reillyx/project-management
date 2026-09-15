@@ -892,11 +892,11 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
     openIntegrateModal(root, {
       title: '添加集成平台',
       defaults: { name: '', target: '' },
-      onSave: f => {
-        const item = { id: `int_${Date.now()}`, ...f };
-        updateProject(proj.id, { integrates: [...(proj.integrates ?? []), item] });
-        addLog({ action: 'create', target: 'integrate', projectId: proj.id, detail: `「${proj.name}」新增集成平台「${f.name}」` });
-        toast(`已添加集成「${f.name}」`);
+      onSave: forms => {
+        const items = forms.map((f, index) => ({ id: `int_${Date.now()}_${index}`, ...f }));
+        updateProject(proj.id, { integrates: [...(proj.integrates ?? []), ...items] });
+        addLog({ action: 'create', target: 'integrate', projectId: proj.id, detail: `「${proj.name}」新增集成平台「${items.map(item => item.name).join('、')}」` });
+        toast(`已添加 ${items.length} 个集成平台`);
       },
     });
   });
@@ -1393,7 +1393,7 @@ export function openSystemModal(root: HTMLElement, opts: {
 export function openIntegrateModal(root: HTMLElement, opts: {
   title: string;
   defaults: IntegrateForm;
-  onSave: (f: IntegrateForm) => void;
+  onSave: (forms: IntegrateForm[]) => void;
 }): void {
   const d = opts.defaults;
   const intOpts = getProductIntegrates();
@@ -1406,19 +1406,14 @@ export function openIntegrateModal(root: HTMLElement, opts: {
         <button type="button" class="text-ink-faint hover:text-ink" data-im-close>${icon('x', 18)}</button>
       </div>
       <div class="p-4 space-y-3">
-        <label class="block"><span class="text-[12px] text-ink-soft">集成平台 <span class="text-[#E36C0A]">*</span></span>
-          <select id="im-name" class="input w-full mt-1">
-            <option value="">— 选择集成平台 —</option>
-            ${intOpts.map((s) => `<option value="${esc(s)}" ${d.name === s ? 'selected' : ''}>${esc(s)}</option>`).join('')}
-            <option value="__custom__" ${d.name && !intOpts.includes(d.name) ? 'selected' : ''}>＋ 自定义…</option>
-          </select>
-        </label>
-        <label id="im-custom-wrap" class="block ${d.name && !intOpts.includes(d.name) ? '' : 'hidden'}"><span class="text-[12px] text-ink-soft">自定义平台</span>
-          <input id="im-custom" class="input w-full mt-1" placeholder="输入集成平台名称" value="${d.name && !intOpts.includes(d.name) ? esc(d.name) : ''}" />
-        </label>
-        <label class="block"><span class="text-[12px] text-ink-soft">目标系统 / 对接对象</span>
-          <input id="im-target" class="input w-full mt-1" placeholder="如：泛微OA、企业微信" value="${esc(d.target)}" />
-        </label>
+        <div><span class="text-[12px] text-ink-soft">选择集成系统（可多选） <span class="text-[#E36C0A]">*</span></span>
+          <div class="mt-1 border border-line rounded-md p-1 max-h-56 overflow-y-auto">
+            ${intOpts.map(s => `<label class="flex items-center gap-2 px-2 py-2 rounded hover:bg-canvas cursor-pointer">
+              <input type="checkbox" data-integrate-option value="${esc(s)}" ${d.name.split(',').map(x => x.trim()).includes(s) ? 'checked' : ''}>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#70AD47]"></span><span class="text-[13px]">${esc(s)}</span>
+            </label>`).join('') || '<span class="text-ink-faint text-[12px]">请先在资源明细维护集成系统</span>'}
+          </div>
+        </div>
       </div>
       <div class="flex justify-end gap-2 px-4 py-3 border-t border-line">
         <button class="btn" data-im-cancel>取消</button>
@@ -1429,22 +1424,14 @@ export function openIntegrateModal(root: HTMLElement, opts: {
   bg.addEventListener('click', (ev: MouseEvent) => { if (ev.target === bg) close(); });
   bg.querySelector('[data-im-close]')?.addEventListener('click', close);
   bg.querySelector('[data-im-cancel]')?.addEventListener('click', close);
-  const $name = bg.querySelector('#im-name') as HTMLSelectElement;
-  const $wrap = bg.querySelector('#im-custom-wrap') as HTMLElement;
-  const $custom = bg.querySelector('#im-custom') as HTMLInputElement;
-  const $target = bg.querySelector('#im-target') as HTMLInputElement;
-  $name.addEventListener('change', () => {
-    $wrap.classList.toggle('hidden', $name.value !== '__custom__');
-  });
   bg.querySelector('[data-im-save]')?.addEventListener('click', () => {
-    const v = $name.value;
-    const name = v === '__custom__' ? $custom.value.trim() : v.trim();
-    if (!name) { toast(v === '__custom__' ? '请输入自定义平台名称' : '请选择集成平台', 'warn'); return; }
-    opts.onSave({ name, target: $target.value.trim() });
+    const names = Array.from(bg.querySelectorAll<HTMLInputElement>('[data-integrate-option]:checked')).map(input => input.value);
+    if (!names.length) { toast('请至少选择一个集成系统', 'warn'); return; }
+    opts.onSave(names.map(name => ({ name, target: '' })));
     close();
   });
   root.appendChild(bg);
-  setTimeout(() => $name.focus(), 0);
+  setTimeout(() => bg.querySelector<HTMLInputElement>('[data-integrate-option]')?.focus(), 0);
 }
 
 
