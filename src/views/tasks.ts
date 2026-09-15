@@ -292,7 +292,7 @@ function listRow({ project, task }: TaskRow, rowNumber: number): string {
     <button data-st="${esc(task.id)}" class="w-[64px] shrink-0">${statusBadge(task)}</button>
     <div class="w-[48px] text-right shrink-0">${ld}</div>
     <div class="w-[72px] flex justify-end gap-1 shrink-0">
-      ${(task.status as string) === 'done' ? `<button data-upload-task="${esc(task.id)}" class="p-1 rounded hover:bg-brand-soft text-brand-deep transition" title="上传任务成果">${icon('upload', 15)}</button>` : `<button data-done="${esc(task.id)}" class="p-1 rounded hover:bg-emerald-100 text-slate-400 hover:text-emerald-600 transition opacity-0 group-hover:opacity-100" title="快速完成">${icon('check', 15)}</button>`}
+      ${(task.status as string) === 'done' ? `<button data-upload-task="${esc(task.id)}" class="p-1 rounded hover:bg-brand-soft text-brand-deep transition" title="上传任务成果">${icon('upload', 15)}</button>` : `<button data-done="${esc(task.id)}" class="p-1 rounded hover:bg-emerald-100 text-slate-500 hover:text-emerald-600 transition" title="快速完成">${icon('check', 15)}</button>`}
     </div>
   </div>`;
 }
