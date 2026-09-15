@@ -2,7 +2,7 @@
 import { activeStageIndex, collectReminders, getProjects, type Route } from '../store';
 import { PHASE_META } from '../data/types';
 import { daysUntil, fmtDate, LEVEL_META } from '../lib';
-import { esc, icon, priorityBadge, progressBar } from '../ui';
+import { esc, icon, priorityBadge } from '../ui';
 import { isOn } from '../plugins/registry';
 import { renderDashboardPlugins } from '../plugins/dashboard';
 import { pieChart, barOverdue, monthTimeline } from '../charts';
@@ -107,7 +107,6 @@ export function renderDashboard(root: HTMLElement, route: Route): void {
               </div>
               <div class="w-44 shrink-0">
                 <div class="text-[11px] text-ink-soft mb-1 flex justify-between"><span>${curName}</span><span>${p.progress}%</span></div>
-                ${progressBar(p.progress, PHASE_META[cur.key]?.color ?? '#5B9BD5')}
               </div>
               <div class="text-[12px] text-ink-faint w-10 text-right shrink-0">${icon('chevron', 14)}</div>
             </a>`;

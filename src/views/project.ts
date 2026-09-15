@@ -343,9 +343,8 @@ export function renderProjectDetail(root: HTMLElement, id: string): void {
                 <div class="text-[11px] text-ink-faint">总体进度（自动）</div>
                 <span class="text-[11px] font-semibold px-2 py-0.5 rounded" style="color:${projState(autoProgress(p)).color};background:${projState(autoProgress(p)).bg}">${projState(autoProgress(p)).label}</span>
               </div>
-              <div class="mt-1.5 flex items-center gap-2">
-                <div class="progress-track flex-1"><div class="progress-fill" style="width:${autoProgress(p)}%"></div></div>
-                <span class="text-[13px] font-semibold text-ink w-[38px] text-right">${autoProgress(p)}%</span>
+              <div class="mt-1.5 text-right">
+                <span class="text-[13px] font-semibold text-ink">${autoProgress(p)}%</span>
               </div>
             </div>
           </div>

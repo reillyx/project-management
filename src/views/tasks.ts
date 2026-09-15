@@ -1,9 +1,9 @@
-import { PHASE_META, type PhaseKey, type Project, type ProjectTask } from '../data/types';
-import { getProject, getProjects, updateProject } from '../store';
+import { PHASE_META, ROLE_META, type PhaseKey, type Project, type ProjectTask } from '../data/types';
+import { getProject, getProjects, getTeam, updateProject } from '../store';
 import { USAGE_DIR_LIST } from '../data/mock';
 import { uploadTaskFiles } from './files';
 import { daysUntil, fmtDate } from '../lib';
-import { esc, icon, progressBar, toast } from '../ui';
+import { esc, icon, toast } from '../ui';
 
 /** 任务携带项目上下文 */
 interface TaskRow {
@@ -72,6 +72,18 @@ function allTasks(): TaskRow[] {
     (proj.tasks || []).forEach(t => rows.push({ project: proj, task: t }));
   });
   return rows;
+}
+
+function ownerChips(value: string): string {
+  const names = value.split(',').map(name => name.trim()).filter(Boolean);
+  if (!names.length) return '<span class="text-ink-faint">未分配</span>';
+  const team = getTeam();
+  return names.map(name => {
+    const member = team.find(item => item.name === name);
+    const role = member?.roles[0];
+    const color = role ? ROLE_META[role].color : '#718096';
+    return `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] text-white mr-1" style="background:${color}">${esc(name)}</span>`;
+  }).join('');
 }
 
 /** 统计卡片数据 */
@@ -263,7 +275,6 @@ function listRow({ project, task }: TaskRow): string {
   const u = urgencyOf(task);
   const bg = URGENCY_BG[u] || '';
   const doneCls = u === 'done' ? 'line-through text-[#A0AEC0]' : '';
-  const progress = task.progress ?? 0;
   const ld = countdown(task);
   return `
   <div class="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-50 transition mb-1" style="background:${bg || 'transparent'};border-left:4px solid ${URGENCY_BAR[u]}">
@@ -274,10 +285,9 @@ function listRow({ project, task }: TaskRow): string {
       </div>
       <div class="text-xs text-slate-400 truncate">${esc(project.name)}</div>
     </div>
-    <div class="w-[110px] text-sm text-slate-600 truncate">${esc(task.owner || '—')}</div>
+    <div class="w-[110px] truncate">${ownerChips(task.owner || '')}</div>
     <div class="w-[90px] text-sm text-slate-600 truncate">${esc(phaseName(task.phase as string))}</div>
     <button data-date="${esc(task.id)}" title="点击修改截止日期" class="w-[96px] text-sm text-slate-600 hover:text-[#5B9BD5] truncate">${task.end ? esc(fmtDate(task.end)) : '—'}</button>
-    <div class="w-[120px]"><div class="text-xs text-slate-400 mb-0.5">${progress}%</div>${progressBar(task.progress ?? 0)}</div>
     <button data-st="${esc(task.id)}" class="w-[70px] shrink-0">${statusBadge(task)}</button>
     <div class="w-[52px] text-right shrink-0">${ld}</div>
     <div class="w-[110px] flex justify-end gap-1 shrink-0">
@@ -302,12 +312,11 @@ function cardRow({ project, task }: TaskRow): string {
     </div>
     <div class="mt-0.5 text-xs text-slate-400">${esc(project.name)}</div>
     <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
-      <span class="truncate">👤 ${esc(task.owner || '—')}</span>
+      <span class="truncate flex items-center">👤 ${ownerChips(task.owner || '')}</span>
       <button data-date="${esc(task.id)}" title="点击修改截止日期" class="hover:text-[#5B9BD5]">${task.end ? esc(fmtDate(task.end)) : '—'}</button>
     </div>
     <div class="mt-2.5">
       <div class="text-xs text-slate-400 mb-1 flex items-center justify-between"><span>${esc(phaseName(task.phase as string))}</span><span>${ld}</span></div>
-      ${progressBar(task.progress ?? 0)}
     </div>
     <div class="mt-2.5 flex items-center justify-between">
       <button data-st="${esc(task.id)}">${statusBadge(task)}</button>

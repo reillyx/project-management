@@ -3,7 +3,7 @@ import { activeStageIndex, addProject, collectReminders, getProjects, getTeam, n
 import { PHASE_META, PHASE_KEYS, LEVEL_META_PROJECT, ROLE_META, type Project, type ProjectStage, type PhaseKey } from '../data/types';
 import { addDays, fmtDate, fmtMoney, LEVEL_META, todayISO } from '../lib';
 import { USAGE_DIRS } from '../data/mock';
-import { badge, contactBlock, esc, icon, progressBar, toast } from '../ui';
+import { badge, contactBlock, esc, icon, toast } from '../ui';
 import { exportProjectDetail } from './export';
 
 export interface ProjectForm {
@@ -147,7 +147,6 @@ function renderProjectsInner(
         <td class="table-td">
           <div class="w-36 space-y-1">
             <div class="text-[11px] text-ink-soft flex justify-between"><span>${cur ? PHASE_META[cur.key].name : '已完成'}</span><span class="editable-cell" data-no-nav data-field="progress" data-type="number" data-value="${p.progress}">${p.progress}%</span></div>
-            ${progressBar(p.progress, cur ? PHASE_META[cur.key].color : '#70AD47')}
           </div>
         </td>
         <td class="table-td text-[12px] text-ink-soft">
