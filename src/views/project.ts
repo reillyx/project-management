@@ -1270,7 +1270,7 @@ interface IntegrateForm {
 
 // 常用产品目录等参数在「资源明细」页维护，见 src/data/resourceConfig.ts
 
-/** 设备弹框：仅设备名（从 catalog 选）+ 规格 + 数量 */
+/** 设备弹框：可搜索设备名 + 规格 + 数量 */
 export function openProductModal(root: HTMLElement, opts: {
   title: string;
   defaults: ProductForm;
@@ -1288,15 +1288,13 @@ export function openProductModal(root: HTMLElement, opts: {
       </div>
       <div class="p-4 space-y-3">
         <label class="block"><span class="text-[12px] text-ink-soft">产品/设备名称 <span class="text-[#E36C0A]">*</span></span>
-          <select id="pm-name" class="input w-full mt-1">
-            <option value="">— 请选择设备 —</option>
-            ${catalog.map((p) => `<option value="${esc(p.name)}" ${d.name === p.name ? 'selected' : ''}>${esc(p.name)}${p.spec ? '（' + esc(p.spec) + '）' : ''}</option>`).join('')}
-            <option value="__custom__" ${d.name && !catalog.some((p) => p.name === d.name) ? 'selected' : ''}>＋ 自定义…</option>
-          </select>
+          <input id="pm-name" class="input w-full mt-1" placeholder="搜索或输入设备名称" value="${esc(d.name)}" autocomplete="off" />
         </label>
-        <label id="pm-custom-wrap" class="block ${d.name && !catalog.some((p) => p.name === d.name) ? '' : 'hidden'}"><span class="text-[12px] text-ink-soft">自定义名称</span>
-          <input id="pm-custom" class="input w-full mt-1" placeholder="输入产品/设备名称" value="${d.name && !catalog.some((p) => p.name === d.name) ? esc(d.name) : ''}" />
-        </label>
+        <div id="pm-results" class="border border-line rounded-md max-h-48 overflow-y-auto ${catalog.length ? '' : 'hidden'}">
+          ${catalog.map((p) => `<button type="button" class="w-full flex items-center justify-between gap-2 px-3 py-2 text-left text-[13px] hover:bg-canvas" data-pm-option="${esc(p.name)}">
+            <span>${esc(p.name)}</span>${p.spec ? `<span class="text-[11px] text-ink-faint">${esc(p.spec)}</span>` : ''}
+          </button>`).join('')}
+        </div>
         <div class="grid grid-cols-2 gap-3">
           <label class="block"><span class="text-[12px] text-ink-soft">规格 / 型号</span>
             <input id="pm-spec" class="input w-full mt-1" placeholder="如：标准款 / A型" value="${esc(d.spec)}" />
@@ -1315,22 +1313,35 @@ export function openProductModal(root: HTMLElement, opts: {
   bg.addEventListener('click', (ev: MouseEvent) => { if (ev.target === bg) close(); });
   bg.querySelector('[data-pm-close]')?.addEventListener('click', close);
   bg.querySelector('[data-pm-cancel]')?.addEventListener('click', close);
-  const $name = bg.querySelector('#pm-name') as HTMLSelectElement;
-  const $custom = bg.querySelector('#pm-custom') as HTMLInputElement;
-  const $customWrap = bg.querySelector('#pm-custom-wrap') as HTMLElement;
+  const $name = bg.querySelector('#pm-name') as HTMLInputElement;
+  const $results = bg.querySelector('#pm-results') as HTMLElement;
   const $spec = bg.querySelector('#pm-spec') as HTMLInputElement;
   const $qty = bg.querySelector('#pm-qty') as HTMLInputElement;
-  $name.addEventListener('change', () => {
-    $customWrap.classList.toggle('hidden', $name.value !== '__custom__');
-    if (!$spec.value) {
-      const hit = catalog.find((p) => p.name === $name.value);
-      if (hit && hit.spec) $spec.value = hit.spec;
-    }
+  const updateResults = (): void => {
+    const query = $name.value.trim().toLowerCase();
+    let visible = 0;
+    $results.querySelectorAll<HTMLButtonElement>('[data-pm-option]').forEach((button) => {
+      const matches = !query || button.dataset.pmOption?.toLowerCase().includes(query);
+      button.classList.toggle('hidden', !matches);
+      if (matches) visible += 1;
+    });
+    $results.classList.toggle('hidden', visible === 0);
+  };
+  $name.addEventListener('input', updateResults);
+  $results.querySelectorAll<HTMLButtonElement>('[data-pm-option]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const value = button.dataset.pmOption || '';
+      $name.value = value;
+      if (!$spec.value) {
+        const hit = catalog.find((p) => p.name === value);
+        if (hit?.spec) $spec.value = hit.spec;
+      }
+      $results.classList.add('hidden');
+    });
   });
   bg.querySelector('[data-pm-save]')?.addEventListener('click', () => {
-    const picked = $name.value;
-    const name = picked === '__custom__' ? $custom.value.trim() : picked.trim();
-    if (!name) { toast(picked === '__custom__' ? '请输入自定义设备名称' : '请选择产品/设备', 'warn'); return; }
+    const name = $name.value.trim();
+    if (!name) { toast('请输入或选择产品/设备', 'warn'); return; }
     opts.onSave({ name, spec: $spec.value.trim(), qty: $qty.value.trim() });
     close();
   });
