@@ -11,12 +11,12 @@ import { addDays, todayISO } from '../lib';
 
 /** 团队成员库（可指派到任意项目） */
 export const TEAM: TeamMember[] = [
-  { id: 't1', name: '李源', roles: ['tech'], tel: '13800000001', email: 'liyuan@corp.com', dept: '技术部', note: '擅长网络/门禁实施' },
-  { id: 't2', name: '郑云飞', roles: ['sales'], tel: '13800000002', email: 'zheng@corp.com', dept: '销售部', note: '区域销售' },
-  { id: 't3', name: '汪洋', roles: ['dev'], tel: '13800000003', email: 'wangyang@corp.com', dept: '研发部', note: '二开与接口开发' },
-  { id: 't4', name: '陈婷', roles: ['tech', 'dev'], tel: '13800000004', email: 'chenting@corp.com', dept: '技术部', note: '现场实施+二次开发' },
-  { id: 't5', name: '张启凡', roles: ['pm'], tel: '13900000005', email: 'pm.zhang@corp.com', dept: '项目管理部', note: '项目经理（本机用户）' },
-  { id: 't6', name: '王芳', roles: ['sales', 'pm'], tel: '13800000006', email: 'wangfang@corp.com', dept: '销售部', note: '' },
+  { id: 't1', name: '李源', roles: ['tech'], tel: '13800000001', email: 'liyuan@qyunxi.com', dept: '技术部', note: '擅长网络/门禁实施' },
+  { id: 't2', name: '郑云飞', roles: ['sales'], tel: '13800000002', email: 'zhengyunfei@qyunxi.com', dept: '销售部', note: '区域销售' },
+  { id: 't3', name: '汪洋', roles: ['dev'], tel: '13800000003', email: 'wangyang@qyunxi.com', dept: '研发部', note: '二开与接口开发' },
+  { id: 't4', name: '陈婷', roles: ['tech', 'dev'], tel: '13800000004', email: 'chenting@qyunxi.com', dept: '技术部', note: '现场实施+二次开发' },
+  { id: 't5', name: '张启凡', roles: ['pm'], tel: '13900000005', email: 'zhangqifan@qyunxi.com', dept: '项目管理部', note: '项目经理（本机用户）' },
+  { id: 't6', name: '王芳', roles: ['sales', 'pm'], tel: '13800000006', email: 'wangfang@qyunxi.com', dept: '销售部', note: '' },
 ];
 
 // 每阶段默认工期（天）

@@ -12,6 +12,17 @@ let memberRole: 'all' | 'tech' | 'sales' | 'dev' | 'pm' = 'all';
 let memberPage = 1;
 const MEMBER_PAGE_SIZE = 10;
 const roleColor = (role: typeof memberRole): string => role === 'all' ? '#5B9BD5' : ROLE_META[role].color;
+const NAME_PINYIN: Record<string, string> = {
+  李源: 'liyuan',
+  郑云飞: 'zhengyunfei',
+  汪洋: 'wangyang',
+  陈婷: 'chenting',
+  张启凡: 'zhangqifan',
+  王芳: 'wangfang',
+};
+function defaultMemberEmail(name: string): string {
+  return `${NAME_PINYIN[name] || name.replace(/\s+/g, '').toLowerCase()}@qyunxi.com`;
+}
 
 export function renderTeam(root: HTMLElement): void {
   const roleMembers = memberRole === 'all'
@@ -405,7 +416,7 @@ function openMemberModal(root: HTMLElement, m?: TeamMember): void {
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div><label class="field-label block">手机号</label><input id="tm-tel" class="input w-full" value="${m ? esc(m.tel) : ''}" /></div>
-          <div><label class="field-label block">邮箱</label><input id="tm-mail" class="input w-full" value="${m ? esc(m.email) : ''}" /></div>
+          <div><label class="field-label block">邮箱</label><input id="tm-mail" class="input w-full" value="${m ? esc(m.email) : ''}" placeholder="姓名全拼@qyunxi.com" /></div>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div><label class="field-label block">所属部门</label><input id="tm-dept" class="input w-full" value="${m ? esc(m.dept) : ''}" /></div>
@@ -423,6 +434,13 @@ function openMemberModal(root: HTMLElement, m?: TeamMember): void {
     el.addEventListener('click', () => bg.remove()),
   );
   const roles: ('tech' | 'sales' | 'dev' | 'pm')[] = m ? [...m.roles] : [];
+  const nameInput = bg.querySelector<HTMLInputElement>('#tm-name');
+  const mailInput = bg.querySelector<HTMLInputElement>('#tm-mail');
+  let emailCustomized = Boolean(m?.email && m.email !== defaultMemberEmail(m.name));
+  nameInput?.addEventListener('input', () => {
+    if (!emailCustomized && mailInput) mailInput.value = defaultMemberEmail(nameInput.value.trim());
+  });
+  mailInput?.addEventListener('input', () => { emailCustomized = true; });
   bg.querySelectorAll<HTMLElement>('.tm-role').forEach(btn => {
     btn.addEventListener('click', () => {
       const r = btn.getAttribute('data-role') as 'tech' | 'sales' | 'dev' | 'pm';

@@ -224,7 +224,21 @@ export function setProjects(list: Project[]): void {
 }
 export function setTeam(list: TeamMember[]): void {
   teamState.length = 0;
-  teamState.push(...list);
+  const pinyin: Record<string, string> = {
+    李源: 'liyuan',
+    郑云飞: 'zhengyunfei',
+    汪洋: 'wangyang',
+    陈婷: 'chenting',
+    张启凡: 'zhangqifan',
+    王芳: 'wangfang',
+  };
+  teamState.push(...list.map(member => {
+    const expected = pinyin[member.name];
+    const email = expected && (!member.email || member.email.endsWith('@corp.com'))
+      ? `${expected}@qyunxi.com`
+      : member.email;
+    return email === member.email ? member : { ...member, email };
+  }));
 }
 
 export function activeStageIndex(p: Project): number {
