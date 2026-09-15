@@ -137,7 +137,7 @@ export function renderTasks(): string {
     { k: 'week', num: s.week, unit: '个', label: '本周待办', color: '#5B9BD5', border: '#5B9BD5' },
     { k: 'done', num: `${doneRate}%`, unit: '', label: '已完成率', color: '#38A169', border: '#38A169' },
   ].map(c =>
-    `<button class="bg-white rounded-lg shadow-sm p-4 text-left hover:shadow transition w-1/4 shrink-0" style="border-top:3px solid ${c.border}" ${activeRow(c.k as any)}>
+    `<button class="bg-white rounded-lg shadow-sm p-4 text-left hover:shadow transition w-1/4 shrink-0 ${statFilter === c.k ? 'ring-2 ring-offset-1 ring-[#5B9BD5]' : ''}" style="border-top:3px solid ${c.border}" ${activeRow(c.k as any)}>
       <div class="text-[28px] font-bold" style="color:${c.color}">${c.num}${c.unit}</div>
       <div class="text-xs mt-1 text-slate-500">${c.label}</div>
     </button>`
@@ -354,6 +354,11 @@ export function wireTasks(): void {
       const active = (button.dataset.viewt === 'card') === (view === 'card');
       button.className = `px-2.5 py-1.5 rounded-md transition ${active ? 'bg-white shadow text-[#5B9BD5]' : 'text-slate-500'}`;
     });
+    root.querySelectorAll<HTMLElement>('[data-stat]').forEach(button => {
+      button.classList.toggle('ring-2', button.dataset.stat === statFilter);
+      button.classList.toggle('ring-offset-1', button.dataset.stat === statFilter);
+      button.classList.toggle('ring-[#5B9BD5]', button.dataset.stat === statFilter);
+    });
   };
 
   // 搜索
@@ -377,10 +382,20 @@ export function wireTasks(): void {
   // 统计卡点击
   root.querySelectorAll<HTMLElement>('[data-stat]').forEach(b => b.addEventListener('click', () => {
     const k = b.dataset.stat as string;
-    if (k === 'done') { scope = 'all'; statFilter = 'done'; saveState(); rerender(); }
-    else if (k === 'overdue') { scope = 'all'; statFilter = 'overdue'; saveState(); rerender(); }
-    else if (k === 'today') { scope = 'all'; statFilter = 'today'; saveState(); rerender(); }
-    else if (k === 'week') { scope = 'all'; statFilter = 'week'; saveState(); rerender(); }
+    if (k === 'done' || k === 'overdue' || k === 'today' || k === 'week') {
+      scope = 'all';
+      statFilter = statFilter === k ? '' : k;
+      q = '';
+      fProj = '';
+      fStatus = '';
+      fPhase = '';
+      fPri = '';
+      const searchInput = root.querySelector<HTMLInputElement>('#tk-s');
+      if (searchInput) searchInput.value = '';
+      root.querySelectorAll<HTMLSelectElement>('select').forEach(select => { select.value = ''; });
+      saveState();
+      rerender();
+    }
   }));
 
   // 分组折叠
